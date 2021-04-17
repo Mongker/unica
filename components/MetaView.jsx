@@ -42,7 +42,8 @@ MetaView.propTypes = {
     description: PropTypes.string,
     title: PropTypes.string,
     url: PropTypes.string,
-    img: PropTypes.string,
+    image: PropTypes.string,
+    name: PropTypes.string,
 };
 
 MetaView.defaultProps = {
