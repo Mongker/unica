@@ -25,7 +25,8 @@ const biodataRouter = require('./routes/biodataRouter');
 // routing
 app.use('/biodata', biodataRouter);
 
+const PORT = 2020;
 // starting server
 app.listen(2020, function () {
-    console.log('server listening on port 3000');
+    console.log(`server listening on port ${2020}`);
 });

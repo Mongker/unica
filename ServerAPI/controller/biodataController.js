@@ -3,8 +3,8 @@ const Biodata = require('../model/Biodata');
 module.exports = {
     index: function (req, res) {
         Biodata.get(req.con, function (err, rows) {
-            // res.render('biodata/index', { data: rows });
-            res.status(200).json(rows);
+            res.render('biodata/index', { data: rows });
+            // res.status(200).json(rows);
         });
     },
 
