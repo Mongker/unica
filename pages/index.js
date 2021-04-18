@@ -20,10 +20,11 @@ function Index(props) {
     const { dataMeta } = props;
     return (
         <React.Fragment>
-            {/* Thêm các thẻ meta cần sử dụng */}
+            {/* Note 5: Thêm các thẻ meta cần sử dụng */}
             <MetaView {...dataMeta} />
             <HeaderController />
             <ContentController />
+            {/* Note 4: Thêm footer vào đây nhé*/}
         </React.Fragment>
     );
 }
