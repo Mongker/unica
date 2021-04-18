@@ -1,19 +1,13 @@
 CREATE TABLE `category`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-            accepted_terms BIT(1) NOT NULL,
-            accepted_privacy BIT(1) NOT NULL,
-            primary key (id),
-    `name` INT NOT NULL,
+    `id` INT AUTO_INCREMENT, primary key (id),
+    `name` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `sort_order` INT NOT NULL COMMENT 'Thứ tự xắp sếp',
     `created` TIMESTAMP NOT NULL
 );
 
 CREATE TABLE `product`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                     accepted_terms BIT(1) NOT NULL,
-                     accepted_privacy BIT(1) NOT NULL,
-                     primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `catalog_id` INT NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `content` VARCHAR(255) NOT NULL,
@@ -25,10 +19,7 @@ CREATE TABLE `product`(
 );
 
 CREATE TABLE `study_program`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                     accepted_terms BIT(1) NOT NULL,
-                     accepted_privacy BIT(1) NOT NULL,
-                     primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `content` VARCHAR(255) NOT NULL,
     `sort_order` INT NOT NULL COMMENT 'order',
     `random_question` TINYINT(1) NOT NULL,
@@ -38,10 +29,7 @@ CREATE TABLE `study_program`(
 );
 
 CREATE TABLE `video`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-             accepted_terms BIT(1) NOT NULL,
-             accepted_privacy BIT(1) NOT NULL,
-             primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `link_video` INT NOT NULL,
     `list_id_comment` VARCHAR(255) NOT NULL,
     `link_pdf` INT NOT NULL,
@@ -49,10 +37,7 @@ CREATE TABLE `video`(
 );
 
 CREATE TABLE `comment`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `user_id` INT NOT NULL,
     `content` VARCHAR(255) NOT NULL,
     `vote` INT NOT NULL,
@@ -61,30 +46,21 @@ CREATE TABLE `comment`(
 );
 
 CREATE TABLE `test_exercises`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `user_id` INT NOT NULL,
     `study_program_id` INT NOT NULL,
     `point` INT NOT NULL COMMENT 'Điểm bài kiểm tra'
 );
 
 CREATE TABLE `question`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `title` VARCHAR(255) NOT NULL,
     `right_answer` VARCHAR(255) NOT NULL COMMENT 'câu trả lời đúng',
     `study_program_id` INT NOT NULL
 );
 
 CREATE TABLE `student_answers`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `id_question` INT NOT NULL,
     `test_examcises_id` INT NOT NULL,
     `selection` TEXT NOT NULL,
@@ -93,10 +69,7 @@ CREATE TABLE `student_answers`(
 );
 
 CREATE TABLE `feedback`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `user_id` INT NOT NULL,
     `content` VARCHAR(255) NOT NULL,
     `link_file` VARCHAR(255) NULL,
@@ -106,10 +79,7 @@ CREATE TABLE `feedback`(
 );
 
 CREATE TABLE `product_reviews`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `product_id` INT NOT NULL,
     `user_id` INT NOT NULL,
     `sort_order` INT NOT NULL,
@@ -117,20 +87,14 @@ CREATE TABLE `product_reviews`(
 );
 
 CREATE TABLE `order`(
-    `id`INT AUTO_INCREMENT NOT NULL,
-                     accepted_terms BIT(1) NOT NULL,
-                     accepted_privacy BIT(1) NOT NULL,
-                     primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `cart_id` INT NOT NULL,
     `transaction_id` INT NOT NULL,
     `status_order` TINYINT(1) NOT NULL
 );
 
 CREATE TABLE `transaction`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `user_id` INT NOT NULL,
     `status_transaction` TINYINT(1) NOT NULL,
     `message` VARCHAR(255) NOT NULL,
@@ -141,10 +105,7 @@ CREATE TABLE `transaction`(
 );
 
 CREATE TABLE `cart`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `product_id` INT NOT NULL,
     `user_id` INT NOT NULL,
     `status_cart` TINYINT(1) NOT NULL,
@@ -153,10 +114,7 @@ CREATE TABLE `cart`(
 );
 
 CREATE TABLE `user`(
-    `id` INT AUTO_INCREMENT NOT NULL,
-                      accepted_terms BIT(1) NOT NULL,
-                      accepted_privacy BIT(1) NOT NULL,
-                      primary key (id),
+    `id` INT AUTO_INCREMENT, primary key (id),
     `name` VARCHAR(255) NOT NULL,
     `phone` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,

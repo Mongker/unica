@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 19, 2021 lúc 12:20 AM
+-- Thời gian đã tạo: Th4 19, 2021 lúc 12:32 AM
 -- Phiên bản máy phục vụ: 10.4.18-MariaDB
 -- Phiên bản PHP: 8.0.3
 
@@ -208,15 +208,15 @@ CREATE TABLE `transaction` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`info`)),
   `position` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `coin` double(8,2) NOT NULL,
-  `status_user` tinyint(1) NOT NULL,
+  `coin` int(10) NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status_user` tinyint(1) NOT NULL,
   `create` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -420,7 +420,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `video`
