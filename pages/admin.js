@@ -9,14 +9,29 @@
 
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
-
+import { Layout, Menu, Breadcrumb, message } from 'antd';
+import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined, PicRightOutlined, HomeOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
+import ContextApp from '../util/ContextApp';
+import Category from '../components/Admin/Category';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 function Admin(props) {
+    // context
+    const { user } = React.useContext(ContextApp);
+
+    // state
     const [collapsed, setCollapsed] = React.useState(false);
+    const router = useRouter();
+
+    React.useEffect(() => {
+        if (user && typeof user === 'object') {
+            message.success(`Xin chào: ${user.email}`);
+        } else {
+            router.push('/');
+        }
+    }, []);
 
     const onCollapse = () => {
         setCollapsed(!collapsed);
@@ -26,36 +41,38 @@ function Admin(props) {
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
                 <div className='logo' />
-                <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
-                    <Menu.Item key='1' icon={<PieChartOutlined />}>
-                        Option 1
+                <Menu theme='dark' defaultSelectedKeys={['CATEGORY']} mode='inline'>
+                    <Menu.Item key='CATEGORY' icon={<PicRightOutlined />}>
+                        Quản lý danh mục
                     </Menu.Item>
-                    <Menu.Item key='2' icon={<DesktopOutlined />}>
-                        Option 2
-                    </Menu.Item>
-                    <SubMenu key='sub1' icon={<UserOutlined />} title='User'>
-                        <Menu.Item key='3'>Tom</Menu.Item>
-                        <Menu.Item key='4'>Bill</Menu.Item>
-                        <Menu.Item key='5'>Alex</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key='sub2' icon={<TeamOutlined />} title='Team'>
-                        <Menu.Item key='6'>Team 1</Menu.Item>
-                        <Menu.Item key='8'>Team 2</Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key='9' icon={<FileOutlined />}>
-                        Files
-                    </Menu.Item>
+                    {/*<Menu.Item key='2' icon={<DesktopOutlined />}>*/}
+                    {/*    Option 2*/}
+                    {/*</Menu.Item>*/}
+                    {/*<SubMenu key='sub1' icon={<UserOutlined />} title='User'>*/}
+                    {/*    <Menu.Item key='3'>Tom</Menu.Item>*/}
+                    {/*    <Menu.Item key='4'>Bill</Menu.Item>*/}
+                    {/*    <Menu.Item key='5'>Alex</Menu.Item>*/}
+                    {/*</SubMenu>*/}
+                    {/*<SubMenu key='sub2' icon={<TeamOutlined />} title='Team'>*/}
+                    {/*    <Menu.Item key='6'>Team 1</Menu.Item>*/}
+                    {/*    <Menu.Item key='8'>Team 2</Menu.Item>*/}
+                    {/*</SubMenu>*/}
+                    {/*<Menu.Item key='9' icon={<FileOutlined />}>*/}
+                    {/*    Files*/}
+                    {/*</Menu.Item>*/}
                 </Menu>
             </Sider>
             <Layout className='site-layout'>
                 <Header className='site-layout-background' style={{ padding: 0 }} />
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            <HomeOutlined />
+                        </Breadcrumb.Item>
                         <Breadcrumb.Item>Bill</Breadcrumb.Item>
                     </Breadcrumb>
                     <div className='site-layout-background' style={{ padding: 24, minHeight: 360 }}>
-                        Bill is a cat.
+                        <Category />
                     </div>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>

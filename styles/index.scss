@@ -239,3 +239,12 @@
 [data-theme="dark"] .site-layout .site-layout-background {
     background: #141414;
 }
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+}
+.flex_col {
+    display: flex;
+    flex-direction: column;
+}

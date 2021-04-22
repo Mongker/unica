@@ -32,6 +32,10 @@ function HeaderUNICAView(props) {
         e.preventDefault();
         router.push('/singup');
     };
+    const handleClickGoAdmin = (e) => {
+        e.preventDefault();
+        router.push('/admin');
+    };
 
     return (
         <div className={styles.header}>
@@ -61,8 +65,8 @@ function HeaderUNICAView(props) {
                                 <React.Fragment>
                                     <div className={'info_user'}>
                                         <img src='http://localhost:2020/api/file/765-default-avatar.png' alt='ssss' style={{ borderRadius: '100%', width: 30, height: 30 }} />
-                                        <p style={{color: 'red', fontSize: 20, marginLeft: 5, marginRight: 5}}>{user.email}</p>
-                                        <p style={{marginRight: 5}}>({user.role})</p>
+                                        <p style={{ color: 'red', fontSize: 20, marginLeft: 5, marginRight: 5 }}>{user.email}</p>
+                                        <p style={{ marginRight: 5 }}>({user.role})</p>
                                     </div>
                                 </React.Fragment>
                             ) : (
@@ -79,15 +83,13 @@ function HeaderUNICAView(props) {
                                     </li>
                                 </React.Fragment>
                             )}
-                            {
-                                user && user.role !== ('user') && (
-                                    <li className={classNames(styles['header_giohang-list-item'], styles['dk'])}>
-                                        <a className={styles['list-link-dk']} onClick={handleClickSingUp}>
-                                            Quản lý khóa học
-                                        </a>
-                                    </li>
-                                )
-                            }
+                            {user && user.role !== 'user' && (
+                                <li className={classNames(styles['header_giohang-list-item'], styles['dk'])}>
+                                    <a className={styles['list-link-dk']} onClick={handleClickGoAdmin}>
+                                        Quản lý khóa học
+                                    </a>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
