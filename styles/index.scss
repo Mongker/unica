@@ -215,3 +215,27 @@
 .modal_post_bank {
     background-image: url(https://firebasestorage.googleapis.com/v0/b/blog-mongker.appspot.com/o/default%2Fbitcoin-17-2.jpg?alt=media&token=a71a039f-82ff-4514-a1d4-737ab6be9a05) !important;
 }
+
+.info_user {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ded9d9;
+    border-radius: 10px;
+    margin: 5px 10px;
+    height: 40px;
+}
+
+// Xóa đi
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+[data-theme="dark"] .site-layout .site-layout-background {
+    background: #141414;
+}

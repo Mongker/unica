@@ -1,9 +1,9 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
- * @author Mongker on 19/03/2021
- * @email: monglv36@gmail.com
- * @student_code: 68DCHT20091
+ * @author Mongker on 22/04/2021
+ * @email: levanmong.dola.99@gmail.com
+ * @student-code: 68DCHT20091
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
@@ -17,21 +17,31 @@ import axios from 'axios';
 // Context
 import ContextApp from '../util/ContextApp';
 
-const  getLoginUser = async (data, dataUser) => {
+export function postUser(data, setUser) {
     try {
-        return axios
-            .post('http://localhost:2020/api/user/login', data)
-            .then((res) => dataUser(res.data['user']))
-            .catch((error) => message.error('Tài khoản hoặc mật khẩu không đúng'));
+        return axios.post('http://localhost:2020/api/user', data)
+            .then(res => res.data).then((result) => {
+                console.log(result);
+                if (result.message === 'OK') {
+                    message.success('Tạo thành công');
+                    setUser(result.user);
+                }else if (result.message === 'LIMIT') {
+                    message.warn('Đã tồn tại email');
+                } else {
+                    message.error('Lỗi truyền');
+                }
+            })
+            .catch(error => message.error('Lỗi: '+ error));
     } catch (e) {
         message.error(e);
     }
 }
 
-function Login(props) {
+function SingUp(props) {
     // state
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [passwordCheck, setPasswordCheck] = React.useState('');
 
     // context
     const {user, setUser} = React.useContext(ContextApp);
@@ -45,19 +55,19 @@ function Login(props) {
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     };
+    const handleChangePasswordCheck = (e) => {
+        setPasswordCheck(e.target.value);
+    };
 
     const handleSave = () => {
-        if(email.length > 0 && password.length > 0) {
-            getLoginUser({
+        if(email.length > 0 && password.length > 0 && passwordCheck.length > 0) {
+            (password === passwordCheck) ?  postUser({
                 "email": email,
-                "password": password,
-            }, setUser);
+                "password": password
+            }, setUser) : message.warn('Mật khẩu không khớp nhau');
         } else message.warn('Không được bỏ trống thông tin');
     };
-    const handleSingUp = (e) => {
-        e.preventDefault();
-        router.push('/singup');
-    };
+
     React.useEffect(() => {
         user && router.push('/');
     }, [user]);
@@ -73,19 +83,16 @@ function Login(props) {
                             <h3>ĐĂNG NHẬP</h3>
                         </div>
                         <div className={style.wrap_input}>
-                            <input onChange={handleChangeEmail} placeholder={'Email tài khoản'} className={style.input0} />
+                            <input onChange={handleChangeEmail} placeholder={'Email đăng ký'} className={style.input0} />
                         </div>
                         <div className={style.wrap_input}>
-                            <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu'} className={style.input0} />
+                            <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu của bạn'} className={style.input0} />
+                        </div>
+                        <div className={style.wrap_input}>
+                            <input type={'password'} onChange={handleChangePasswordCheck} placeholder={'Mật khẩu xác nhận'} className={style.input0} />
                         </div>
                         <div className={style.title_login} onClick={handleSave}>
-                            Đăng nhập
-                        </div>
-                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyItems: 'center'}}>
-                            <div style={{marginRight: 10}}>Bạn chưa có tài khoản ?</div>
-                            <a onClick={handleSingUp}>
-                                Đăng ký
-                            </a>
+                            Đăng ký
                         </div>
                     </div>
                 </div>
@@ -94,4 +101,4 @@ function Login(props) {
     );
 }
 
-export default Login;
+export default SingUp;

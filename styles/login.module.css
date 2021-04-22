@@ -99,7 +99,37 @@
     color: white;
     cursor: pointer;
 }
-.title_login:hover {
+.title_singup {
+    width: 100%;
+    display: -moz-box;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #38aae6;
+    text-align: center;
+    padding: 10px;
+    height: 50px;
+    font-size: 1.75rem;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+}
+.title_singup:hover {
+    background: #a64bf4;
+    background: -webkit-linear-gradient(
+            45deg
+            , #00dbde, #fc00ff);
+    background: -o-linear-gradient(45deg, #00dbde, #fc00ff);
+    background: -moz-linear-gradient(45deg, #00dbde, #fc00ff);
+    background: linear-gradient(
+            45deg
+            , #00dbde, #fc00ff);
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}.title_login:hover {
     background: #a64bf4;
     background: -webkit-linear-gradient(
             45deg

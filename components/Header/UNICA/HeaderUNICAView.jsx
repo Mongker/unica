@@ -9,18 +9,36 @@
 
 import React from 'react';
 import Image from 'next/image';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { SearchOutlined, ShoppingCartOutlined, UnlockOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
+
+// context
+import ContextApp from 'util/ContextApp';
+
 // styles
 import styles from './styles/index.module.css';
+
 function HeaderUNICAView(props) {
+    const router = useRouter();
+
+    const { user } = React.useContext(ContextApp);
+    const handleClickLogin = (e) => {
+        e.preventDefault();
+        router.push('/login');
+    };
+    const handleClickSingUp = (e) => {
+        e.preventDefault();
+        router.push('/singup');
+    };
+
     return (
         <div className={styles.header}>
             <div className={styles.grid}>
                 <div className={styles.header_grid}>
                     <div className={styles.header_logo}>
-                        <Image width={140} height={33} src={'/logo2.png'} alt={'logo'} styles={{backgroundColor: 'red'}} />
+                        <Image width={140} height={33} src={'/logo2.png'} alt={'logo'} styles={{ backgroundColor: 'red' }} />
                     </div>
                     <div className={styles.header_input}>
                         <form className={styles['header_input-form']} action=''>
@@ -33,22 +51,43 @@ function HeaderUNICAView(props) {
                     <div className={styles.header_giohang}>
                         <a className={styles['header_giohang-link-kichhoat']} href=''>
                             <p>Kích hoạt khóa học</p>
-                            <i className='fa fa-unlock-alt' />
+                            <UnlockOutlined />
                         </a>
                         <a className={styles['header_giohang-icon']} href=''>
-                            <ShoppingCartOutlined styles={{color: 'red'}} />
+                            <ShoppingCartOutlined style={{ color: 'red', margin: '10px', fontSize: '25px' }} />
                         </a>
                         <ul className={styles['header_giohang-list']}>
-                            <li className={styles['header_giohang-list-item']}>
-                                <a className={styles['list-link-dn']} href=''>
-                                    ĐĂNG NHẬP
-                                </a>
-                            </li>
-                            <li className={classNames(styles['header_giohang-list-item'], styles['dk'])}>
-                                <a className={styles['list-link-dk']} href=''>
-                                    ĐĂNG KÝ
-                                </a>
-                            </li>
+                            {user && typeof user === 'object' ? (
+                                <React.Fragment>
+                                    <div className={'info_user'}>
+                                        <img src='http://localhost:2020/api/file/765-default-avatar.png' alt='ssss' style={{ borderRadius: '100%', width: 30, height: 30 }} />
+                                        <p style={{color: 'red', fontSize: 20, marginLeft: 5, marginRight: 5}}>{user.email}</p>
+                                        <p style={{marginRight: 5}}>({user.role})</p>
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <li className={styles['header_giohang-list-item']}>
+                                        <a className={styles['list-link-dn']} onClick={handleClickLogin}>
+                                            ĐĂNG NHẬP
+                                        </a>
+                                    </li>
+                                    <li className={classNames(styles['header_giohang-list-item'], styles['dk'])}>
+                                        <a className={styles['list-link-dk']} onClick={handleClickSingUp}>
+                                            ĐĂNG KÝ
+                                        </a>
+                                    </li>
+                                </React.Fragment>
+                            )}
+                            {
+                                user && user.role !== ('user') && (
+                                    <li className={classNames(styles['header_giohang-list-item'], styles['dk'])}>
+                                        <a className={styles['list-link-dk']} onClick={handleClickSingUp}>
+                                            Quản lý khóa học
+                                        </a>
+                                    </li>
+                                )
+                            }
                         </ul>
                     </div>
                 </div>

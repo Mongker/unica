@@ -138,7 +138,7 @@ function ContentUNICAView(prop) {
                             <li className='content_category-list-item'>
                                 <a className='content_category-list-item-link' href=''>
                                     <i className='fas fa-rocket'></i>
-                                    <p>Kinh doanh - Khởi nghiệp</p>
+                                    <p>Kinh doanh</p>
                                 </a>
                                 <div className='menuhover'>
                                     <div className='menuhover_row'>
@@ -241,7 +241,7 @@ function ContentUNICAView(prop) {
                     </div>
                     <div className='content_slider'>
                         <a href=''>
-                            <img src='./img/slider.png' alt='' />
+                            <img src='http://localhost:2020/api/file/IA0qQah.jpg' alt='' />
                         </a>
                     </div>
                     <div className='content_card'>
