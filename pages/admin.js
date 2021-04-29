@@ -12,8 +12,14 @@ import React from 'react';
 import { Layout, Menu, Breadcrumb, message } from 'antd';
 import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined, PicRightOutlined, HomeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+
+// context
 import ContextApp from '../util/ContextApp';
-import Category from '../components/Admin/Category';
+
+// component
+import CategoryContainer from '../components/Admin/Category/CategoryContainer';
+
+// const
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -23,13 +29,11 @@ function Admin(props) {
 
     // state
     const [collapsed, setCollapsed] = React.useState(false);
-    const router = useRouter();
+    // const router = useRouter();
 
     React.useEffect(() => {
         if (user && typeof user === 'object') {
             message.success(`Xin chào: ${user.email}`);
-        } else {
-            router.push('/');
         }
     }, []);
 
@@ -40,7 +44,7 @@ function Admin(props) {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className='logo' />
+                <div className='logo' style={{ background: 'url(http://localhost:2020/api/file/logo-unica.svg) no-repeat' }} />
                 <Menu theme='dark' defaultSelectedKeys={['CATEGORY']} mode='inline'>
                     <Menu.Item key='CATEGORY' icon={<PicRightOutlined />}>
                         Quản lý danh mục
@@ -63,7 +67,7 @@ function Admin(props) {
                 </Menu>
             </Sider>
             <Layout className='site-layout'>
-                <Header className='site-layout-background' style={{ padding: 0 }} />
+                <Header className='site-layout-background-header' style={{ padding: 0 }} />
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>
@@ -72,10 +76,10 @@ function Admin(props) {
                         <Breadcrumb.Item>Bill</Breadcrumb.Item>
                     </Breadcrumb>
                     <div className='site-layout-background' style={{ padding: 24, minHeight: 360 }}>
-                        <Category />
+                        <CategoryContainer />
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>
+                {/*<Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>*/}
             </Layout>
         </Layout>
     );

@@ -13,8 +13,11 @@ import { Modal, Button, Input, Select, InputNumber, message, Tree } from 'antd';
 import classNames from 'classnames';
 import { CarryOutOutlined } from '@ant-design/icons';
 
+// component
+import UploadFileView from './UploadFileView';
+
 // styles
-import styles from './styles/index.module.css';
+import styles from './styles/index.module.scss';
 import axios from 'axios';
 
 // const
@@ -44,13 +47,37 @@ const postCatalog = (data) => {
     }
 };
 
-const Category = () => {
+const treeDataFake = [
+    {
+        title: 'parent 0',
+        key: '0-0',
+        icon: <CarryOutOutlined />,
+        children: [
+            { title: 'leaf 0-0', key: '0-0-0', isLeaf: true },
+            { title: 'leaf 0-1', key: '0-0-1', isLeaf: true },
+        ],
+    },
+    {
+        title: 'parent 1',
+        key: '0-1',
+        icon: <CarryOutOutlined />,
+        children: [
+            { title: 'leaf 1-0', key: '0-1-0', isLeaf: true },
+            { title: 'leaf 1-1', key: '0-1-1', isLeaf: true },
+        ],
+    },
+];
+const CategoryView = () => {
+    // state
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [category, setCategory] = useState([]);
     const [treeData, setTreeData] = useState([]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
+
+    // ref
+    const refUpdateFile = React.useRef(null);
 
     console.log('category', category);
 
@@ -86,11 +113,9 @@ const Category = () => {
         setSortOrder(value);
     };
 
-    const onSelect = (selectedKeys, info) => {
-        console.log('selected', selectedKeys, info);
-    };
+    const onSelect = (selectedKeys, info) => {};
 
-    // Vong doi
+    // Xử lý vòng đời
     React.useEffect(() => {
         getListCategory(setCategory);
     }, []);
@@ -110,41 +135,58 @@ const Category = () => {
         }
     }, [category]);
 
+    console.log('refUpdateFile', refUpdateFile); // MongLV log fix bug
+    // JSX
+    const modalAddComponent = (
+        <Modal title='Thêm danh mục' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <div className={classNames('flex_col', styles.category_add)}>
+                {/* name */}
+                <div className={classNames('flex_row', styles.item_category)}>
+                    <div className={styles.item_name_category}>Tên:</div>
+                    <Input value={name} onChange={handleChangeInputName} className={styles.item_input_category} />
+                </div>
+
+                {/* description */}
+                <div className={classNames('flex_row', styles.item_category)}>
+                    <div className={styles.item_name_category}>Nội dung:</div>
+                    <Input.TextArea onChange={handleChangeInputDescription} value={description} className={styles.item_input_category} />
+                </div>
+
+                {/* icon */}
+                <div className={classNames('flex_row', styles.item_category)}>
+                    <div className={styles.item_name_category}>Icon:</div>
+                    <div className={styles.item_input_category}>
+                        <UploadFileView ref={refUpdateFile} />
+                    </div>
+                </div>
+
+                {/* sort_order */}
+                {/*<div className={classNames('flex_row', styles.item_category)}>*/}
+                {/*    <div className={styles.item_name_category}>Vị trí hiễn thị:</div>*/}
+                {/*    <InputNumber value={sortOrder} className={styles.item_input_category} onChange={handleChangeInputSortOrder} />*/}
+                {/*</div>*/}
+            </div>
+        </Modal>
+    );
     return (
         <React.Fragment>
-            <Button type='primary' onClick={showModal}>
-                Thêm danh mục
-            </Button>
+            <div className={styles.btn_add_category}>
+                <Button type='primary' onClick={showModal}>
+                    Thêm danh mục
+                </Button>
+            </div>
             <div className={'flex_col'}>
-                <Modal title='Thêm danh mục' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <div className={classNames('flex_col', styles.category_add)}>
-                        {/* name */}
-                        <div className={classNames('flex_row', styles.item_category)}>
-                            <div className={styles.item_name_category}>Tên:</div>
-                            <Input value={name} onChange={handleChangeInputName} className={styles.item_input_category} />
-                        </div>
-
-                        {/* description */}
-                        <div className={classNames('flex_row', styles.item_category)}>
-                            <div className={styles.item_name_category}>Nội dung:</div>
-                            <Input.TextArea onChange={handleChangeInputDescription} value={description} className={styles.item_input_category} />
-                        </div>
-
-                        {/* sort_order */}
-                        <div className={classNames('flex_row', styles.item_category)}>
-                            <div className={styles.item_name_category}>Vị trí hiễn thị:</div>
-                            <InputNumber value={sortOrder} className={styles.item_input_category} onChange={handleChangeInputSortOrder} />
-                        </div>
-                    </div>
-                </Modal>
-                <Tree onSelect={onSelect} treeData={treeData} />
+                {modalAddComponent}
+                <div className={styles.custom_tree_antd}>
+                    <Tree onSelect={onSelect} treeData={treeDataFake} showIcon draggable />
+                </div>
             </div>
         </React.Fragment>
     );
 };
 
-Category.propTypes = {};
+CategoryView.propTypes = {};
 
-Category.defaultProps = {};
+CategoryView.defaultProps = {};
 
-export default Category;
+export default CategoryView;

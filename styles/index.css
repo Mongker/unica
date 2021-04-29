@@ -226,15 +226,23 @@
     height: 40px;
 }
 
-// Xóa đi
+/*Note: xem lại đây cần chuẩn lại css chỗ này*/
 .logo {
     height: 32px;
     margin: 16px;
-    background: rgba(255, 255, 255, 0.3);
 }
 
 .site-layout .site-layout-background {
     background: #fff;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.site-layout-background-header {
+    background: #fff;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+}
+.site-layout-background {
+
 }
 [data-theme="dark"] .site-layout .site-layout-background {
     background: #141414;

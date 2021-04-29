@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import * as gtag from '../lib/gtag';
 import 'antd/dist/antd.css';
-import '../styles/index.scss';
+import '../styles/index.css';
 import '../styles/base.css';
 import '../styles/header.css';
 import '../styles/content.css';
@@ -20,6 +20,7 @@ function App({ Component, pageProps }) {
     const [user, setUser] = React.useState(null);
 
     useEffect(() => {
+        // Note: Hàm dùng để check xem đã tồn tại user chưa nếu chưa thì lấy dữ liệu từ localStorage lấp vào
         if (user) {
             arrTypeUser.map((item) => {
                 localStorage.setItem(`${item}`, user[item]);
@@ -43,15 +44,17 @@ function App({ Component, pageProps }) {
                 });
         }
     }, [user]);
-    useEffect(() => {
-        const handleRouteChange = (url) => {
-            gtag.pageview(url);
-        };
-        router.events.on('routeChangeComplete', handleRouteChange);
-        return () => {
-            router.events.off('routeChangeComplete', handleRouteChange);
-        };
-    }, [router.events]);
+
+    // Note: chưa sử dụng nên tắt đi ( sử dụng cho mục đích quảng cáo )
+    // useEffect(() => {
+    //     const handleRouteChange = (url) => {
+    //         gtag.pageview(url);
+    //     };
+    //     router.events.on('routeChangeComplete', handleRouteChange);
+    //     return () => {
+    //         router.events.off('routeChangeComplete', handleRouteChange);
+    //     };
+    // }, [router.events]);
     return (
         <ContextApp.Provider
             value={{
