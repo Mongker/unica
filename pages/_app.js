@@ -1,4 +1,4 @@
-import { wrapper } from '../redux/store';
+import { wrapper } from 'redux/store';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import * as gtag from '../lib/gtag';

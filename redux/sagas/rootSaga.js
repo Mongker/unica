@@ -8,14 +8,10 @@
  */
 
 import { all } from 'redux-saga/effects';
+import { watcherGetCategory, watcherPostCategory, watcherDeleteCategory, watcherPutCategory } from 'redux/sagas/categorySagas';
 
 // watch saga
-import { watcherCallListCatalog, watcherCallPostCatalog, watcherCallDeleteCatalog, watcherCallPutCatalog } from './shopmypham/catalogSaga';
-import { watcherGetListProduct, watcherCallPostProduct, watcherCallDeleteProduct, watcherPutProduct } from './shopmypham/productSaga';
-import { watcherCallPostAdmin, watcherCallListAdmin, watcherCallDeleteAdmin, watcherLoginAdmin, watcherCallUpdateAdmin } from './shopmypham/adminSaga';
-import {watcherCallListUser} from './shopmypham/userSaga';
-
 // saga
 export default function* rootSaga() {
-    yield all([watcherCallListCatalog(), watcherCallPostCatalog(), watcherCallDeleteCatalog(), watcherCallPutCatalog(), watcherGetListProduct(), watcherCallPostProduct(), watcherCallDeleteProduct(), watcherPutProduct(), watcherCallPostAdmin(), watcherCallListAdmin(), watcherCallDeleteAdmin(), watcherLoginAdmin(), watcherCallUpdateAdmin(), watcherCallListUser()]);
+    yield all([watcherGetCategory(), watcherPostCategory(), watcherDeleteCategory(), watcherPutCategory()]);
 }

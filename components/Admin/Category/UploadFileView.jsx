@@ -11,6 +11,9 @@ import React from 'react';
 import { Upload, message } from 'antd';
 import PropTypes from 'prop-types';
 
+// styles
+import _styles from './styles/index.module.scss';
+
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -20,47 +23,59 @@ function getBase64(file) {
     });
 }
 
-class UploadFileView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            linkFile: '',
-        };
-    }
-    onChange(info) {
+function UploadFileView(props) {
+    const { refFunc, Img, styles } = props;
+    const [linkFile, setLinkFile] = React.useState('');
+    const [fileList, setFileList] = React.useState([]);
+
+    const linkFileView = linkFile ? 'http://localhost:2020/api/' + 'file/' + linkFile : 'https://img.icons8.com/cotton/344/image--v1.png';
+
+    // handle func
+    const onChange = (info) => {
+        setFileList(info.fileList);
         switch (info.file.status) {
             case 'uploading':
                 break;
             case 'done':
-                message.success('Thêm thành công');
-                this.setState({
-                    linkFile: info.file.response.fileNameInServer,
-                });
+                // message.success('Thêm thành công');
+                setLinkFile(info.file.response.fileNameInServer);
                 break;
             default:
-                message.error(`${info.file.name}`);
-                this.setState({
-                    linkFile: '',
-                });
+                // message.error(`${info.file.name}`);
+                setLinkFile('');
+                break;
         }
-    }
-    render() {
-        const { linkFile } = this.state;
-        const UpFile = {
-            name: 'file',
-            action: `http://localhost:2020/api/file/upload`,
-            multiple: true,
-            onChange: (info) => this.onChange(info),
+    };
+
+    // Props
+    const UpFile = {
+        name: 'file',
+        action: `http://localhost:2020/api/file/upload`,
+        multiple: true,
+        onChange: (info) => onChange(info),
+    };
+
+    // Vòng đời
+    React.useEffect(() => {
+        // Gán ref cho phần tử cha sử dụng lại
+        refFunc.current = {
+            linkFile,
+            setLinkFile,
+            setFileList,
         };
-        const linkFileView = linkFile ? 'http://localhost:2020/api/' + 'file/' + linkFile : 'https://img.icons8.com/cotton/344/image--v1.png';
-        console.log('linkFileView', linkFileView); // MongLV log fix bug
-        return (
-            <Upload {...UpFile} listType='picture-card'>
-                {linkFile.length === 0 ? <img alt='example' src={linkFileView} style={{ width: '50px', height: '50px' }} /> : null}
+    });
+
+    return (
+        <div className={styles.upload_file}>
+            <Upload {...UpFile} fileList={fileList} listType='picture-card'>
+                {linkFile.length <= 0 ? <img alt='example' src={linkFileView} style={{ width: Img.width, height: Img.height }} /> : null}
             </Upload>
-        );
-    }
+        </div>
+    );
 }
 UploadFileView.propTypes = {};
-UploadFileView.defaultProps = {};
-export default UploadFileView;
+UploadFileView.defaultProps = {
+    Img: { width: '50px', height: '50px' },
+    styles: _styles,
+};
+export default React.memo(UploadFileView);

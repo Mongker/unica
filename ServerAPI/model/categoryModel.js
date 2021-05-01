@@ -26,4 +26,11 @@ module.exports = {
     getList: function (con, callback) {
         con.query('SELECT * FROM category', callback);
     },
+    getByName: function (con, name, callback) {
+        console.log('name', name); // MongLV log fix bug
+        con.query(`SELECT * FROM category WHERE name = '${name}'`, callback);
+    },
+    delete: function (con, id, callback) {
+        con.query(`DELETE FROM category WHERE id = ${id}`, callback);
+    },
 };

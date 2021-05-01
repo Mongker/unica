@@ -18,6 +18,7 @@ import ContextApp from '../util/ContextApp';
 
 // component
 import CategoryContainer from '../components/Admin/Category/CategoryContainer';
+import CategoryView from '../components/Admin/Category/CategoryView';
 
 // const
 const { Header, Content, Footer, Sider } = Layout;
@@ -75,8 +76,9 @@ function Admin(props) {
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>Bill</Breadcrumb.Item>
                     </Breadcrumb>
-                    <div className='site-layout-background' style={{ padding: 24, minHeight: 360 }}>
-                        <CategoryContainer />
+                    <div className='site-layout-background' style={{ padding: 24, minHeight: '90%' }}>
+                        {/*<CategoryContainer />*/}
+                        <CategoryView />
                     </div>
                 </Content>
                 {/*<Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>*/}

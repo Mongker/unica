@@ -24,7 +24,7 @@ function Index(props) {
             <MetaView {...dataMeta} />
             <HeaderController />
             <ContentController />
-            {/* Note 4: Thêm footer vào đây nhé*/}
+            {/* Note 4: Thêm footer vào đây nhé */}
         </React.Fragment>
     );
 }

@@ -8,21 +8,9 @@
  */
 
 import { combineReducers } from 'redux';
-import Counts from './example/updownReducers';
-import Catalog from './shopmypham/catalogReducer';
-import WindowSize from './shopmypham/windowSizeReducer';
-import Product from 'redux/reducers/shopmypham/producReducer';
-import Admin from 'redux/reducers/shopmypham/adminReducer';
-import User from 'redux/reducers/shopmypham/userReducer';
-import Login from 'redux/reducers/shopmypham/loginReducer';
+import Category from 'redux/reducers/categoryReducers';
 
 const rootReducer = combineReducers({
-    Counts: Counts,
-    Catalog: Catalog,
-    WindowSize: WindowSize,
-    Product: Product,
-    Admin: Admin,
-    User: User,
-    Login: Login,
+    category: Category,
 });
 export default rootReducer;
