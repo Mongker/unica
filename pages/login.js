@@ -17,7 +17,10 @@ import axios from 'axios';
 // Context
 import ContextApp from '../util/ContextApp';
 
-const  getLoginUser = async (data, dataUser) => {
+// Component
+import MetaView from '../components/MetaView';
+
+const getLoginUser = async (data, dataUser) => {
     try {
         return axios
             .post('http://localhost:2020/api/user/login', data)
@@ -26,7 +29,7 @@ const  getLoginUser = async (data, dataUser) => {
     } catch (e) {
         message.error(e);
     }
-}
+};
 
 function Login(props) {
     // state
@@ -34,7 +37,7 @@ function Login(props) {
     const [password, setPassword] = React.useState('');
 
     // context
-    const {user, setUser} = React.useContext(ContextApp);
+    const { user, setUser } = React.useContext(ContextApp);
 
     const router = useRouter();
 
@@ -47,11 +50,14 @@ function Login(props) {
     };
 
     const handleSave = () => {
-        if(email.length > 0 && password.length > 0) {
-            getLoginUser({
-                "email": email,
-                "password": password,
-            }, setUser);
+        if (email.length > 0 && password.length > 0) {
+            getLoginUser(
+                {
+                    email: email,
+                    password: password,
+                },
+                setUser,
+            );
         } else message.warn('Không được bỏ trống thông tin');
     };
     const handleSingUp = (e) => {
@@ -62,35 +68,36 @@ function Login(props) {
         user && router.push('/');
     }, [user]);
     return (
-        <div className={style.limiter}>
-            <div className={style.container_login}>
-                <div className={`${style.text_center} ${style.form_group}`}>
-                    <img src={'https://id.unica.vn/images/logo.png'} alt={'logo'} />
-                </div>
-                <div className={style.login}>
-                    <div className={style.form_login}>
-                        <div className={style.title}>
-                            <h3>ĐĂNG NHẬP</h3>
-                        </div>
-                        <div className={style.wrap_input}>
-                            <input onChange={handleChangeEmail} placeholder={'Email tài khoản'} className={style.input0} />
-                        </div>
-                        <div className={style.wrap_input}>
-                            <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu'} className={style.input0} />
-                        </div>
-                        <div className={style.title_login} onClick={handleSave}>
-                            Đăng nhập
-                        </div>
-                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyItems: 'center'}}>
-                            <div style={{marginRight: 10}}>Bạn chưa có tài khoản ?</div>
-                            <a onClick={handleSingUp}>
-                                Đăng ký
-                            </a>
+        <React.Fragment>
+            <MetaView title={'Login - Unica'} />
+            <div className={style.limiter}>
+                <div className={style.container_login}>
+                    <div className={`${style.text_center} ${style.form_group}`}>
+                        <img src={'https://id.unica.vn/images/logo.png'} alt={'logo'} />
+                    </div>
+                    <div className={style.login}>
+                        <div className={style.form_login}>
+                            <div className={style.title}>
+                                <h3>ĐĂNG NHẬP</h3>
+                            </div>
+                            <div className={style.wrap_input}>
+                                <input onChange={handleChangeEmail} placeholder={'Email tài khoản'} className={style.input0} />
+                            </div>
+                            <div className={style.wrap_input}>
+                                <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu'} className={style.input0} />
+                            </div>
+                            <div className={style.title_login} onClick={handleSave}>
+                                Đăng nhập
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyItems: 'center' }}>
+                                <div style={{ marginRight: 10 }}>Bạn chưa có tài khoản ?</div>
+                                <a onClick={handleSingUp}>Đăng ký</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 

@@ -12,7 +12,9 @@ import '../styles/reset.css';
 // context
 import ContextApp from 'util/ContextApp';
 
-const arrTypeUser = ['id', 'name', 'phone', 'email', 'address', 'info', 'position', 'role', 'coin', 'password', 'status_user', 'create'];
+// Util
+import { arrTypeUser } from 'util/TypeUI';
+
 function App({ Component, pageProps }) {
     const router = useRouter();
 

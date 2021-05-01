@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as categoryAction from 'redux/actions/categoryAction';
 
 // component
-import ModalAdd from './Modal/ModalAdd';
+import ModalUI from './ModalUI';
 
 // styles
 import styles from './styles/index.module.scss';
@@ -54,11 +54,12 @@ const CategoryView = () => {
         category.map((itemChildren) => {
             if (`${itemChildren.rootId}` === `${id}`) {
                 const _key = `${key}-${dem}`;
+                const img = itemChildren.icon ? `${urlImg}${itemChildren.icon}` : urlImg + 'operation.png';
                 children.push({
                     title: <TitleTreeView item={itemChildren} showModalAdd={showModalAdd} showModalEdit={showModalEdit} />,
                     // title: itemChildren.name,
                     key: _key,
-                    icon: <img src={urlImg + itemChildren.icon} alt={'icon'} style={{ width: 20, height: 17 }} />,
+                    icon: <img src={img} alt={'icon'} style={{ width: 20, height: 17, objectFit: 'cover' }} />,
                     children: setChildren(itemChildren.id, _key.toString()),
                 });
                 dem = dem + 1;
@@ -70,13 +71,12 @@ const CategoryView = () => {
         let newTreeData = [];
         let dem = 0;
         category.map((item) => {
+            const img = item.icon ? `${urlImg}${item.icon}` : urlImg + 'operation.png';
             if (`${item.rootId}` === '1') {
                 newTreeData.push({
-                    // title: <TitleTree name={item.name} showModalAdd={showModal} id={item._id} onDelete={onDelete} onEdit={put} />,
-                    // title: item.name,
                     title: <TitleTreeView item={item} showModalAdd={showModalAdd} showModalEdit={showModalEdit} />,
                     key: `${dem}`,
-                    icon: <img src={urlImg + item.icon} alt={'icon'} style={{ width: 15, height: 15, borderRadius: 5 }} />,
+                    icon: <img src={img} alt={'icon'} style={{ width: 20, height: 17, objectFit: 'cover' }} />,
                     children: setChildren(item.id, `${dem}`),
                 });
                 dem = dem + 1;
@@ -102,7 +102,7 @@ const CategoryView = () => {
                 </Button>
             </div>
             <div className={'flex_row'}>
-                <ModalAdd refFunc={refModalAdd} />
+                <ModalUI refFunc={refModalAdd} />
                 <div className={styles.custom_tree_antd}>
                     <Tree onSelect={onSelect} treeData={treeData} showIcon draggable />
                 </div>

@@ -9,81 +9,94 @@
 
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Layout, Menu, Breadcrumb, message } from 'antd';
-import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined, PicRightOutlined, HomeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { Layout, Menu, message, notification, Spin } from 'antd';
 
 // context
 import ContextApp from '../util/ContextApp';
 
 // component
-import CategoryContainer from '../components/Admin/Category/CategoryContainer';
-import CategoryView from '../components/Admin/Category/CategoryView';
+import MetaView from '../components/MetaView';
+
+// style
+import styles from '../components/Admin/styles/index.module.scss';
+import MenuView from '../components/Admin/Menu/MenuView';
+import ContentView from '../components/Admin/Content/ContentView';
+
+// util
+import { TYPE_MENU } from 'util/TypeMenu';
+import HeaderView from '../components/Admin/Header/HeaderView';
 
 // const
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
-
+const { Header, Content, Sider } = Layout;
+notification.config({
+    duration: 2,
+});
 function Admin(props) {
     // context
     const { user } = React.useContext(ContextApp);
 
     // state
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [activeMenu, setActiveMenu] = React.useState(TYPE_MENU.CATEGORY);
+
+    // ref
+    const numberRender = React.useRef(0);
+
+    // state
     const [collapsed, setCollapsed] = React.useState(false);
-    // const router = useRouter();
+    const router = useRouter();
 
-    React.useEffect(() => {
-        if (user && typeof user === 'object') {
-            message.success(`Xin chào: ${user.email}`);
-        }
-    }, []);
-
+    // handle func
     const onCollapse = () => {
         setCollapsed(!collapsed);
     };
 
-    return (
+    // Vòng đời
+    React.useEffect(() => {
+        if (user && typeof user === 'object') {
+            notification.open({
+                message: `Xin chào: ${user.email} !`,
+                description: 'Chúc bạn một phiên làm việc hiệu quả',
+            });
+        } else if ((user && numberRender.current > 0) || !localStorage.getItem('role')) router.push('/login');
+        numberRender.current = numberRender.current + 1;
+        // Note 4: nếu không có quyền admin / teacher thì không thể vào đây
+    }, [user]);
+
+    React.useEffect(() => {
+        const handleLoading = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(handleLoading);
+    }, []);
+    // JSX
+    const ComponentContent = (
         <Layout style={{ minHeight: '100vh' }}>
+            <MetaView title={'Quản trị - Unica'} />
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className='logo' style={{ background: 'url(http://localhost:2020/api/file/logo-unica.svg) no-repeat' }} />
-                <Menu theme='dark' defaultSelectedKeys={['CATEGORY']} mode='inline'>
-                    <Menu.Item key='CATEGORY' icon={<PicRightOutlined />}>
-                        Quản lý danh mục
-                    </Menu.Item>
-                    {/*<Menu.Item key='2' icon={<DesktopOutlined />}>*/}
-                    {/*    Option 2*/}
-                    {/*</Menu.Item>*/}
-                    {/*<SubMenu key='sub1' icon={<UserOutlined />} title='User'>*/}
-                    {/*    <Menu.Item key='3'>Tom</Menu.Item>*/}
-                    {/*    <Menu.Item key='4'>Bill</Menu.Item>*/}
-                    {/*    <Menu.Item key='5'>Alex</Menu.Item>*/}
-                    {/*</SubMenu>*/}
-                    {/*<SubMenu key='sub2' icon={<TeamOutlined />} title='Team'>*/}
-                    {/*    <Menu.Item key='6'>Team 1</Menu.Item>*/}
-                    {/*    <Menu.Item key='8'>Team 2</Menu.Item>*/}
-                    {/*</SubMenu>*/}
-                    {/*<Menu.Item key='9' icon={<FileOutlined />}>*/}
-                    {/*    Files*/}
-                    {/*</Menu.Item>*/}
-                </Menu>
+                <div className='logo' onClick={() => router.push('/')} style={{ background: 'url(http://localhost:2020/api/file/logo-unica.svg) no-repeat' }} />
+                <MenuView setActiveMenu={setActiveMenu} TYPE_MENU={TYPE_MENU} />
             </Sider>
             <Layout className='site-layout'>
-                <Header className='site-layout-background-header' style={{ padding: 0 }} />
-                <Content style={{ margin: '0 16px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>
-                            <HomeOutlined />
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <div className='site-layout-background' style={{ padding: 24, minHeight: '90%' }}>
-                        {/*<CategoryContainer />*/}
-                        <CategoryView />
-                    </div>
+                <Header className='site-layout-background-header' style={{ padding: 0 }}>
+                    <HeaderView activeMenu={activeMenu} />
+                </Header>
+                <Content style={{ margin: '0 10px' }}>
+                    <ContentView activeMenu={activeMenu} />
                 </Content>
                 {/*<Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>*/}
             </Layout>
         </Layout>
+    );
+    return (
+        <React.Fragment>
+            {isLoading ? (
+                <div className={styles.spin_loading}>
+                    <Spin size='large' />
+                </div>
+            ) : (
+                ComponentContent
+            )}
+        </React.Fragment>
     );
 }
 
@@ -91,4 +104,4 @@ Admin.propTypes = {};
 
 Admin.defaultProps = {};
 
-export default Admin;
+export default React.memo(Admin);

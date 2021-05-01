@@ -16,12 +16,12 @@ import { useDispatch } from 'react-redux';
 import { post, put } from 'redux/actions/categoryAction';
 
 // component
-import UploadFileView from '../UploadFileView';
+import UploadFileView from './UploadFileView';
 
 // styles
-import styles from '../styles/index.module.scss';
+import styles from './styles/index.module.scss';
 
-function ModalAdd(props) {
+function ModalUI(props) {
     const { refFunc } = props;
     const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ function ModalAdd(props) {
         setDescription(e.target.value);
     };
     const handleOk = () => {
-        data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : '';
+        data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : 'http://localhost:2020/api/file/operation.png';
         itemEdit ? dispatch(put({ ...itemEdit, ...data })) : dispatch(post(data));
         handleResetState();
         setIsModalVisible(false);
@@ -135,8 +135,8 @@ function ModalAdd(props) {
     );
 }
 
-ModalAdd.propTypes = {};
+ModalUI.propTypes = {};
 
-ModalAdd.defaultProps = {};
+ModalUI.defaultProps = {};
 
-export default React.memo(ModalAdd);
+export default React.memo(ModalUI);
