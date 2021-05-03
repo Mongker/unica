@@ -9,8 +9,23 @@
 
 import { combineReducers } from 'redux';
 import Category from 'redux/reducers/categoryReducers';
+import Users from 'redux/reducers/usersReducers';
 
-const rootReducer = combineReducers({
-    category: Category,
-});
-export default rootReducer;
+// util
+import { typeStore } from 'util/TypeUI';
+
+const store = {};
+const listState = [
+    {
+        name: typeStore.CATEGORY,
+        value: Category,
+    },
+    {
+        name: typeStore.USER,
+        value: Users,
+    },
+];
+
+listState.map((item) => (store[item.name] = item.value));
+const rootReducer = combineReducers(store);
+export { rootReducer };

@@ -8,5 +8,12 @@
  */
 
 const arrTypeUser = ['id', 'name', 'phone', 'email', 'address', 'info', 'position', 'role', 'coin', 'password', 'status_user', 'create'];
-
-export { arrTypeUser };
+const typeStore = {
+    USER: 'users',
+    CATEGORY: 'category',
+};
+const url_api = {
+    USER: '/user',
+    CATEGORY: '/category',
+};
+export { arrTypeUser, typeStore, url_api };

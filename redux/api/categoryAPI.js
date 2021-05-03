@@ -11,8 +11,8 @@ import axiosClient from './axiosClient';
 const url_base = '/category';
 const categoryAPI = {
     // params yeu cau sau / vd : lay ra 10 ptu dau
-    getAll(params) {
-        return axiosClient.get(url_base, { params });
+    getAll(data) {
+        return axiosClient.get(url_base, data);
     },
     // get(id) {
     //     const url = `/product/${id}`;

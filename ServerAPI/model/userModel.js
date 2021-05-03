@@ -11,10 +11,8 @@
 // var currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
 // var currentTimeInMilliseconds=Date.now(); // unix timestamp in milliseconds
 module.exports = {
-    getList_Role: function (con, role, callback) {
-        console.log('role 1', role);
-        const query = `SELECT * FROM user WHERE role='${role.toString()}'`;
-        console.log('query', query);
+    getList: function (con, role, callback) {
+        const query = role ? `SELECT * FROM user WHERE role='${role.toString()}'` : `SELECT * FROM user`;
         con.query(query, callback);
     },
 

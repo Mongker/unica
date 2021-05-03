@@ -17,6 +17,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
     function (config) {
         // Do something before request is send
+        console.log('config', config); // MongLV log fix bug
         return config;
     },
     function (error) {

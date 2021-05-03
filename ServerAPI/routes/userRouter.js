@@ -11,9 +11,9 @@ const express = require('express');
 const UserRouter = express.Router();
 
 // container
-const {CREATE, LOGIN, GET_LIST_ROLE} = require('../controller/userController');
+const { CREATE, LOGIN, GET_LIST } = require('../controller/userController');
 
-UserRouter.route('/api/user').post(CREATE).get(GET_LIST_ROLE);
+UserRouter.route('/api/user').post(CREATE).get(GET_LIST);
 UserRouter.route('/api/user/login').post(LOGIN);
 
 module.exports = UserRouter;
