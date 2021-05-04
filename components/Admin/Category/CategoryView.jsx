@@ -25,15 +25,16 @@ import { url_base_img } from '../../../util/TypeUI';
 import ModalProductView from '../Product/Modal/ModalProductView';
 import ProductView from '../Product/ProductView';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
+import ContextApp from '../../../util/ContextApp';
 
-const CategoryView = () => {
+const CategoryView = ({ refModalProduct }) => {
     // redux
     const dispatch = useDispatch();
     const { category, categoryObj } = useCategoryBase();
+    const { keyTreeActive, setKeyTreeActive } = React.useContext(ContextApp);
 
     // state
     const [treeData, setTreeData] = useState([]);
-    const [keyTreeActive, setKeyTreeActive] = useState(null);
 
     // ref
     const refModalAdd = React.useRef(null);
@@ -101,6 +102,10 @@ const CategoryView = () => {
         updateTreeData();
     }, [category]);
 
+    React.useEffect(() => {
+        refModalAddProduct.current = refModalProduct.current;
+    });
+
     return (
         <React.Fragment>
             <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
@@ -127,7 +132,7 @@ const CategoryView = () => {
                 </div>
                 <ProductView keyTreeActive={keyTreeActive} refCallback={refModalAddProduct} />
             </div>
-            <ModalProductView refFunc={refModalAddProduct} idCategory={keyTreeActive} />
+            {/*<ModalProductView refFunc={refModalAddProduct} idCategory={keyTreeActive} />*/}
         </React.Fragment>
     );
 };
@@ -136,4 +141,4 @@ CategoryView.propTypes = {};
 
 CategoryView.defaultProps = {};
 
-export default React.memo(CategoryView);
+export default CategoryView;

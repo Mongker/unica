@@ -13,17 +13,22 @@ import PropTypes from 'prop-types';
 // component
 import CategoryView from '../Category/CategoryView';
 import ManagementUserView from '../ManagementUser/ManagementUserView';
+import ProductView from '../Product/ProductView';
 
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
-function ContentController({ activeMenu }) {
+function ContentController({ activeMenu, refModalProduct }) {
+    console.log('ContentController', refModalProduct); // MongLV log fix bug
     let Component;
     switch (activeMenu) {
         case TYPE_MENU.CATEGORY:
-            Component = <CategoryView />;
+            Component = <CategoryView refModalProduct={refModalProduct} />;
             break;
         case TYPE_MENU.USER:
             Component = <ManagementUserView />;
+            break;
+        case TYPE_MENU.PRODUCT:
+            Component = <ProductView refCallback={refModalProduct} isMenu={activeMenu === TYPE_MENU.PRODUCT} />;
             break;
         default:
             Component = <React.Fragment />;

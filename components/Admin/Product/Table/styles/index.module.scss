@@ -7,3 +7,12 @@
     }
   }
 }
+.controllerFull {
+  width: 100%;
+  border-radius: 20px;
+  :global {
+    .ant-avatar-image {
+      border-radius: unset;
+    }
+  }
+}

@@ -15,7 +15,8 @@ import { HomeOutlined } from '@ant-design/icons';
 // Component
 import ContentController from './ContentController';
 
-function ContentView({ activeMenu }) {
+function ContentView({ activeMenu, refModalProduct }) {
+    console.log('ContentView', refModalProduct); // MongLV log fix bug
     return (
         <React.Fragment>
             <Breadcrumb style={{ margin: '10px 0' }}>
@@ -25,7 +26,7 @@ function ContentView({ activeMenu }) {
                 {/*<Breadcrumb.Item>Bill</Breadcrumb.Item>*/}
             </Breadcrumb>
             <div className='site-layout-background' style={{ padding: 24, minHeight: '95%' }}>
-                <ContentController activeMenu={activeMenu} />
+                <ContentController refModalProduct={refModalProduct} activeMenu={activeMenu} />
             </div>
         </React.Fragment>
     );

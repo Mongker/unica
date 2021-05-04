@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /ServerAPI/node_modules
+/ServerAPI/images
 /.pnp
 .pnp.js
 .idea

@@ -1,5 +1,5 @@
 import { wrapper } from 'redux/store';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import * as gtag from '../lib/gtag';
 import 'antd/dist/antd.css';
@@ -23,6 +23,7 @@ function App({ Component, pageProps }) {
 
     // state
     const [user, setUser] = React.useState(null);
+    const [keyTreeActive, setKeyTreeActive] = useState(null);
 
     useEffect(() => {
         getListProduct();
@@ -68,6 +69,8 @@ function App({ Component, pageProps }) {
             value={{
                 user,
                 setUser,
+                keyTreeActive,
+                setKeyTreeActive,
             }}
         >
             <Component {...pageProps} />

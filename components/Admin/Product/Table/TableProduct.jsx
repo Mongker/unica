@@ -10,6 +10,7 @@
 import React from 'react';
 import { message, Table } from 'antd';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 // hooks
 import useColumns from '../../../hooks/useColumns';
@@ -22,7 +23,7 @@ import styles from './styles/index.module.scss';
 import useCategoryBase from '../../../hooks/LogicData/useCategoryBase';
 
 const funcDefault = () => {};
-function TableProduct({ columnsTable, type, actionProduct }) {
+function TableProduct({ columnsTable, type, actionProduct, isFullWidth }) {
     // hooks
     const { category } = useCategoryBase();
 
@@ -46,7 +47,7 @@ function TableProduct({ columnsTable, type, actionProduct }) {
         dataSource = data.filter((item) => arrCategoryAll.includes(Number(item.catalog_id)));
     }
     return (
-        <div className={styles.controller}>
+        <div className={classNames(isFullWidth ? styles.controllerFull : styles.controller)}>
             <Table columns={columns} dataSource={dataSource} />
         </div>
     );

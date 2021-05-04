@@ -7,7 +7,7 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 // import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Layout, Menu, message, notification, Spin } from 'antd';
@@ -27,6 +27,7 @@ import { TYPE_MENU } from 'util/TypeMenu';
 import { url_base_img } from '../util/TypeUI';
 import { getList } from 'redux/actions/userAction';
 import { useDispatch } from 'react-redux';
+import ModalProductView from '../components/Admin/Product/Modal/ModalProductView';
 
 // const
 const { Header, Content, Sider } = Layout;
@@ -39,19 +40,19 @@ notification.config({
 
 function Admin(props) {
     // context
-    const { user } = React.useContext(ContextApp);
+    const { user, keyTreeActive, setKeyTreeActive } = React.useContext(ContextApp);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     // state
     const [isLoading, setIsLoading] = React.useState(true);
     const [activeMenu, setActiveMenu] = React.useState('');
+    const [collapsed, setCollapsed] = React.useState(false);
 
     // ref
     const numberRender = React.useRef(0);
-
-    // state
-    const [collapsed, setCollapsed] = React.useState(false);
-    const router = useRouter();
+    const refModalProduct = React.useRef(null);
+    console.log('refModalProduct', refModalProduct); // MongLV log fix bug
 
     // handle func
     const onCollapse = () => {
@@ -94,10 +95,11 @@ function Admin(props) {
                     <HeaderView activeMenu={activeMenu} />
                 </Header>
                 <Content style={{ margin: '0 10px' }}>
-                    <ContentView activeMenu={activeMenu} />
+                    <ContentView activeMenu={activeMenu} refModalProduct={refModalProduct} />
                 </Content>
                 {/*<Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>*/}
             </Layout>
+            <ModalProductView refFunc={refModalProduct} idCategory={keyTreeActive} />
         </Layout>
     );
     return (
