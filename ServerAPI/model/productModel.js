@@ -8,27 +8,16 @@
  */
 
 module.exports = {
-    create: function (con, data, callback) {
-        con.query(
-            `INSERT INTO product SET catalog_id = '${data.catalog_id}',
-                name = '${data.name}',
-                content = '${data.content}', 
-                price = '${data.price}', 
-                image_link = '${data.image_link}', 
-                trailer_link = '${data.trailer_link}', 
-                author_id = '${data.author_id}'
-                `,
-            callback,
-        );
+    create: function (con, querySQL, callback) {
+        con.query(`INSERT INTO product SET ` + querySQL, callback);
     },
-    update: function(con, data, callback) {
-        con.query(
-            `UPDATE category SET rootId = '${data.rootId}',status = '${data.status}',name = '${data.name}', description = '${data.description}', sort_order = '${data.sort_order}' WHERE id = '${data.id}'`,
-            callback,
-        );
+    update: function (con, data, callback) {
+        con.query(`UPDATE product SET rootId = '${data.rootId}',status = '${data.status}',name = '${data.name}', description = '${data.description}', sort_order = '${data.sort_order}' WHERE id = '${data.id}'`, callback);
     },
     getList: function (con, callback) {
-        con.query("SELECT * FROM category", callback,
-        );
+        con.query('SELECT * FROM product', callback);
+    },
+    getByName: function (con, name, callback) {
+        con.query(`SELECT * FROM product WHERE name = '${name}'`, callback);
     },
 };

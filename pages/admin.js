@@ -26,19 +26,21 @@ import ContentView from '../components/Admin/Content/ContentView';
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
 import HeaderView from '../components/Admin/Header/HeaderView';
+import { url_base_img } from '../util/TypeUI';
 
 // const
 const { Header, Content, Sider } = Layout;
 notification.config({
     duration: 2,
 });
+
 function Admin(props) {
     // context
     const { user } = React.useContext(ContextApp);
 
     // state
     const [isLoading, setIsLoading] = React.useState(true);
-    const [activeMenu, setActiveMenu] = React.useState(TYPE_MENU.CATEGORY);
+    const [activeMenu, setActiveMenu] = React.useState('');
 
     // ref
     const numberRender = React.useRef(0);
@@ -50,6 +52,10 @@ function Admin(props) {
     // handle func
     const onCollapse = () => {
         setCollapsed(!collapsed);
+    };
+    const handleSetActiveMenu = (value) => {
+        localStorage.setItem('activeMenuAdmin', value);
+        setActiveMenu(value);
     };
 
     // Vòng đời
@@ -66,6 +72,8 @@ function Admin(props) {
 
     React.useEffect(() => {
         const handleLoading = setTimeout(() => setIsLoading(false), 1000);
+        const defaultActiveMenu = localStorage.getItem('activeMenuAdmin') ? localStorage.getItem('activeMenuAdmin') : TYPE_MENU.CATEGORY;
+        handleSetActiveMenu(defaultActiveMenu);
         return () => clearTimeout(handleLoading);
     }, []);
     // JSX
@@ -73,8 +81,8 @@ function Admin(props) {
         <Layout style={{ minHeight: '100vh' }}>
             <MetaView title={'Quản trị - Unica'} />
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className='logo' onClick={() => router.push('/')} style={{ background: 'url(http://localhost:2020/api/file/logo-unica.svg) no-repeat' }} />
-                <MenuView setActiveMenu={setActiveMenu} TYPE_MENU={TYPE_MENU} />
+                <div className='logo' onClick={() => router.push('/')} style={{ background: `url(${url_base_img}logo-unica.svg) no-repeat` }} />
+                <MenuView setActiveMenu={handleSetActiveMenu} activeMenu={activeMenu} TYPE_MENU={TYPE_MENU} />
             </Sider>
             <Layout className='site-layout'>
                 <Header className='site-layout-background-header' style={{ padding: 0 }}>

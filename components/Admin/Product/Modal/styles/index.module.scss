@@ -1,0 +1,18 @@
+@mixin img {
+  width: 260px;
+  height: 130px;
+}
+.upload_file {
+  :global {
+
+    .ant-upload-select-picture-card, .ant-upload-list-item, .ant-upload-list-picture-card-container, .ant-upload-list, .ant-upload-picture-card-wrapper {
+      @include img;
+    }
+    .ant-upload-list-item-thumbnail {
+      @include img
+    }
+    .ant-upload-list-picture-card .ant-upload-list-item-thumbnail, .ant-upload-list-picture-card .ant-upload-list-item-thumbnail img {
+      @include img
+    }
+  }
+}

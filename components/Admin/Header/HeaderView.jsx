@@ -41,6 +41,9 @@ function HeaderView({ activeMenu }) {
         case TYPE_MENU.USER:
             text = 'Quản lý người dùng';
             break;
+        case TYPE_MENU.PRODUCT:
+            text = 'Quản lý khóa học';
+            break;
         default:
             text = 'Quản trị hệ thống Unica';
             break;

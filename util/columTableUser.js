@@ -10,7 +10,7 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import React from 'react';
-
+const name = localStorage.getItem('name') ? localStorage.getItem('name') : null;
 const columnsTableUser = [
     {
         title: 'Avatar',
@@ -24,7 +24,11 @@ const columnsTableUser = [
         dataIndex: 'name',
         key: 'name',
         width: 200,
-        render: (text) => <a>{text}</a>,
+        render: (text) => (
+            <a>
+                {text} {}
+            </a>
+        ),
     },
     {
         title: 'Email',
@@ -33,9 +37,9 @@ const columnsTableUser = [
         width: 200,
     },
     {
-        title: 'Chức vụ',
-        dataIndex: 'position',
-        key: 'position',
+        title: 'Cấp bậc',
+        dataIndex: 'rank',
+        key: 'rank',
         width: 150,
     },
     {

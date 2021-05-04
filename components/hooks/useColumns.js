@@ -8,18 +8,16 @@
  */
 
 import React from 'react';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Popconfirm, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 // styles
 import style from './styles/index.module.scss';
-const text = 'Are you sure to delete this task?';
 
 // import PropTypes from 'prop-types';
-
 function useColumns(props) {
-    const { nameStore, handleDidMount, columnsTable, actionDelete } = props;
+    const { nameStore, handleDidMount, columnsTable, actionDelete, handleActionTable } = props;
     const dispatch = useDispatch();
 
     // state
@@ -43,6 +41,41 @@ function useColumns(props) {
     React.useEffect(() => {
         handleDidMount && handleDidMount();
     }, []);
+    const handleAction = (_, record) => {
+        const textType = record.status_user ? 'khóa' : 'mở';
+        const text = `Bạn có chắc chắn muốn ${textType} ?`;
+        return (
+            <div className={style.action}>
+                <EditOutlined onClick={() => handleEdit(record)} className={style.item_action} />
+                {record.status_user ? (
+                    <Popconfirm
+                        placement='top'
+                        title={text}
+                        onConfirm={() => {
+                            handleDelete(record.id);
+                        }}
+                        okText='Phải'
+                        cancelText='Không'
+                    >
+                        <UnlockOutlined style={{ color: '#00f814' }} />
+                    </Popconfirm>
+                ) : (
+                    <Popconfirm
+                        placement='top'
+                        title={text}
+                        onConfirm={() => {
+                            handleDelete(record.id);
+                        }}
+                        okText='Phải'
+                        cancelText='Không'
+                    >
+                        <LockOutlined style={{ color: 'red' }} />
+                    </Popconfirm>
+                )}
+            </div>
+        );
+    };
+
     return {
         data,
         visibleEdit,
@@ -53,24 +86,7 @@ function useColumns(props) {
             {
                 title: 'Action',
                 dataIndex: 'action',
-                render: (_, record) => {
-                    return (
-                        <div className={style.action}>
-                            <EditOutlined onClick={() => handleEdit(record)} className={style.item_action} />
-                            <Popconfirm
-                                placement='top'
-                                title={text}
-                                onConfirm={() => {
-                                    handleDelete(record._id);
-                                }}
-                                okText='Yes'
-                                cancelText='No'
-                            >
-                                <DeleteOutlined className={style.item_action} />
-                            </Popconfirm>
-                        </div>
-                    );
-                },
+                render: handleActionTable ? handleActionTable : handleAction,
             },
         ],
     };

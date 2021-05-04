@@ -10,12 +10,17 @@
 import { combineReducers } from 'redux';
 import Category from 'redux/reducers/categoryReducers';
 import Users from 'redux/reducers/usersReducers';
+import Product from 'redux/reducers/productReducer';
 
 // util
 import { typeStore } from 'util/TypeUI';
 
 const store = {};
 const listState = [
+    {
+        name: typeStore.PRODUCT,
+        value: Product,
+    },
     {
         name: typeStore.CATEGORY,
         value: Category,

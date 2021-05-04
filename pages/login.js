@@ -19,11 +19,12 @@ import ContextApp from '../util/ContextApp';
 
 // Component
 import MetaView from '../components/MetaView';
+import { url_api, url_base } from '../util/TypeUI';
 
 const getLoginUser = async (data, dataUser) => {
     try {
         return axios
-            .post('http://localhost:2020/api/user/login', data)
+            .post(`${url_base}${url_api.USER}/login`, data)
             .then((res) => dataUser(res.data['user']))
             .catch((error) => message.error('Tài khoản hoặc mật khẩu không đúng'));
     } catch (e) {

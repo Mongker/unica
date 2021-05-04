@@ -30,6 +30,16 @@ const typeAction = {
         PUT: 'PUT_USER',
         PUT_LOGIC: 'PUT_USER_LOGIC',
     },
+    PRODUCT: {
+        GET_LIST: 'GET_LIST_PRODUCT',
+        GET_LOGIC: 'GET_PRODUCT_LOGIC',
+        DEL: 'DEL_CATEGORY',
+        DEL_LOGIC: 'DEL_PRODUCT_LOGIC',
+        POST: 'POT_PRODUCT',
+        POST_LOGIC: 'POT_PRODUCT_LOGIC',
+        PUT: 'PUT_PRODUCT',
+        PUT_LOGIC: 'PUT_PRODUCT_LOGIC',
+    },
 };
 
 export default typeAction;

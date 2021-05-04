@@ -9,5 +9,6 @@
 const TYPE_MENU = {
     USER: 'USER',
     CATEGORY: 'CATEGORY',
+    PRODUCT: 'PRODUCT',
 };
 export { TYPE_MENU };

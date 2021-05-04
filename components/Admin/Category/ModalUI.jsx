@@ -20,6 +20,7 @@ import UploadFileView from './UploadFileView';
 
 // styles
 import styles from './styles/index.module.scss';
+import { url_base_img } from '../../../util/TypeUI';
 
 function ModalUI(props) {
     const { refFunc } = props;
@@ -70,7 +71,7 @@ function ModalUI(props) {
         setDescription(e.target.value);
     };
     const handleOk = () => {
-        data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : 'http://localhost:2020/api/file/operation.png';
+        data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : `${url_base_img}operation.png`;
         itemEdit ? dispatch(put({ ...itemEdit, ...data })) : dispatch(post(data));
         handleResetState();
         setIsModalVisible(false);
@@ -100,7 +101,7 @@ function ModalUI(props) {
                     uid: '-1',
                     name: 'image.png',
                     status: 'done',
-                    url: `http://localhost:2020/api/file/${itemEdit.icon}`,
+                    url: `${url_base_img}${itemEdit.icon}`,
                 },
             ]);
         }

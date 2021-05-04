@@ -13,19 +13,36 @@ import PropTypes from 'prop-types';
 
 // hooks
 import useColumns from '../../../hooks/useColumns';
+import useUserBase from '../../../hooks/LogicData/useUserBase';
 
 const funcDefault = () => {};
 function TableView({ handleDidMount, actionDelete, columnsTable, type }) {
+    // hooks
+    const { users, updateUser } = useUserBase();
+
+    // handle func
+    const handleUpdateUser = (id) => {
+        let indexUpdate;
+        users.map((item, index) => item.id === id && (indexUpdate = index));
+        const status_user = users[indexUpdate].status_user === 0 ? 1 : 0;
+        const data = { status_user, id };
+        indexUpdate && updateUser(data);
+    };
+
+    // hooks
     const { columns, data } = useColumns({
         nameStore: 'users',
         handleDidMount,
         columnsTable,
-        actionDelete,
+        actionDelete: handleUpdateUser,
     });
-    const newData = data.filter((item) => item.role === type);
+
+    const dataSource = type !== 'ALL' ? data.filter((item) => item.role === type) : data;
+    console.log('data', data); // MongLV log fix bug
+    console.log('dataSource', dataSource); // MongLV log fix bug
     return (
         <React.Fragment>
-            <Table columns={columns} dataSource={newData} />
+            <Table columns={columns} dataSource={dataSource} />
         </React.Fragment>
     );
 }
@@ -40,4 +57,4 @@ TableView.defaultProps = {
     actionDelete: funcDefault,
 };
 
-export default TableView;
+export default React.memo(TableView);

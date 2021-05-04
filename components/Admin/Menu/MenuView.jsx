@@ -8,25 +8,29 @@
  */
 import React from 'react';
 import { Menu } from 'antd';
-import { PicRightOutlined, TeamOutlined } from '@ant-design/icons';
+import { DesktopOutlined, PicRightOutlined, TeamOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
+// util
+import { TYPE_MENU } from 'util/TypeMenu';
+
+// const
 function MenuView(props) {
-    const { TYPE_MENU, setActiveMenu } = props;
+    const { TYPE_MENU, setActiveMenu, activeMenu } = props;
     function handleClick(event) {
         setActiveMenu(event.key);
     }
     return (
-        <Menu theme='dark' defaultSelectedKeys={[TYPE_MENU.CATEGORY]} mode='inline' onClick={handleClick}>
+        <Menu theme='dark' selectedKeys={[activeMenu]} mode='inline' onClick={handleClick}>
             <Menu.Item key={TYPE_MENU.CATEGORY} icon={<PicRightOutlined />}>
                 Quản lý danh mục
+            </Menu.Item>
+            <Menu.Item key={TYPE_MENU.PRODUCT} icon={<DesktopOutlined />}>
+                Quản lý khóa học
             </Menu.Item>
             <Menu.Item key={TYPE_MENU.USER} icon={<TeamOutlined />}>
                 Quản lý người dùng
             </Menu.Item>
-            {/*<Menu.Item key='2' icon={<DesktopOutlined />}>*/}
-            {/*    Option 2*/}
-            {/*</Menu.Item>*/}
             {/*<SubMenu key='sub1' icon={<UserOutlined />} title='User'>*/}
             {/*    <Menu.Item key='3'>Tom</Menu.Item>*/}
             {/*    <Menu.Item key='4'>Bill</Menu.Item>*/}
@@ -46,6 +50,7 @@ function MenuView(props) {
 MenuView.propTypes = {
     TYPE_MENU: PropTypes.object.isRequired,
     setActiveMenu: PropTypes.func.isRequired,
+    activeMenu: PropTypes.func.isRequired,
 };
 
 MenuView.defaultProps = {};

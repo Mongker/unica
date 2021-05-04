@@ -9,7 +9,7 @@
 
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Tabs } from 'antd';
+import { Avatar, Tabs } from 'antd';
 import { useDispatch } from 'react-redux';
 
 // action
@@ -17,7 +17,10 @@ import { getList } from 'redux/actions/userAction';
 
 // component
 import TableView from './Table/TableView';
-import { columnsTableUser } from 'util/columTableUser';
+import { UserOutlined } from '@ant-design/icons';
+
+// util
+import ContextApp from 'util/ContextApp';
 
 // const
 const { TabPane } = Tabs;
@@ -25,38 +28,93 @@ const TypeTabs = {
     USER: 'user',
     TEACHER: 'teacher',
     ADMIN: 'admin',
+    ALL: 'ALL',
 };
 
 function ManagementUserView() {
+    // hooks
+    const { user } = React.useContext(ContextApp);
+
     // state
-    const [keyActive, setKeyActive] = React.useState();
+    const [keyActive, setKeyActive] = React.useState(null);
 
     // redux
     const dispatch = useDispatch();
 
     // ref
-    const typeRef = React.useRef('user');
+    // const typeRef = React.useRef('user');
 
     // handle func
     const callback = (key) => {
+        localStorage.setItem('ManagementUserView', key);
         setKeyActive(key);
     };
 
     const handleGetList = () => {
         dispatch(getList());
     };
+    React.useEffect(() => {
+        setKeyActive(localStorage.getItem('ManagementUserView') ? localStorage.getItem('ManagementUserView') : TypeTabs.ALL);
+    }, []);
 
-    const table = <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />;
+    // JSX
+    const columnsTableUser = [
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            width: 50,
+            render: (text) => <Avatar icon={<UserOutlined />} src={text} />,
+        },
+        {
+            title: 'Tên',
+            dataIndex: 'name',
+            key: 'name',
+            width: 200,
+            render: (text) => (
+                <a>
+                    {text} {user.name === text ? '(Chính bạn)' : ''}
+                </a>
+            ),
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            width: 200,
+        },
+        {
+            title: 'Cấp bậc',
+            dataIndex: 'rank',
+            key: 'rank',
+            width: 150,
+        },
+        {
+            title: 'Quyền hạn',
+            dataIndex: 'role',
+            key: 'role',
+            width: 150,
+        },
+        {
+            title: 'Giảng viên môn',
+            dataIndex: 'teacher_category',
+            key: 'teacher_category',
+            width: 200,
+        },
+    ];
     return (
-        <Tabs onChange={callback} type='card'>
+        <Tabs onChange={callback} type='card' activeKey={keyActive}>
+            <TabPane tab={'Tất cả thành viên'} key={TypeTabs.ALL}>
+                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
+            </TabPane>
             <TabPane tab={'Người dùng'} key={TypeTabs.USER}>
-                {table}
+                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
             </TabPane>
             <TabPane tab={'Giảng viên'} key={TypeTabs.TEACHER}>
-                {table}
+                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
             </TabPane>
             <TabPane tab={'Quản trị viên'} key={TypeTabs.ADMIN}>
-                {table}
+                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
             </TabPane>
         </Tabs>
     );

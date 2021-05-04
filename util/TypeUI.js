@@ -11,9 +11,13 @@ const arrTypeUser = ['id', 'name', 'phone', 'email', 'address', 'info', 'positio
 const typeStore = {
     USER: 'users',
     CATEGORY: 'category',
+    PRODUCT: 'product',
 };
 const url_api = {
     USER: '/user',
     CATEGORY: '/category',
+    PRODUCT: '/product',
 };
-export { arrTypeUser, typeStore, url_api };
+const url_base = 'http://localhost:2020/api';
+const url_base_img = `${url_base}/file/`;
+export { arrTypeUser, typeStore, url_api, url_base_img, url_base };

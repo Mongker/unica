@@ -11,7 +11,7 @@ const express = require('express');
 const ProductRouter = express.Router();
 
 // container
-const {CREATE, UPDATE, GET_LIST} = require('../controller/productController');
+const { CREATE, UPDATE, GET_LIST } = require('../controller/product.controller');
 
 ProductRouter.route('/api/product').post(CREATE);
 

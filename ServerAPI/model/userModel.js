@@ -11,18 +11,14 @@
 // var currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
 // var currentTimeInMilliseconds=Date.now(); // unix timestamp in milliseconds
 module.exports = {
-    getList: function (con, role, callback) {
-        const query = role ? `SELECT * FROM user WHERE role='${role.toString()}'` : `SELECT * FROM user`;
+    getList: function (con, querySQL, callback) {
+        const query = querySQL.length > 0 ? `SELECT * FROM user WHERE ` + querySQL : `SELECT * FROM user`;
         con.query(query, callback);
     },
 
     checkEmail: function (con, data, callback) {
         con.query(`SELECT * FROM user WHERE email = '${data.email}'`, callback);
     },
-
-    // checkPassWord: function (con, data, callback) {
-    //     con.query(`SELECT * FROM user WHERE email = '${data.email}'`, callback);
-    // },
 
     create: function (con, data, callback) {
         con.query(
@@ -40,18 +36,10 @@ module.exports = {
             callback,
         );
     },
+    update: function (con, id, querySQL, callback) {
+        const query = `UPDATE user SET ${querySQL} WHERE id = ${id}`;
 
-    // update: function (con, data, id, callback) {
-    //     con.query(
-    //         `UPDATE biodata SET
-    //   nama = '${data.nama}',
-    //   alamat = '${data.alamat}'
-    //   WHERE id_biodata = ${id}`,
-    //         callback,
-    //     );
-    // },
-    //
-    // destroy: function (con, id, callback) {
-    //     con.query(`DELETE FROM biodata WHERE id_biodata = ${id}`, callback);
-    // },
+        // con.query(`UPDATE category SET rootId = '${data.rootId}', icon = '${data.icon}', status = '${data.status}', name = '${data.name}', description = '${data.description}', sort_order = '${data.sort_order}' WHERE id = '${data.id}'`, callback);
+        con.query(query, callback);
+    },
 };

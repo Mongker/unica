@@ -9,6 +9,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { url_base_img } from '../../../util/TypeUI';
 
 function ContentUNICAView(prop) {
     return (
@@ -241,7 +242,7 @@ function ContentUNICAView(prop) {
                     </div>
                     <div className='content_slider'>
                         <a href=''>
-                            <img src='http://localhost:2020/api/file/IA0qQah.jpg' alt='' />
+                            <img src={`${url_base_img}IA0qQah.jpg`} alt='' />
                         </a>
                     </div>
                     <div className='content_card'>

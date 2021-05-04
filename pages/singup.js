@@ -16,22 +16,25 @@ import axios from 'axios';
 
 // Context
 import ContextApp from '../util/ContextApp';
+import { url_api, url_base } from '../util/TypeUI';
 
 export function postUser(data, setUser) {
     try {
-        return axios.post('http://localhost:2020/api/user', data)
-            .then(res => res.data).then((result) => {
+        return axios
+            .post(`${url_base}${url_api}`, data)
+            .then((res) => res.data)
+            .then((result) => {
                 console.log(result);
                 if (result.message === 'OK') {
                     message.success('Tạo thành công');
                     setUser(result.user);
-                }else if (result.message === 'LIMIT') {
+                } else if (result.message === 'LIMIT') {
                     message.warn('Đã tồn tại email');
                 } else {
                     message.error('Lỗi truyền');
                 }
             })
-            .catch(error => message.error('Lỗi: '+ error));
+            .catch((error) => message.error('Lỗi: ' + error));
     } catch (e) {
         message.error(e);
     }
@@ -44,7 +47,7 @@ function SingUp(props) {
     const [passwordCheck, setPasswordCheck] = React.useState('');
 
     // context
-    const {user, setUser} = React.useContext(ContextApp);
+    const { user, setUser } = React.useContext(ContextApp);
 
     const router = useRouter();
 
@@ -60,11 +63,16 @@ function SingUp(props) {
     };
 
     const handleSave = () => {
-        if(email.length > 0 && password.length > 0 && passwordCheck.length > 0) {
-            (password === passwordCheck) ?  postUser({
-                "email": email,
-                "password": password
-            }, setUser) : message.warn('Mật khẩu không khớp nhau');
+        if (email.length > 0 && password.length > 0 && passwordCheck.length > 0) {
+            password === passwordCheck
+                ? postUser(
+                      {
+                          email: email,
+                          password: password,
+                      },
+                      setUser,
+                  )
+                : message.warn('Mật khẩu không khớp nhau');
         } else message.warn('Không được bỏ trống thông tin');
     };
 

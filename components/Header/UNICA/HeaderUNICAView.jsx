@@ -17,6 +17,8 @@ import { useRouter } from 'next/router';
 // context
 import ContextApp from 'util/ContextApp';
 
+// util
+import { url_base_img } from 'util/TypeUI';
 // styles
 import styles from './styles/index.module.css';
 
@@ -64,7 +66,7 @@ function HeaderUNICAView(props) {
                             {user && typeof user === 'object' ? (
                                 <React.Fragment>
                                     <div className={'info_user'}>
-                                        <img src='http://localhost:2020/api/file/765-default-avatar.png' alt='ssss' style={{ borderRadius: '100%', width: 30, height: 30 }} />
+                                        <img src={`${url_base_img}765-default-avatar.png`} alt='ssss' style={{ borderRadius: '100%', width: 30, height: 30 }} />
                                         <p style={{ color: 'red', fontSize: 20, marginLeft: 5, marginRight: 5 }}>{user.email}</p>
                                         <p style={{ marginRight: 5 }}>({user.role})</p>
                                     </div>
