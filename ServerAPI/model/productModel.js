@@ -11,11 +11,13 @@ module.exports = {
     create: function (con, querySQL, callback) {
         con.query(`INSERT INTO product SET ` + querySQL, callback);
     },
-    update: function (con, data, callback) {
-        con.query(`UPDATE product SET rootId = '${data.rootId}',status = '${data.status}',name = '${data.name}', description = '${data.description}', sort_order = '${data.sort_order}' WHERE id = '${data.id}'`, callback);
+    update: function (con, id, querySQL, callback) {
+        const query = `UPDATE product SET ${querySQL} WHERE id = ${id}`;
+        con.query(query, callback);
     },
-    getList: function (con, callback) {
-        con.query('SELECT * FROM product', callback);
+    getList: function (con, querySQL, callback) {
+        const query = querySQL.length > 0 ? `SELECT * FROM product WHERE ` + querySQL : `SELECT * FROM product`;
+        con.query(query, callback);
     },
     getByName: function (con, name, callback) {
         con.query(`SELECT * FROM product WHERE name = '${name}'`, callback);

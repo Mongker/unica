@@ -11,7 +11,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Layout, Menu, message, notification, Spin } from 'antd';
-
+import dynamic from 'next/dynamic';
 // context
 import ContextApp from '../util/ContextApp';
 
@@ -21,15 +21,18 @@ import MetaView from '../components/MetaView';
 // style
 import styles from '../components/Admin/styles/index.module.scss';
 import MenuView from '../components/Admin/Menu/MenuView';
-import ContentView from '../components/Admin/Content/ContentView';
 
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
-import HeaderView from '../components/Admin/Header/HeaderView';
 import { url_base_img } from '../util/TypeUI';
+import { getList } from 'redux/actions/userAction';
+import { useDispatch } from 'react-redux';
 
 // const
 const { Header, Content, Sider } = Layout;
+const ContentView = dynamic(import('../components/Admin/Content/ContentView'), { ssr: false });
+const HeaderView = dynamic(import('../components/Admin/Header/HeaderView'), { ssr: false });
+
 notification.config({
     duration: 2,
 });
@@ -37,6 +40,7 @@ notification.config({
 function Admin(props) {
     // context
     const { user } = React.useContext(ContextApp);
+    const dispatch = useDispatch();
 
     // state
     const [isLoading, setIsLoading] = React.useState(true);
@@ -74,6 +78,7 @@ function Admin(props) {
         const handleLoading = setTimeout(() => setIsLoading(false), 1000);
         const defaultActiveMenu = localStorage.getItem('activeMenuAdmin') ? localStorage.getItem('activeMenuAdmin') : TYPE_MENU.CATEGORY;
         handleSetActiveMenu(defaultActiveMenu);
+        dispatch(getList());
         return () => clearTimeout(handleLoading);
     }, []);
     // JSX

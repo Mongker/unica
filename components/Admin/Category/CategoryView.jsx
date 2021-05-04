@@ -23,11 +23,13 @@ import styles from './styles/index.module.scss';
 import TitleTreeView from './TitleTree/TitleTreeView';
 import { url_base_img } from '../../../util/TypeUI';
 import ModalProductView from '../Product/Modal/ModalProductView';
+import ProductView from '../Product/ProductView';
+import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 
 const CategoryView = () => {
     // redux
     const dispatch = useDispatch();
-    const category = useSelector((store) => store.category);
+    const { category, categoryObj } = useCategoryBase();
 
     // state
     const [treeData, setTreeData] = useState([]);
@@ -42,7 +44,6 @@ const CategoryView = () => {
 
     // handle func
     const onSelect = (selectedKeys, info) => {
-        console.log('selectedKeys[0]', selectedKeys[0]); // MongLV log fix bug
         setKeyTreeActive(selectedKeys[0]);
     };
     const showModalAdd = (item) => {
@@ -108,12 +109,15 @@ const CategoryView = () => {
                         Thêm danh mục
                     </Button>
                 </div>
-                {keyTreeActive && (
+                <h2 style={{ fontWeight: 'bold' }}>Danh sách {keyTreeActive ? categoryObj[keyTreeActive].name : 'ALL'} </h2>
+                {keyTreeActive ? (
                     <div className={styles.btn_add_category}>
                         <Button type='primary' onClick={() => refModalAddProduct.current && refModalAddProduct.current.showDrawer()}>
                             Thêm khóa học
                         </Button>
                     </div>
+                ) : (
+                    <div />
                 )}
             </div>
             <div className={'flex_row'}>
@@ -121,10 +125,9 @@ const CategoryView = () => {
                 <div className={styles.custom_tree_antd}>
                     <Tree onSelect={onSelect} treeData={treeData} showIcon draggable />
                 </div>
-                <div className={styles.content_category}>
-                    <ModalProductView refFunc={refModalAddProduct} idCategory={keyTreeActive} />
-                </div>
+                <ProductView keyTreeActive={keyTreeActive} refCallback={refModalAddProduct} />
             </div>
+            <ModalProductView refFunc={refModalAddProduct} idCategory={keyTreeActive} />
         </React.Fragment>
     );
 };

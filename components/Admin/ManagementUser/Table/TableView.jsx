@@ -38,8 +38,6 @@ function TableView({ handleDidMount, actionDelete, columnsTable, type }) {
     });
 
     const dataSource = type !== 'ALL' ? data.filter((item) => item.role === type) : data;
-    console.log('data', data); // MongLV log fix bug
-    console.log('dataSource', dataSource); // MongLV log fix bug
     return (
         <React.Fragment>
             <Table columns={columns} dataSource={dataSource} />

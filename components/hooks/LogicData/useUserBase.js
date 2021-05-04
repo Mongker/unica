@@ -22,10 +22,11 @@ function useUserBase() {
     const users = useSelector((store) => store[typeStore.USER]);
     const { user: myUser } = React.useContext(ContextApp);
     const dispatch = useDispatch();
+    let usersObj = {};
+    users.map((item) => (usersObj[item.id] = item));
 
     // handle func
     const updateUser = async (data = {}) => {
-        debugger; // MongLV
         const { message } = await baseAPI.update(url_api.USER, data);
         const id = data.id;
         if (message === 'OK') {
@@ -38,6 +39,7 @@ function useUserBase() {
     };
     return {
         myUser,
+        usersObj,
         users,
         updateUser,
     };

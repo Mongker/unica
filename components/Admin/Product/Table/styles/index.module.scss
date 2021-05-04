@@ -1,0 +1,9 @@
+.controller {
+  width: 65%;
+  border-radius: 20px;
+  :global {
+    .ant-avatar-image {
+      border-radius: unset;
+    }
+  }
+}

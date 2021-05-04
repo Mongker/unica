@@ -14,13 +14,19 @@ import ContextApp from 'util/ContextApp';
 
 // Util
 import { arrTypeUser } from 'util/TypeUI';
+import useProductBase from '../components/hooks/LogicData/useProductBase';
 
 function App({ Component, pageProps }) {
+    // hooks
     const router = useRouter();
+    const { getListProduct } = useProductBase();
 
     // state
     const [user, setUser] = React.useState(null);
 
+    useEffect(() => {
+        getListProduct();
+    }, []);
     useEffect(() => {
         // Note: Hàm dùng để check xem đã tồn tại user chưa nếu chưa thì lấy dữ liệu từ localStorage lấp vào
         if (user) {

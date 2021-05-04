@@ -38,9 +38,6 @@ function ManagementUserView() {
     // state
     const [keyActive, setKeyActive] = React.useState(null);
 
-    // redux
-    const dispatch = useDispatch();
-
     // ref
     // const typeRef = React.useRef('user');
 
@@ -50,9 +47,6 @@ function ManagementUserView() {
         setKeyActive(key);
     };
 
-    const handleGetList = () => {
-        dispatch(getList());
-    };
     React.useEffect(() => {
         setKeyActive(localStorage.getItem('ManagementUserView') ? localStorage.getItem('ManagementUserView') : TypeTabs.ALL);
     }, []);
@@ -105,16 +99,16 @@ function ManagementUserView() {
     return (
         <Tabs onChange={callback} type='card' activeKey={keyActive}>
             <TabPane tab={'Tất cả thành viên'} key={TypeTabs.ALL}>
-                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
+                <TableView columnsTable={columnsTableUser} type={keyActive} />
             </TabPane>
             <TabPane tab={'Người dùng'} key={TypeTabs.USER}>
-                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
+                <TableView columnsTable={columnsTableUser} type={keyActive} />
             </TabPane>
             <TabPane tab={'Giảng viên'} key={TypeTabs.TEACHER}>
-                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
+                <TableView columnsTable={columnsTableUser} type={keyActive} />
             </TabPane>
             <TabPane tab={'Quản trị viên'} key={TypeTabs.ADMIN}>
-                <TableView columnsTable={columnsTableUser} handleDidMount={handleGetList} type={keyActive} />
+                <TableView columnsTable={columnsTableUser} type={keyActive} />
             </TabPane>
         </Tabs>
     );

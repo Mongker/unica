@@ -28,21 +28,23 @@ function ModalProductView({ refFunc, idCategory }) {
     // hooks
     const [form] = Form.useForm();
     const { myUser } = useUserBase();
-    const { postProduct } = useProductBase();
+    const { postProduct, updateProduct } = useProductBase();
     const category = useSelector((state) => state[typeStore.CATEGORY]);
 
     // state
+    const [typeModal, setTypeModal] = React.useState('ADD'); // Note: type này để xác "EDIT" sửa hay "ADD"
     const [visible, setVisible] = React.useState(false);
     const [imgFile, setImgFile] = React.useState('');
     const [videoFile, setVideoFile] = React.useState('');
-    console.log('videoFile', videoFile); // MongLV log fix bug
+    const [IdCategory, setIdCategory] = React.useState(null);
+    const [dataEdit, setDataEdit] = React.useState({}); // Note: dành cho trạng thái typeModal === "EDIT"
 
     // ref
     const refImgFile = React.useRef(null);
     const refVideoFile = React.useRef(null);
 
     // const
-    const arr = category.filter((item) => item.id === idCategory);
+    const arr = IdCategory ? category.filter((item) => item.id === IdCategory) : [];
     const nameCategory = arr.length > 0 && arr[0].name;
 
     // handle func
@@ -59,6 +61,8 @@ function ModalProductView({ refFunc, idCategory }) {
         form.resetFields();
         setImgFile('');
         setVideoFile('');
+        setTypeModal('ADD');
+        setIdCategory(null);
 
         refVideoFile.current && refVideoFile.current.setLinkFile('');
         refVideoFile.current && refVideoFile.current.setFileList([]);
@@ -71,14 +75,23 @@ function ModalProductView({ refFunc, idCategory }) {
     };
 
     const onFinish = (values) => {
-        console.log('imgFile', imgFile); // MongLV log fix bug
-        console.log('imgFile', imgFile); // MongLV log fix bug
+        if (typeModal === 'ADD') {
+        }
         if (imgFile && videoFile) {
-            values['author_id'] = myUser.id;
-            values['catalog_id'] = idCategory;
+            values['image_link'] = imgFile;
+            values['trailer_link'] = videoFile;
+            values['catalog_id'] = IdCategory;
+
             delete values['name_category'];
-            postProduct(values);
-            message.success('Thêm thành công');
+
+            if (typeModal === 'ADD') {
+                values['author_id'] = myUser.id;
+                postProduct(values);
+            } else {
+                console.log(values);
+                values['id'] = dataEdit.id;
+                updateProduct(values);
+            }
             onReset();
             onClose();
         } else message.warn('Thiếu file đính kèm');
@@ -94,11 +107,20 @@ function ModalProductView({ refFunc, idCategory }) {
             visible,
             showDrawer,
             onClose,
+            setTypeModal,
+            form,
+            refImgFile,
+            refVideoFile,
+            setIdCategory,
+            setDataEdit,
         };
     });
     React.useEffect(() => {
-        form.setFieldsValue({ name_category: nameCategory });
+        idCategory && !IdCategory && setIdCategory(idCategory);
     }, [idCategory]);
+    React.useEffect(() => {
+        form.setFieldsValue({ name_category: nameCategory });
+    }, [IdCategory]);
 
     return (
         <React.Fragment>
@@ -106,7 +128,7 @@ function ModalProductView({ refFunc, idCategory }) {
                 style={{
                     position: 'absolute',
                 }}
-                title='Thêm khóa học'
+                title={typeModal === 'ADD' ? 'Thêm khóa học' : 'Sửa khóa học'}
                 placement='right'
                 onClose={onClose}
                 visible={visible}
@@ -134,7 +156,7 @@ function ModalProductView({ refFunc, idCategory }) {
 
                     <Form.Item {...tailLayout}>
                         <Button type='primary' htmlType='submit'>
-                            Thêm
+                            {typeModal === 'ADD' ? 'Thêm' : 'Lưu cập nhật'}
                         </Button>
                     </Form.Item>
                     {videoFile && (
