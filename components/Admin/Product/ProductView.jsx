@@ -9,17 +9,21 @@
 
 import React from 'react';
 import TableProduct from './Table/TableProduct';
-import { Avatar, Image, Popconfirm, Tag } from 'antd';
-import { EditOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, TeamOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Image, Popconfirm, Tag, Tooltip } from 'antd';
+import { AppstoreOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, TeamOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons';
 import { url_base_img } from '../../../util/TypeUI';
 import useUserBase from '../../hooks/LogicData/useUserBase';
 import PropTypes from 'prop-types';
 import style from '../../hooks/styles/index.module.scss';
 import useProductBase from '../../hooks/LogicData/useProductBase';
+import ModalStudyProgram from './Modal/ModalStudyProgram';
 
 function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const { usersObj } = useUserBase();
     const { hideProduct } = useProductBase();
+
+    // ref
+    const refModalStudyProgram = React.useRef();
 
     // handle func
     const handleShow = (data) => {
@@ -82,6 +86,14 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     };
     const typeWidthTable = isMenu ? 'FullScreen' : 'SmallScreen';
 
+    // handle func
+    const showDrawer = (data) => {
+        if (refModalStudyProgram.current) {
+            refModalStudyProgram.current.setDataProduct(data);
+            refModalStudyProgram.current.showDrawer(true);
+        }
+    };
+
     // JSX
     const columnsTable = [
         {
@@ -132,9 +144,12 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
         return (
             <div className={style.action}>
                 <EditOutlined onClick={() => handleShow(data)} className={style.item_action} />
+                <Tooltip title='Quản trị chương trình học'>
+                    <AppstoreOutlined onClick={() => showDrawer(data)} className={style.item_action} style={{ color: 'blue' }} />
+                </Tooltip>
                 {data.status ? (
                     <Popconfirm placement='top' title={'Ẩn khóa học đi'} onConfirm={() => hideProduct(data)} okText='Phải' cancelText='Không'>
-                        <EyeOutlined style={{ color: '#0b8f01' }} />
+                        <EyeOutlined style={{ color: '#0b8f01' }} className={style.item_action} />
                     </Popconfirm>
                 ) : (
                     <Popconfirm placement='top' title={'Hiễn thị khóa học'} onConfirm={() => hideProduct(data)} okText='Phải' cancelText='Không'>
@@ -159,7 +174,13 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     ];
 
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
-    return <TableProduct columnsTable={_columnsTable} actionProduct={actionProduct} type={keyTreeActive} isFullWidth={isMenu} />;
+    console.log('refModalStudyProgram', refModalStudyProgram); // MongLV log fix bug
+    return (
+        <React.Fragment>
+            <TableProduct columnsTable={_columnsTable} actionProduct={actionProduct} type={keyTreeActive} isFullWidth={isMenu} />
+            <ModalStudyProgram refCallBack={refModalStudyProgram} />
+        </React.Fragment>
+    );
 }
 
 ProductView.propTypes = {

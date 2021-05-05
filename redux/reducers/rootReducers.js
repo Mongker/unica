@@ -11,6 +11,7 @@ import { combineReducers } from 'redux';
 import Category from 'redux/reducers/categoryReducers';
 import Users from 'redux/reducers/usersReducers';
 import Product from 'redux/reducers/productReducer';
+import StudyProgram from 'redux/reducers/studyProgramReducer';
 
 // util
 import { typeStore } from 'util/TypeUI';
@@ -28,6 +29,10 @@ const listState = [
     {
         name: typeStore.USER,
         value: Users,
+    },
+    {
+        name: typeStore.STUDY_PROGRAM,
+        value: StudyProgram,
     },
 ];
 

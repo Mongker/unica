@@ -16,3 +16,23 @@
     }
   }
 }
+.controller_study_program {
+  display: flex;
+  flex-direction: row;
+  :global {
+    .ant-collapse {
+      width: 40%;
+    }
+  }
+}
+.title {
+  font-weight: bold;
+  font-size: 20px;
+}
+.content_right {
+  width: 55%;
+  background-color: #fafafa;
+  border-radius: 20px;
+  margin-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}

@@ -12,6 +12,7 @@ const uploadRouter = require('./routes/uploadRouter');
 const UserRouter = require('./routes/userRouter');
 const CategoryRouter = require('./routes/categoryRouter');
 const ProductRouter = require('./routes/productRouter');
+const StudyProgramRouter = require('./routes/studyProgramRouter');
 
 // Using pug template engine
 app.set('views', path.join(__dirname, 'views'));
@@ -32,16 +33,16 @@ const corsOptions = {
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(methodOverride('_method'));
-
 // routing
 app.use('/biodata', biodataRouter);
 app.use('/api/file', uploadRouter); // Thao tác với dữ liệu người dùng
 app.use(UserRouter);
 app.use(CategoryRouter);
 app.use(ProductRouter);
+app.use(StudyProgramRouter);
 
 const PORT = 2020;
 // starting server

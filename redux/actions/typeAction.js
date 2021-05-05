@@ -40,6 +40,16 @@ const typeAction = {
         PUT: 'PUT_PRODUCT',
         PUT_LOGIC: 'PUT_PRODUCT_LOGIC',
     },
+    STUDY_PROGRAM: {
+        GET_LIST: 'GET_LIST_STUDY_PROGRAM',
+        GET_LOGIC: 'GET_STUDY_PROGRAM_LOGIC',
+        DEL: 'DEL_CATEGORY',
+        DEL_LOGIC: 'DEL_STUDY_PROGRAM_LOGIC',
+        POST: 'POT_STUDY_PROGRAM',
+        POST_LOGIC: 'POT_STUDY_PROGRAM_LOGIC',
+        PUT: 'PUT_STUDY_PROGRAM',
+        PUT_LOGIC: 'PUT_STUDY_PROGRAM_LOGIC',
+    },
 };
 
 export default typeAction;
