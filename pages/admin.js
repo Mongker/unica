@@ -52,7 +52,6 @@ function Admin(props) {
     // ref
     const numberRender = React.useRef(0);
     const refModalProduct = React.useRef(null);
-    console.log('refModalProduct', refModalProduct); // MongLV log fix bug
 
     // handle func
     const onCollapse = () => {

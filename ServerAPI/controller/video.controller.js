@@ -7,27 +7,23 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-const StudyProgramModel = require('../model/studiProgramModel');
+const VideoModel = require('../model/videoModel');
 
 module.exports = {
     CREATE: function (req, res) {
         let querySQL = '';
-        let querySQLGet = '';
+
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
             index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
-        delete req.body.content;
-        Object.entries(req.body).map((item, index) => {
-            const key = item[0];
-            const value = `'${item[1]}'`;
-            index === 0 ? (querySQLGet = `${key} = ${value}`) : (querySQLGet = querySQLGet + ' and ' + `${key} = ${value}`);
-        });
-        if (querySQL.length > 0 && req.body && req.body['product_id']) {
-            StudyProgramModel.create(req.con, querySQL, function (err) {
+
+        const querySQLGet = querySQL.replace(/,/g, ' and ');
+        if (querySQL.length > 0 && req.body && req.body['study_program_id']) {
+            VideoModel.create(req.con, querySQL, function (err) {
                 if (err) return res.status(404).json({ message: err });
-                StudyProgramModel.getList(req.con, querySQLGet, function (err, row) {
+                VideoModel.getList(req.con, querySQLGet, function (err, row) {
                     return res.status(200).json({ message: 'OK', data: row[0] });
                 });
             });
@@ -42,7 +38,7 @@ module.exports = {
             const value = `'${item[1]}'`;
             index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
         });
-        StudyProgramModel.getList(req.con, querySQL, function (err, row) {
+        VideoModel.getList(req.con, querySQL, function (err, row) {
             if (err) return res.status(404).json({ message: err });
             return res.status(200).json({ message: 'OK', data: row });
         });
@@ -57,10 +53,16 @@ module.exports = {
             index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
         if (querySQL.length > 0) {
-            StudyProgramModel.update(req.con, id, querySQL, function (err) {
+            VideoModel.update(req.con, id, querySQL, function (err) {
                 if (err) return res.status(200).json({ message: err });
                 else return res.status(200).json({ message: 'OK' });
             });
         } else return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
+    },
+    DELETE: function (req, res) {
+        VideoModel.delete(req.con, req.params.id, function (err, row) {
+            if (err) return res.status(404).json({ message: err });
+            return res.status(200).json({ message: 'OK' });
+        });
     },
 };

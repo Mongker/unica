@@ -15,17 +15,18 @@ import PropTypes from 'prop-types';
 import _styles from './styles/index.module.scss';
 import { url_base_img } from '../../../util/TypeUI';
 
-function getBase64(file) {
+// const
+const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
     });
-}
+};
 
 function UploadFileView(props) {
-    const { refFunc, Img, styles, imgDefault, callback = () => {} } = props;
+    const { refFunc, Img, styles, imgDefault, callback = () => {}, fileListUtil, linkFileUtil, setLinkFileUtil, setFileListUtil } = props;
     const [linkFile, setLinkFile] = React.useState('');
     const [fileList, setFileList] = React.useState([]);
 
@@ -34,16 +35,19 @@ function UploadFileView(props) {
     // handle func
     const onChange = (info) => {
         setFileList(info.fileList);
+        setFileListUtil(info.fileList);
         switch (info.file.status) {
             case 'uploading':
                 break;
             case 'done':
                 // message.success('Thêm thành công');
                 setLinkFile(info.file.response.fileNameInServer);
+                setLinkFileUtil(info.file.response.fileNameInServer);
                 break;
             default:
                 // message.error(`${info.file.name}`);
                 setLinkFile('');
+                setLinkFileUtil('');
                 break;
         }
     };
@@ -69,6 +73,11 @@ function UploadFileView(props) {
         linkFile && callback(linkFile);
     }, [linkFile, fileList]);
 
+    React.useEffect(() => {
+        setFileList(fileListUtil);
+        setLinkFile(linkFileUtil);
+    }, [fileListUtil, linkFileUtil]);
+
     return (
         <div className={styles.upload_file}>
             <Upload {...UpFile} fileList={fileList} listType='picture-card'>
@@ -77,10 +86,27 @@ function UploadFileView(props) {
         </div>
     );
 }
-UploadFileView.propTypes = {};
+UploadFileView.propTypes = {
+    refFunc: PropTypes.object,
+    styles: PropTypes.object,
+    Img: PropTypes.string,
+    imgDefault: PropTypes.string,
+    callback: PropTypes.func,
+    setLinkFileUtil: PropTypes.func,
+    setFileListUtil: PropTypes.func,
+    linkFileUtil: PropTypes.string,
+    fileListUtil: PropTypes.array,
+    // refFunc, Img, styles, imgDefault, callback = () => {}
+};
+
 UploadFileView.defaultProps = {
-    Img: { width: '50px', height: '50px' },
+    Img: { width: 50, height: 50 },
+    refFunc: { current: null },
     styles: _styles,
     imgDefault: 'https://img.icons8.com/cotton/344/image--v1.png',
+    setLinkFileUtil: () => {},
+    setFileListUtil: () => {},
+    linkFileUtil: '',
+    fileListUtil: [],
 };
 export default React.memo(UploadFileView);

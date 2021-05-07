@@ -27,7 +27,6 @@ module.exports = {
                 email = '${data.email}', 
                 address = '${data.address}',
                 info = '${data.info}', 
-                position = '${data.position}', 
                 role = '${data.role}', 
                 coin = '${data.coin}', 
                 password = '${data.password}', 

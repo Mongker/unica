@@ -21,7 +21,7 @@ import { url_api, url_base } from '../util/TypeUI';
 export function postUser(data, setUser) {
     try {
         return axios
-            .post(`${url_base}${url_api}`, data)
+            .post(`${url_base}${url_api.USER}`, data)
             .then((res) => res.data)
             .then((result) => {
                 console.log(result);

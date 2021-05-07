@@ -174,7 +174,6 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     ];
 
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
-    console.log('refModalStudyProgram', refModalStudyProgram); // MongLV log fix bug
     return (
         <React.Fragment>
             <TableProduct columnsTable={_columnsTable} actionProduct={actionProduct} type={keyTreeActive} isFullWidth={isMenu} />

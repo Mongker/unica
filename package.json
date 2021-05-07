@@ -50,6 +50,7 @@
     "reselect": "^4.0.0",
     "sass": "^1.32.4",
     "uuid-v4": "^0.1.0",
+    "video-react": "^0.14.1",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {

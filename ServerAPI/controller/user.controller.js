@@ -28,13 +28,14 @@ module.exports = {
 
     // Tạo tài khoản
     CREATE: function (req, res) {
+        console.log('req.body', req.body); // MongLV log fix bug
         const { name, phone, email, address, info, position, role, coin, password, status_user } = req.body;
         const data = {
             name: name || '',
             phone: phone || '',
             email: email,
             address: address || '',
-            info: info || '{}',
+            info: '{}',
             position: 'Học viên',
             role: 'user', // Khởi tạo mặc định là user => quản trị viên sẽ xét thêm cho
             coin: '0',
@@ -42,6 +43,7 @@ module.exports = {
             status_user: '1',
         };
         UserModel.checkEmail(req.con, data, function (err, rows) {
+            console.log('data', data); // MongLV log fix bug
             if (err) return res.status(200).json({ message: err });
             if (rows.length > 0) {
                 return res.status(200).json({ message: 'LIMIT' });

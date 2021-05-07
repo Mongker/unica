@@ -37,11 +37,18 @@ function useUserBase() {
             dispatch({ type: typeAction.USER.GET_LIST, payload: { users: [...newData] } });
         } else messageAnt.warn(message);
     };
+    const getListUser = async (data = {}) => {
+        const { message, users } = await baseAPI.getAll(url_api.USER, data);
+        if (message === 'OK') {
+            dispatch({ type: typeAction.USER.GET_LIST, payload: { users: [...users] } });
+        } else messageAnt.warn(message);
+    };
     return {
         myUser,
         usersObj,
         users,
         updateUser,
+        getListUser,
     };
 }
 

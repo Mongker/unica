@@ -29,7 +29,6 @@ import { typeStore, url_api } from 'util/TypeUI';
 function useStudyProgramBase() {
     // hooks
     const studyProgram = useSelector((store) => store[typeStore.STUDY_PROGRAM]);
-    console.log('studyProgram', studyProgram); // MongLV log fix bug
     const dispatch = useDispatch();
     let studyProgramObj = {};
     studyProgram.length > 0 && studyProgram.map((item) => (studyProgramObj[item.id] = item));
@@ -37,7 +36,6 @@ function useStudyProgramBase() {
     // handle func
     // handle func
     const postStudyProgram = async (obj = {}) => {
-        console.log('obj', obj); // MongLV log fix bug
         const { message, data } = await baseAPI.add(url_api.STUDY_PROGRAM, obj);
         if (message === 'OK') {
             studyProgram.push(data);

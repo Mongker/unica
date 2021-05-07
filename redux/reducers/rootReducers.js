@@ -15,6 +15,7 @@ import StudyProgram from 'redux/reducers/studyProgramReducer';
 
 // util
 import { typeStore } from 'util/TypeUI';
+import Video from 'redux/reducers/videoReducers';
 
 const store = {};
 const listState = [
@@ -33,6 +34,10 @@ const listState = [
     {
         name: typeStore.STUDY_PROGRAM,
         value: StudyProgram,
+    },
+    {
+        name: typeStore.VIDEO,
+        value: Video,
     },
 ];
 

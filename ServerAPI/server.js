@@ -13,6 +13,7 @@ const UserRouter = require('./routes/userRouter');
 const CategoryRouter = require('./routes/categoryRouter');
 const ProductRouter = require('./routes/productRouter');
 const StudyProgramRouter = require('./routes/studyProgramRouter');
+const VideoRouter = require('./routes/videoRouter');
 
 // Using pug template engine
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +44,7 @@ app.use(UserRouter);
 app.use(CategoryRouter);
 app.use(ProductRouter);
 app.use(StudyProgramRouter);
+app.use(VideoRouter);
 
 const PORT = 2020;
 // starting server

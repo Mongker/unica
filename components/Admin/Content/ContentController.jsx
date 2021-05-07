@@ -18,7 +18,6 @@ import ProductView from '../Product/ProductView';
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
 function ContentController({ activeMenu, refModalProduct }) {
-    console.log('ContentController', refModalProduct); // MongLV log fix bug
     let Component;
     switch (activeMenu) {
         case TYPE_MENU.CATEGORY:

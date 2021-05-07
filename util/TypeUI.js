@@ -13,12 +13,14 @@ const typeStore = {
     CATEGORY: 'category',
     PRODUCT: 'product',
     STUDY_PROGRAM: 'studyprogram',
+    VIDEO: 'video',
 };
 const url_api = {
     USER: '/user',
     CATEGORY: '/category',
     PRODUCT: '/product',
     STUDY_PROGRAM: '/studyprogram',
+    VIDEO: '/video',
 };
 const url_base = 'http://localhost:2020/api';
 const url_base_img = `${url_base}/file/`;
