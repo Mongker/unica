@@ -43,8 +43,8 @@ function HeaderUNICAView(props) {
         <div className={styles.header}>
             <div className={styles.grid}>
                 <div className={styles.header_grid}>
-                    <div className={styles.header_logo}>
-                        <Image width={140} height={33} src={'/logo2.png'} alt={'logo'} styles={{ backgroundColor: 'red' }} />
+                    <div className={styles.header_logo} onClick={() => router.push('/')}>
+                        <Image width={150} height={33} src={'/logo2.png'} alt={'logo'} styles={{ backgroundColor: 'red' }} />
                     </div>
                     <div className={styles.header_input}>
                         <form className={styles['header_input-form']} action=''>
@@ -59,7 +59,7 @@ function HeaderUNICAView(props) {
                             <p>Kích hoạt khóa học</p>
                             <UnlockOutlined />
                         </a>
-                        <a className={styles['header_giohang-icon']} href=''>
+                        <a className={styles['header_giohang-icon']} onClick={() => router.push('/cart')}>
                             <ShoppingCartOutlined style={{ color: 'red', margin: '10px', fontSize: '25px' }} />
                         </a>
                         <ul className={styles['header_giohang-list']}>

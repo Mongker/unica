@@ -12,7 +12,10 @@
 }
 
 .header_logo {
-    margin: 10px 15px;
+    margin: 20px 15px;
+}
+.header_logo:hover{
+    cursor: pointer;
 }
 
 .header_input {

@@ -15,6 +15,7 @@ import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 import { UserOutlined } from '@ant-design/icons';
 import useProductBase from '../../hooks/LogicData/useProductBase';
 import useUserBase from '../../hooks/LogicData/useUserBase';
+import { useRouter } from 'next/router';
 
 // const
 const contentStyle = {
@@ -25,11 +26,16 @@ const contentStyle = {
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 function ContentUNICAView(prop) {
+    const router = useRouter();
     const { category } = useCategoryBase();
     const { product } = useProductBase();
     const { usersObj } = useUserBase();
-    console.log('usersObj', usersObj); // MongLV log fix bug
-    debugger; // MongLV
+    // console.log('usersObj', usersObj);
+    // debugger; // MongLV
+    const handleClickDetailProduct = (e) => {
+        e.preventDefault();
+        router.push('/DetailProduct');
+    };
     return (
         <div className='contentc'>
             <div className='grid'>
@@ -85,7 +91,7 @@ function ContentUNICAView(prop) {
                         <div className='content_card-chung'>
                             {product.concat(product).map((item) => (
                                 <div className='content_card-chung-item'>
-                                    <a className='content_card-chung-item-link' href=''>
+                                    <a className='content_card-chung-item-link' onClick={(e) => handleClickDetailProduct(e)}>
                                         {item.sale !== 0 && <span className='sale-off'>Sale: {item.sale} %</span>}
                                         <div className='img-course'>
                                             <img className='img-course-tieubieu' src={url_base_img + item.image_link} alt='' />

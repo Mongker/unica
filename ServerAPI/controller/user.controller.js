@@ -78,6 +78,7 @@ module.exports = {
             index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
         });
         UserModel.getList(req.con, querySQL, function (err, rows) {
+            console.log('rows', rows); // MongLV log fix bug
             const rowNew = rows.map((item) => {
                 let info = {};
                 try {
