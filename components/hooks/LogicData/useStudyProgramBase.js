@@ -31,7 +31,8 @@ function useStudyProgramBase() {
     const studyProgram = useSelector((store) => store[typeStore.STUDY_PROGRAM]);
     const dispatch = useDispatch();
     let studyProgramObj = {};
-    studyProgram.length > 0 && studyProgram.map((item) => (studyProgramObj[item.id] = item));
+    studyProgram.length > 0 &&
+        studyProgram.map((item) => (studyProgramObj[item.id] = item));
 
     // handle func
     // handle func
@@ -39,7 +40,10 @@ function useStudyProgramBase() {
         const { message, data } = await baseAPI.add(url_api.STUDY_PROGRAM, obj);
         if (message === 'OK') {
             studyProgram.push(data);
-            dispatch({ type: typeAction.STUDY_PROGRAM.POST, payload: { data: [...studyProgram] } });
+            dispatch({
+                type: typeAction.STUDY_PROGRAM.POST,
+                payload: { data: [...studyProgram] },
+            });
             debugger; // MongLV
             messageAnt.success('Thêm thành công');
         } else messageAnt.warn(message);
@@ -47,7 +51,13 @@ function useStudyProgramBase() {
     const getListStudyProgram = async (obj) => {
         const { message, data } = await baseAPI.getAll(url_api.STUDY_PROGRAM, obj);
         if (message === 'OK') {
-            dispatch({ type: typeAction.STUDY_PROGRAM.GET_LIST, payload: { data: [...data] } });
+            let objData = {};
+            data.map((item) => (objData[item.id] = item));
+            const newObj = { ...studyProgramObj, ...objData };
+            dispatch({
+                type: typeAction.STUDY_PROGRAM.GET_LIST,
+                payload: { data: [...Object.values(newObj)] },
+            });
         } else messageAnt.warn(message);
     };
     const putStudyProgram = async (data = {}) => {
@@ -58,7 +68,10 @@ function useStudyProgramBase() {
                 if (item.id === id) return { ...item, ...data };
                 return item;
             });
-            dispatch({ type: typeAction.STUDY_PROGRAM.GET_LIST, payload: { data: [...newData] } });
+            dispatch({
+                type: typeAction.STUDY_PROGRAM.GET_LIST,
+                payload: { data: [...newData] },
+            });
         } else messageAnt.warn(message);
     };
     return {

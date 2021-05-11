@@ -10,7 +10,14 @@
 import React from 'react';
 import TableProduct from './Table/TableProduct';
 import { Avatar, Image, Popconfirm, Tag, Tooltip } from 'antd';
-import { AppstoreOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, TeamOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+    AppstoreOutlined,
+    EditOutlined,
+    EyeInvisibleOutlined,
+    EyeOutlined,
+    TeamOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
 import { url_base_img } from '../../../util/TypeUI';
 import useUserBase from '../../hooks/LogicData/useUserBase';
 import PropTypes from 'prop-types';
@@ -33,7 +40,8 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             refCallback.current.setDataEdit(data);
             refCallback.current.form.setFieldsValue(data);
             refCallback.current.setIdCategory(data.catalog_id);
-            refCallback.current.refVideoFile.current && refCallback.current.refVideoFile.current.setLinkFile(data.trailer_link);
+            refCallback.current.refVideoFile.current &&
+                refCallback.current.refVideoFile.current.setLinkFile(data.trailer_link);
             refCallback.current.refVideoFile.current &&
                 refCallback.current.refVideoFile.current.setFileList([
                     {
@@ -44,7 +52,8 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
                     },
                 ]);
 
-            refCallback.current.refImgFile.current && refCallback.current.refImgFile.current.setLinkFile(data.image_link);
+            refCallback.current.refImgFile.current &&
+                refCallback.current.refImgFile.current.setLinkFile(data.image_link);
             refCallback.current.refImgFile.current &&
                 refCallback.current.refImgFile.current.setFileList([
                     {
@@ -101,21 +110,37 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             dataIndex: 'image_link',
             width: widthTable.image_link[typeWidthTable],
             render: (image_link) => {
-                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} src={''} />;
-                return <Avatar icon={<UserOutlined />} src={url_base_img + (image_link ? image_link : 'default.png')} style={{ width: 100, height: 100 }} />;
+                <Avatar
+                    style={{ backgroundColor: '#87d068' }}
+                    icon={<UserOutlined />}
+                    src={''}
+                />;
+                return (
+                    <Avatar
+                        icon={<UserOutlined />}
+                        src={url_base_img + (image_link ? image_link : 'default.png')}
+                        style={{ width: 100, height: 100 }}
+                    />
+                );
             },
         },
         {
             title: 'Tên khóa học',
             dataIndex: 'name',
             width: widthTable.name[typeWidthTable],
-            render: (name) => <div style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>{name}</div>,
+            render: (name) => (
+                <div style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>
+                    {name}
+                </div>
+            ),
         },
         {
             title: 'Giá sản phẩm',
             dataIndex: 'price',
             width: widthTable.price[typeWidthTable],
-            render: (price) => <a>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</a>,
+            render: (price) => (
+                <a>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</a>
+            ),
         },
         {
             title: 'Giảm giá',
@@ -129,10 +154,21 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             width: widthTable.author_id[typeWidthTable],
             // render: (author_id) => <div>{usersObj[author_id].name}</div>,
             render: (author_id) => (
-                <div className={'flex_col'} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <div className={'flex_row'} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Avatar icon={<UserOutlined />} src={url_base_img + usersObj[author_id].avatar} />
-                        <p style={{ marginLeft: 3, fontWeight: 'bold' }}>{usersObj[author_id].name}</p>
+                <div
+                    className={'flex_col'}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <div
+                        className={'flex_row'}
+                        style={{ justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <Avatar
+                            icon={<UserOutlined />}
+                            src={url_base_img + usersObj[author_id].avatar}
+                        />
+                        <p style={{ marginLeft: 3, fontWeight: 'bold' }}>
+                            {usersObj[author_id].name}
+                        </p>
                     </div>
                     <p>({usersObj[author_id].email})</p>
                 </div>
@@ -143,16 +179,38 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const actionProduct = (_, data) => {
         return (
             <div className={style.action}>
-                <EditOutlined onClick={() => handleShow(data)} className={style.item_action} />
+                <EditOutlined
+                    onClick={() => handleShow(data)}
+                    className={style.item_action}
+                />
                 <Tooltip title='Quản trị chương trình học'>
-                    <AppstoreOutlined onClick={() => showDrawer(data)} className={style.item_action} style={{ color: 'blue' }} />
+                    <AppstoreOutlined
+                        onClick={() => showDrawer(data)}
+                        className={style.item_action}
+                        style={{ color: 'blue' }}
+                    />
                 </Tooltip>
                 {data.status ? (
-                    <Popconfirm placement='top' title={'Ẩn khóa học đi'} onConfirm={() => hideProduct(data)} okText='Phải' cancelText='Không'>
-                        <EyeOutlined style={{ color: '#0b8f01' }} className={style.item_action} />
+                    <Popconfirm
+                        placement='top'
+                        title={'Ẩn khóa học đi'}
+                        onConfirm={() => hideProduct(data)}
+                        okText='Phải'
+                        cancelText='Không'
+                    >
+                        <EyeOutlined
+                            style={{ color: '#0b8f01' }}
+                            className={style.item_action}
+                        />
                     </Popconfirm>
                 ) : (
-                    <Popconfirm placement='top' title={'Hiễn thị khóa học'} onConfirm={() => hideProduct(data)} okText='Phải' cancelText='Không'>
+                    <Popconfirm
+                        placement='top'
+                        title={'Hiễn thị khóa học'}
+                        onConfirm={() => hideProduct(data)}
+                        okText='Phải'
+                        cancelText='Không'
+                    >
                         <EyeInvisibleOutlined style={{ color: '#fc0000' }} />
                     </Popconfirm>
                 )}
@@ -176,7 +234,12 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
     return (
         <React.Fragment>
-            <TableProduct columnsTable={_columnsTable} actionProduct={actionProduct} type={keyTreeActive} isFullWidth={isMenu} />
+            <TableProduct
+                columnsTable={_columnsTable}
+                actionProduct={actionProduct}
+                type={keyTreeActive}
+                isFullWidth={isMenu}
+            />
             <ModalStudyProgram refCallBack={refModalStudyProgram} />
         </React.Fragment>
     );

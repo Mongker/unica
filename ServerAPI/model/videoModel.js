@@ -13,11 +13,13 @@ module.exports = {
     },
     update: function (con, id, querySQL, callback) {
         const query = `UPDATE video SET ${querySQL} WHERE id = ${id}`;
-        console.log('query', query); // MongLV log fix bug
         con.query(query, callback);
     },
     getList: function (con, querySQL, callback) {
-        const query = querySQL.length > 0 ? `SELECT * FROM video WHERE ` + querySQL : `SELECT * FROM video`;
+        const query =
+            querySQL.length > 0
+                ? `SELECT * FROM video WHERE ` + querySQL
+                : `SELECT * FROM video`;
         con.query(query, callback);
     },
     delete: function (con, id, callback) {

@@ -16,13 +16,17 @@ module.exports = {
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
         delete req.body.content;
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQLGet = `${key} = ${value}`) : (querySQLGet = querySQLGet + ' and ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQLGet = `${key} = ${value}`)
+                : (querySQLGet = querySQLGet + ' and ' + `${key} = ${value}`);
         });
         if (querySQL.length > 0 && req.body && req.body['product_id']) {
             StudyProgramModel.create(req.con, querySQL, function (err) {
@@ -37,10 +41,12 @@ module.exports = {
     },
     GET_LIST: function (req, res) {
         let querySQL = '';
-        Object.entries(req.body).map((item, index) => {
+        Object.entries(req.query).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
         });
         StudyProgramModel.getList(req.con, querySQL, function (err, row) {
             if (err) return res.status(404).json({ message: err });
@@ -54,13 +60,16 @@ module.exports = {
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
         if (querySQL.length > 0) {
             StudyProgramModel.update(req.con, id, querySQL, function (err) {
                 if (err) return res.status(200).json({ message: err });
                 else return res.status(200).json({ message: 'OK' });
             });
-        } else return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
+        } else
+            return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
     },
 };

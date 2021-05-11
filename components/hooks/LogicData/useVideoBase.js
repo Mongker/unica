@@ -14,6 +14,7 @@ import baseAPI from 'redux/api/baseAPI';
 import typeAction from 'redux/actions/typeAction';
 import ContextApp from 'util/ContextApp';
 import { typeStore, url_api } from 'util/TypeUI';
+import MergeArr from '../../../util/MergeArr';
 
 // import PropTypes from 'prop-types';
 
@@ -22,7 +23,6 @@ function useVideoBase() {
     const video = useSelector((store) => store[typeStore.VIDEO]);
     const dispatch = useDispatch();
 
-    // handle func
     // handle func
     const postStudyVideo = async (obj = {}) => {
         const { message, data } = await baseAPI.add(url_api.VIDEO, obj);
@@ -35,11 +35,14 @@ function useVideoBase() {
     const getListStudyVideo = async (obj) => {
         const { message, data } = await baseAPI.getAll(url_api.VIDEO, obj);
         if (message === 'OK') {
-            dispatch({ type: typeAction.VIDEO.GET_LIST, payload: { data: [...data] } });
+            const newData = MergeArr(video, data);
+            dispatch({
+                type: typeAction.VIDEO.GET_LIST,
+                payload: { data: [...newData] },
+            });
         } else messageAnt.warn(message);
     };
     const putStudyVideo = async (data = {}) => {
-        console.log('data', data); // MongLV log fix bug
         const { message } = await baseAPI.update(url_api.VIDEO, data);
         const id = data.id;
         if (message === 'OK') {
@@ -47,12 +50,14 @@ function useVideoBase() {
                 if (item.id === id) return { ...item, ...data };
                 return item;
             });
-            dispatch({ type: typeAction.VIDEO.GET_LIST, payload: { data: [...newData] } });
+            dispatch({
+                type: typeAction.VIDEO.GET_LIST,
+                payload: { data: [...newData] },
+            });
         } else messageAnt.warn(message);
     };
 
     const deleteVideo = async (id) => {
-        debugger; // MongLV
         const { message } = await baseAPI.delete(url_api.VIDEO, id);
         if (message === 'OK') {
             const newData = video.filter((item) => item.id !== id);

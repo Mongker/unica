@@ -16,7 +16,9 @@ module.exports = {
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
 
         const querySQLGet = querySQL.replace(/,/g, ' and ');
@@ -33,10 +35,12 @@ module.exports = {
     },
     GET_LIST: function (req, res) {
         let querySQL = '';
-        Object.entries(req.body).map((item, index) => {
+        Object.entries(req.query).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
         });
         VideoModel.getList(req.con, querySQL, function (err, row) {
             if (err) return res.status(404).json({ message: err });
@@ -50,14 +54,17 @@ module.exports = {
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
+            index === 0
+                ? (querySQL = `${key} = ${value}`)
+                : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
         if (querySQL.length > 0) {
             VideoModel.update(req.con, id, querySQL, function (err) {
                 if (err) return res.status(200).json({ message: err });
                 else return res.status(200).json({ message: 'OK' });
             });
-        } else return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
+        } else
+            return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
     },
     DELETE: function (req, res) {
         VideoModel.delete(req.con, req.params.id, function (err, row) {

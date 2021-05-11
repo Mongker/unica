@@ -32,9 +32,9 @@ function ContentUNICAView(prop) {
     const { usersObj } = useUserBase();
     // console.log('usersObj', usersObj);
     // debugger; // MongLV
-    const handleClickDetailProduct = (e) => {
+    const handleClickDetailProduct = (e, item) => {
         e.preventDefault();
-        router.push('/DetailProduct');
+        router.push(`/detail/${item.id}`);
     };
     return (
         <div className='contentc'>
@@ -46,9 +46,19 @@ function ContentUNICAView(prop) {
                                 (item) =>
                                     item.rootId === 1 && (
                                         <li className='content_category-list-item'>
-                                            <a className='content_category-list-item-link' href=''>
-                                                <Avatar size={14} shape='square' icon={<UserOutlined />} src={`${url_base_img}${item.icon}`} />
-                                                <p style={{ paddingLeft: 8 }}>{item.name}</p>
+                                            <a
+                                                className='content_category-list-item-link'
+                                                href=''
+                                            >
+                                                <Avatar
+                                                    size={14}
+                                                    shape='square'
+                                                    icon={<UserOutlined />}
+                                                    src={`${url_base_img}${item.icon}`}
+                                                />
+                                                <p style={{ paddingLeft: 8 }}>
+                                                    {item.name}
+                                                </p>
                                             </a>
                                             <div className='menuhover'>
                                                 <div className='menuhover_row'>
@@ -57,7 +67,10 @@ function ContentUNICAView(prop) {
                                                             (value) =>
                                                                 value.id === item.id && (
                                                                     <li className='menuhover_row-item'>
-                                                                        <a href='' className='menuhover-link'>
+                                                                        <a
+                                                                            href=''
+                                                                            className='menuhover-link'
+                                                                        >
                                                                             {value.name}
                                                                         </a>
                                                                     </li>
@@ -73,7 +86,11 @@ function ContentUNICAView(prop) {
                     </div>
                     <div className='content_slider'>
                         <Carousel autoplay>
-                            {['https://i.imgur.com/g2xGyrS.jpg', 'https://i.imgur.com/66L8dGe.jpg', 'https://i.imgur.com/IA0qQah.jpg'].map((item) => (
+                            {[
+                                'https://i.imgur.com/g2xGyrS.jpg',
+                                'https://i.imgur.com/66L8dGe.jpg',
+                                'https://i.imgur.com/IA0qQah.jpg',
+                            ].map((item) => (
                                 <div>
                                     <img src={item} />
                                 </div>
@@ -91,23 +108,61 @@ function ContentUNICAView(prop) {
                         <div className='content_card-chung'>
                             {product.concat(product).map((item) => (
                                 <div className='content_card-chung-item'>
-                                    <a className='content_card-chung-item-link' onClick={(e) => handleClickDetailProduct(e)}>
-                                        {item.sale !== 0 && <span className='sale-off'>Sale: {item.sale} %</span>}
+                                    <a
+                                        className='content_card-chung-item-link'
+                                        onClick={(e) => handleClickDetailProduct(e, item)}
+                                    >
+                                        {item.sale !== 0 && (
+                                            <span className='sale-off'>
+                                                Sale: {item.sale} %
+                                            </span>
+                                        )}
                                         <div className='img-course'>
-                                            <img className='img-course-tieubieu' src={url_base_img + item.image_link} alt='' />
+                                            <img
+                                                className='img-course-tieubieu'
+                                                src={url_base_img + item.image_link}
+                                                alt=''
+                                            />
                                         </div>
                                         <div className='content-title'>
-                                            <h3 className='content-tltle-sourse'>{item.name}</h3>
+                                            <h3 className='content-tltle-sourse'>
+                                                {item.name}
+                                            </h3>
                                             <div className='name-gv'>
-                                                <b>{Object.keys(usersObj).length > 0 && usersObj[`${item.author_id}`].name}</b>
-                                                {item.price === 0 && <span className='giamgia'>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</span>}
+                                                <b>
+                                                    {Object.keys(usersObj).length > 0 &&
+                                                        usersObj[`${item.author_id}`]
+                                                            .name}
+                                                </b>
+                                                {item.price === 0 && (
+                                                    <span className='giamgia'>
+                                                        {item.price
+                                                            .toString()
+                                                            .replace(
+                                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                                ',',
+                                                            )}{' '}
+                                                        $
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                         <div className='saovagiatien'>
                                             <div className='chuasao'>
                                                 <Rate tooltips={desc} value={5} />
                                                 <div className='chuagiatien'>
-                                                    <span className='chuagiatien-price'>{(item.price - item.price * item.sale).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</span>
+                                                    <span className='chuagiatien-price'>
+                                                        {(
+                                                            item.price -
+                                                            item.price * item.sale
+                                                        )
+                                                            .toString()
+                                                            .replace(
+                                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                                ',',
+                                                            )}{' '}
+                                                        $
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

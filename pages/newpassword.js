@@ -1,21 +1,21 @@
 import React from 'react';
 import HeaderUNICAView from '../components/Header/UNICA/HeaderUNICAView';
-import ContentDetail from '../components/Content/DetailProduct/ContentDetailProduct';
 import Footer from '../components/Footer/Footer';
+import Password from '../components/Content/AccountHome/Password';
 // import PropTypes from 'prop-types';
 
-function DetailProduct() {
+function newPassword() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <HeaderUNICAView />
-            <ContentDetail />
+            <Password />
             <Footer />
         </div>
     );
 }
 
-DetailProduct.propTypes = {};
+newPassword.propTypes = {};
 
-DetailProduct.defaultProps = {};
+newPassword.defaultProps = {};
 
-export default DetailProduct;
+export default newPassword;

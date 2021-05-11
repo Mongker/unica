@@ -22,7 +22,6 @@ import ModalUI from './ModalUI';
 import styles from './styles/index.module.scss';
 import TitleTreeView from './TitleTree/TitleTreeView';
 import { url_base_img } from '../../../util/TypeUI';
-import ModalProductView from '../Product/Modal/ModalProductView';
 import ProductView from '../Product/ProductView';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 import ContextApp from '../../../util/ContextApp';
@@ -54,6 +53,7 @@ const CategoryView = ({ refModalProduct }) => {
     };
     const showModalEdit = (item) => {
         refModalAdd.current && refModalAdd.current.showModal();
+        refModalAdd.current && refModalAdd.current.setItemEdit(item);
         refModalAdd.current && refModalAdd.current.setItemEdit(item);
     };
     const setChildren = (id, key) => {

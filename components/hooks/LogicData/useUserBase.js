@@ -34,13 +34,24 @@ function useUserBase() {
                 if (item.id === id) return { ...item, ...data };
                 return item;
             });
-            dispatch({ type: typeAction.USER.GET_LIST, payload: { users: [...newData] } });
+            dispatch({
+                type: typeAction.USER.GET_LIST,
+                payload: { users: [...newData] },
+            });
         } else messageAnt.warn(message);
     };
-    const getListUser = async (data = {}) => {
-        const { message, users } = await baseAPI.getAll(url_api.USER, data);
+    const getListUser = async (obj = {}) => {
+        const { message, users: data } = await baseAPI.getAll(url_api.USER, obj);
         if (message === 'OK') {
-            dispatch({ type: typeAction.USER.GET_LIST, payload: { users: [...users] } });
+            let objData = {};
+            data.map((item) => (objData[item.id] = item));
+            const newObj = { ...usersObj, ...objData };
+            dispatch({
+                type: typeAction.USER.GET_LIST,
+                payload: {
+                    users: [...Object.values(newObj)],
+                },
+            });
         } else messageAnt.warn(message);
     };
     return {
