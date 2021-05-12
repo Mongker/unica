@@ -16,6 +16,8 @@ import StudyProgram from 'redux/reducers/studyProgramReducer';
 // util
 import { typeStore } from 'util/TypeUI';
 import Video from 'redux/reducers/videoReducers';
+import Cart from 'redux/reducers/cartReducer';
+import Transaction from 'redux/reducers/transactionReducer';
 
 const store = {};
 const listState = [
@@ -38,6 +40,14 @@ const listState = [
     {
         name: typeStore.VIDEO,
         value: Video,
+    },
+    {
+        name: typeStore.CART,
+        value: Cart,
+    },
+    {
+        name: typeStore.TRANSACTION,
+        value: Transaction,
     },
 ];
 

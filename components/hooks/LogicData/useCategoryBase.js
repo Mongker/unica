@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 04/05/2021
  * @email: monglv36@gmail.com
@@ -25,7 +25,10 @@ function useCategoryBase() {
     const getListCategory = async (obj = {}) => {
         const { message, categories } = await baseAPI.getAll(url_api.CATEGORY, obj);
         if (message === 'OK') {
-            dispatch({ type: typeAction.CATEGORY.GET, payload: { category: [...categories] } });
+            dispatch({
+                type: typeAction.CATEGORY.GET,
+                payload: { category: [...categories] },
+            });
         } else messageAnt.warn(message);
     };
     return {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -31,7 +31,10 @@ function* watcherPostUser() {
         if (message === 'OK' && item) {
             const { category } = yield select();
             category.push(item);
-            yield put({ type: typeAction.CATEGORY.POST, payload: { category: [...category] } });
+            yield put({
+                type: typeAction.CATEGORY.POST,
+                payload: { category: [...category] },
+            });
         }
     }
 }
@@ -50,7 +53,10 @@ function* watcherPutUser() {
                 }
                 return item;
             });
-            yield put({ type: typeAction.CATEGORY.PUT, payload: { category: [...newCategory] } });
+            yield put({
+                type: typeAction.CATEGORY.PUT,
+                payload: { category: [...newCategory] },
+            });
         }
     }
 }
@@ -65,7 +71,10 @@ function* watcherDeleteUser() {
         if (message === 'OK') {
             const { category } = yield select();
             const newState = category.filter((item) => item.id !== id);
-            yield put({ type: typeAction.CATEGORY.DEL, payload: { category: [...newState] } });
+            yield put({
+                type: typeAction.CATEGORY.DEL,
+                payload: { category: [...newState] },
+            });
         }
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 02/05/2021
  * @email: monglv36@gmail.com
@@ -17,7 +17,13 @@ import style from './styles/index.module.scss';
 
 // import PropTypes from 'prop-types';
 function useColumns(props) {
-    const { nameStore, handleDidMount, columnsTable, actionDelete, handleActionTable } = props;
+    const {
+        nameStore,
+        handleDidMount,
+        columnsTable,
+        actionDelete,
+        handleActionTable,
+    } = props;
     const dispatch = useDispatch();
 
     // state
@@ -46,7 +52,10 @@ function useColumns(props) {
         const text = `Bạn có chắc chắn muốn ${textType} ?`;
         return (
             <div className={style.action}>
-                <EditOutlined onClick={() => handleEdit(record)} className={style.item_action} />
+                <EditOutlined
+                    onClick={() => handleEdit(record)}
+                    className={style.item_action}
+                />
                 {record.status_user ? (
                     <Popconfirm
                         placement='top'

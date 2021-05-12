@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -16,7 +16,10 @@ function* watcherGetCategory() {
         yield take(typeAction.CATEGORY.GET_LOGIC);
         const { categories, message } = yield categoryAPI.getAll();
         if (message === 'OK') {
-            yield put({ type: typeAction.CATEGORY.GET, payload: { category: categories } });
+            yield put({
+                type: typeAction.CATEGORY.GET,
+                payload: { category: categories },
+            });
         }
     }
 }
@@ -29,7 +32,10 @@ function* watcherPostCategory() {
         if (message === 'OK' && item) {
             const { category } = yield select();
             category.push(item);
-            yield put({ type: typeAction.CATEGORY.POST, payload: { category: [...category] } });
+            yield put({
+                type: typeAction.CATEGORY.POST,
+                payload: { category: [...category] },
+            });
         }
     }
 }
@@ -48,7 +54,10 @@ function* watcherPutCategory() {
                 }
                 return item;
             });
-            yield put({ type: typeAction.CATEGORY.PUT, payload: { category: [...newCategory] } });
+            yield put({
+                type: typeAction.CATEGORY.PUT,
+                payload: { category: [...newCategory] },
+            });
         }
     }
 }
@@ -63,8 +72,16 @@ function* watcherDeleteCategory() {
         if (message === 'OK') {
             const { category } = yield select();
             const newState = category.filter((item) => item.id !== id);
-            yield put({ type: typeAction.CATEGORY.DEL, payload: { category: [...newState] } });
+            yield put({
+                type: typeAction.CATEGORY.DEL,
+                payload: { category: [...newState] },
+            });
         }
     }
 }
-export { watcherGetCategory, watcherPostCategory, watcherDeleteCategory, watcherPutCategory };
+export {
+    watcherGetCategory,
+    watcherPostCategory,
+    watcherDeleteCategory,
+    watcherPutCategory,
+};

@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 19/03/2021
  * @email: monglv36@gmail.com
@@ -82,16 +82,34 @@ function Login(props) {
                                 <h3>ĐĂNG NHẬP</h3>
                             </div>
                             <div className={style.wrap_input}>
-                                <input onChange={handleChangeEmail} placeholder={'Email tài khoản'} className={style.input0} />
+                                <input
+                                    onChange={handleChangeEmail}
+                                    placeholder={'Email tài khoản'}
+                                    className={style.input0}
+                                />
                             </div>
                             <div className={style.wrap_input}>
-                                <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu'} className={style.input0} />
+                                <input
+                                    type={'password'}
+                                    onChange={handleChangePassword}
+                                    placeholder={'Mật khẩu'}
+                                    className={style.input0}
+                                />
                             </div>
                             <div className={style.title_login} onClick={handleSave}>
                                 Đăng nhập
                             </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyItems: 'center' }}>
-                                <div style={{ marginRight: 10 }}>Bạn chưa có tài khoản ?</div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyItems: 'center',
+                                }}
+                            >
+                                <div style={{ marginRight: 10 }}>
+                                    Bạn chưa có tài khoản ?
+                                </div>
                                 <a onClick={handleSingUp}>Đăng ký</a>
                             </div>
                         </div>

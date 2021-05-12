@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import { Menu } from 'antd';
-import { DesktopOutlined, PicRightOutlined, TeamOutlined } from '@ant-design/icons';
+import { DesktopOutlined, PicRightOutlined, TeamOutlined, TransactionOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 // util
@@ -30,6 +30,9 @@ function MenuView(props) {
             </Menu.Item>
             <Menu.Item key={TYPE_MENU.USER} icon={<TeamOutlined />}>
                 Quản lý người dùng
+            </Menu.Item>
+            <Menu.Item key={TYPE_MENU.TRANSACTION} icon={<TransactionOutlined />}>
+                Quản lý hóa đơn
             </Menu.Item>
             {/*<SubMenu key='sub1' icon={<UserOutlined />} title='User'>*/}
             {/*    <Menu.Item key='3'>Tom</Menu.Item>*/}

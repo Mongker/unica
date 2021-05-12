@@ -89,6 +89,9 @@
     margin-left: 15px;
     margin-top: 5px;
     font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header_giohang-list {
@@ -125,4 +128,12 @@
     font-size: 1.4rem;
     padding: 11px 11px;
     display: block;
+}
+
+.menu {
+    :global {
+        .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
+            text-align: center;
+        }
+    }
 }

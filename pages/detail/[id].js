@@ -3,7 +3,6 @@ import HeaderUNICAView from '../../components/Header/UNICA/HeaderUNICAView';
 import ContentDetail from '../../components/Content/DetailProduct/ContentDetailProduct';
 import Footer from '../../components/Footer/Footer';
 import MetaView from '../../components/MetaView';
-import useProductBase from '../../components/hooks/LogicData/useProductBase';
 import baseAPI from 'redux/api/baseAPI';
 import { url_api } from '../../util/TypeUI';
 import useUserBase from '../../components/hooks/LogicData/useUserBase';

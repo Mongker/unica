@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -7,13 +7,31 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-const arrTypeUser = ['id', 'name', 'phone', 'email', 'address', 'info', 'position', 'role', 'coin', 'password', 'status_user', 'create'];
+const arrTypeUser = [
+    'id',
+    'name',
+    'phone',
+    'email',
+    'address',
+    'info',
+    'position',
+    'role',
+    'coin',
+    'password',
+    'status_user',
+    'create',
+    'gender',
+    'gender',
+    'avatar',
+];
 const typeStore = {
     USER: 'users',
     CATEGORY: 'category',
     PRODUCT: 'product',
     STUDY_PROGRAM: 'studyprogram',
     VIDEO: 'video',
+    CART: 'cart',
+    TRANSACTION: 'transaction',
 };
 const url_api = {
     USER: '/user',
@@ -21,6 +39,8 @@ const url_api = {
     PRODUCT: '/product',
     STUDY_PROGRAM: '/studyprogram',
     VIDEO: '/video',
+    CART: '/cart',
+    TRANSACTION: '/transaction',
 };
 const url_base = 'http://localhost:2020/api';
 const url_base_img = `${url_base}/file/`;

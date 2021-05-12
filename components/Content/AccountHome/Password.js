@@ -2,7 +2,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import style from './style.module.scss';
 import { DoubleRightOutlined, KeyOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
+import useUserBase from '../../hooks/LogicData/useUserBase';
 
 const layout = {
     labelCol: { span: 4 },
@@ -13,8 +14,17 @@ const tailLayout = {
 };
 
 function Password() {
+    const [form] = Form.useForm();
+    const { myUser, updateUser } = useUserBase();
+
     const onFinish = (values) => {
-        console.log('Success:', values);
+        if (values['new_password'] === values['check_new_password']) {
+            values['id'] = myUser.id;
+            values['email'] = myUser.email;
+            delete values['check_new_password'];
+            console.log('Success:', values);
+            updateUser(values);
+        } else message.warn('Mật khẩu mới không khớp nhau');
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -25,26 +35,23 @@ function Password() {
             <div className={style.content_main_user}>
                 <div className={style.content_main_user_content}>
                     <div className={style.breadcrumb}>
-                        <ul className={style.ul_pass}>
-                            <li>Dashboard</li>
-                            <li>
-                                <DoubleRightOutlined
-                                    style={{ fontSize: 12, margin: '0px 10px' }}
-                                />
-                                Học viên
-                            </li>
-                            <li>
-                                <DoubleRightOutlined
-                                    style={{ fontSize: 12, margin: '0px 10px' }}
-                                />
-                                Thay đổi mật khẩu
-                            </li>
-                        </ul>
+                        {/*<ul className={style.ul_pass}>*/}
+                        {/*    <li>Dashboard</li>*/}
+                        {/*    <li>*/}
+                        {/*        <DoubleRightOutlined*/}
+                        {/*            style={{ fontSize: 12, margin: '0px 10px' }}*/}
+                        {/*        />*/}
+                        {/*        Học viên*/}
+                        {/*    </li>*/}
+                        {/*    <li>*/}
+                        {/*        <DoubleRightOutlined*/}
+                        {/*            style={{ fontSize: 12, margin: '0px 10px' }}*/}
+                        {/*        />*/}
+                        {/*        Thay đổi mật khẩu*/}
+                        {/*    </li>*/}
+                        {/*</ul>*/}
                         <div className={style.panel_default}>
-                            <div
-                                className={style.panel_heading}
-                                style={{ fontWeight: 'bold' }}
-                            >
+                            <div className={style.panel_heading} style={{ fontWeight: 'bold' }}>
                                 <KeyOutlined style={{ marginRight: 10 }} />
                                 Thay đổi mật khẩu
                             </div>
@@ -52,7 +59,8 @@ function Password() {
                                 <Form
                                     {...layout}
                                     name='basic'
-                                    initialValues={{ remember: true }}
+                                    // initialValues={{ remember: true }}
+                                    form={form}
                                     onFinish={onFinish}
                                     onFinishFailed={onFinishFailed}
                                 >
@@ -73,8 +81,7 @@ function Password() {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message:
-                                                            'Please input your password!',
+                                                        message: 'Mật khẩu hiện tại không được thiếu !',
                                                     },
                                                 ]}
                                             >
@@ -99,8 +106,7 @@ function Password() {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message:
-                                                            'Please input your new password!',
+                                                        message: 'Mật khẩu mới không được thiếu!',
                                                     },
                                                 ]}
                                             >
@@ -120,12 +126,11 @@ function Password() {
                                         </div>
                                         <div style={{ width: '50%' }}>
                                             <Form.Item
-                                                name='new_password'
+                                                name='check_new_password'
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message:
-                                                            'Please input your new password!',
+                                                        message: 'Mật khẩu kiểm tra mật khẩu mới không được trống!',
                                                     },
                                                 ]}
                                             >
@@ -135,7 +140,7 @@ function Password() {
                                     </div>
                                     <Form.Item {...tailLayout}>
                                         <Button type='primary' htmlType='submit'>
-                                            Submit
+                                            Cập nhật
                                         </Button>
                                     </Form.Item>
                                 </Form>

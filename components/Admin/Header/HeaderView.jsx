@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -42,6 +42,9 @@ function HeaderView({ activeMenu }) {
             text = 'Quản lý người dùng';
             break;
         case TYPE_MENU.PRODUCT:
+            text = 'Quản lý khóa học';
+            break;
+        case TYPE_MENU.TRANSACTION:
             text = 'Quản lý khóa học';
             break;
         default:

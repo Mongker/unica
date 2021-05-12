@@ -97,6 +97,7 @@
 .content_card-chung-item {
     width: 25%;
     padding: 10px 12px;
+    cursor: pointer;
 }
 
 .content_card-chung-item-link {

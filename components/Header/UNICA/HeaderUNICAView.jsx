@@ -20,12 +20,22 @@ import ContextApp from 'util/ContextApp';
 // util
 import { url_base_img } from 'util/TypeUI';
 // styles
-import styles from './styles/index.module.css';
+import styles from './styles/index.module.scss';
+import { Badge, Dropdown, Menu } from 'antd';
+import useCartBase from '../../hooks/LogicData/useCartBase';
+import UseLogoutUser from '../../hooks/useLogoutUser';
 
 function HeaderUNICAView(props) {
+    // hooks
     const router = useRouter();
-
+    const { cart, getListCart } = useCartBase();
     const { user } = React.useContext(ContextApp);
+    const handleLogOut = UseLogoutUser();
+
+    // const
+    const cartFilter = cart.filter((item) => item.status === 0);
+
+    // handle func
     const handleClickLogin = (e) => {
         e.preventDefault();
         router.push('/login');
@@ -38,39 +48,92 @@ function HeaderUNICAView(props) {
         e.preventDefault();
         router.push('/admin');
     };
+    const handleMenu = (event) => {
+        event.key === 'USER' && router.push('/account?show=2');
+        event.key === 'LOGOUT' && handleLogOut();
+    };
 
+    // Vòng đời
+    React.useEffect(() => {
+        user && user.id && getListCart({ user_id: user.id });
+    }, [user]);
+
+    // JSX
+    const menu = (
+        <Menu className={styles.menu} onClick={handleMenu}>
+            <Menu.Item key={'USER'}>Tài khoản</Menu.Item>
+            <Menu.Item key={'LOGOUT'}>Đăng xuất</Menu.Item>
+        </Menu>
+    );
     return (
         <div className={styles.header}>
             <div className={styles.grid}>
                 <div className={styles.header_grid}>
                     <div className={styles.header_logo} onClick={() => router.push('/')}>
-                        <Image width={150} height={33} src={'/logo2.png'} alt={'logo'} styles={{ backgroundColor: 'red' }} />
+                        <Image
+                            width={150}
+                            height={33}
+                            src={'/logo2.png'}
+                            alt={'logo'}
+                            styles={{ backgroundColor: 'red' }}
+                        />
                     </div>
                     <div className={styles.header_input}>
                         <form className={styles['header_input-form']} action=''>
-                            <input className={styles['header_input-input']} type='text' placeholder='Tìm khóa học, giảng viên' />
+                            <input
+                                className={styles['header_input-input']}
+                                type='text'
+                                placeholder='Tìm khóa học, giảng viên'
+                            />
                             <button className={styles['header_input-button']} type='submit'>
                                 <SearchOutlined />
                             </button>
                         </form>
                     </div>
                     <div className={styles.header_giohang}>
-                        <a className={styles['header_giohang-link-kichhoat']} href=''>
+                        <div className={styles['header_giohang-link-kichhoat']} href=''>
                             <p>Kích hoạt khóa học</p>
                             <UnlockOutlined />
-                        </a>
+                        </div>
                         <a className={styles['header_giohang-icon']} onClick={() => router.push('/cart')}>
-                            <ShoppingCartOutlined style={{ color: 'red', margin: '10px', fontSize: '25px' }} />
+                            <Badge count={cartFilter.length}>
+                                <ShoppingCartOutlined
+                                    style={{
+                                        color: 'red',
+                                        fontSize: '25px',
+                                        borderRadius: '100%',
+                                    }}
+                                />
+                            </Badge>
                         </a>
                         <ul className={styles['header_giohang-list']}>
                             {user && typeof user === 'object' ? (
-                                <React.Fragment>
-                                    <div className={'info_user'}>
-                                        <img src={`${url_base_img}765-default-avatar.png`} alt='ssss' style={{ borderRadius: '100%', width: 30, height: 30 }} />
-                                        <p style={{ color: 'red', fontSize: 20, marginLeft: 5, marginRight: 5 }}>{user.email}</p>
-                                        <p style={{ marginRight: 5 }}>({user.role})</p>
+                                <Dropdown overlay={menu}>
+                                    <div className={'info_user'} style={{ cursor: 'pointer', padding: '-5px' }}>
+                                        <img
+                                            src={`${url_base_img}${
+                                                user.avatar ? user.avatar : '765-default-avatar.png'
+                                            }`}
+                                            alt='ssss'
+                                            style={{
+                                                borderRadius: '100%',
+                                                width: 30,
+                                                height: 30,
+                                            }}
+                                        />
+                                        <p
+                                            style={{
+                                                color: 'red',
+                                                fontSize: 20,
+                                                marginLeft: 5,
+                                                marginRight: 5,
+                                            }}
+                                        >
+                                            {user.email}
+                                        </p>
+                                        {/*<p style={{ marginRight: 5 }}>({user.role})</p>*/}
                                     </div>
-                                </React.Fragment>
+                                </Dropdown>
                             ) : (
                                 <React.Fragment>
                                     <li className={styles['header_giohang-list-item']}>

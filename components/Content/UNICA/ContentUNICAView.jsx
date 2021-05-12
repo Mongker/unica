@@ -9,7 +9,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Carousel, Rate } from 'antd';
+import { Avatar, Carousel, message, Rate } from 'antd';
 import { url_base_img } from '../../../util/TypeUI';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 import { UserOutlined } from '@ant-design/icons';
@@ -30,11 +30,18 @@ function ContentUNICAView(prop) {
     const { category } = useCategoryBase();
     const { product } = useProductBase();
     const { usersObj } = useUserBase();
-    // console.log('usersObj', usersObj);
-    // debugger; // MongLV
+
+    const key = 'updatable';
+    const openMessage = () => {
+        message.loading({ content: 'Loading...', key });
+        setTimeout(() => {
+            message.success({ content: 'Ok', key, duration: 2 });
+        }, 5000);
+    };
     const handleClickDetailProduct = (e, item) => {
         e.preventDefault();
         router.push(`/detail/${item.id}`);
+        openMessage();
     };
     return (
         <div className='contentc'>
@@ -46,31 +53,23 @@ function ContentUNICAView(prop) {
                                 (item) =>
                                     item.rootId === 1 && (
                                         <li className='content_category-list-item'>
-                                            <a
-                                                className='content_category-list-item-link'
-                                                href=''
-                                            >
+                                            <a className='content_category-list-item-link' href='#'>
                                                 <Avatar
                                                     size={14}
                                                     shape='square'
                                                     icon={<UserOutlined />}
                                                     src={`${url_base_img}${item.icon}`}
                                                 />
-                                                <p style={{ paddingLeft: 8 }}>
-                                                    {item.name}
-                                                </p>
+                                                <p style={{ paddingLeft: 8 }}>{item.name}</p>
                                             </a>
                                             <div className='menuhover'>
                                                 <div className='menuhover_row'>
                                                     <ul>
                                                         {category.map(
                                                             (value) =>
-                                                                value.id === item.id && (
+                                                                value.rootId === item.id && (
                                                                     <li className='menuhover_row-item'>
-                                                                        <a
-                                                                            href=''
-                                                                            className='menuhover-link'
-                                                                        >
+                                                                        <a href='' className='menuhover-link'>
                                                                             {value.name}
                                                                         </a>
                                                                     </li>
@@ -108,15 +107,11 @@ function ContentUNICAView(prop) {
                         <div className='content_card-chung'>
                             {product.concat(product).map((item) => (
                                 <div className='content_card-chung-item'>
-                                    <a
+                                    <div
                                         className='content_card-chung-item-link'
                                         onClick={(e) => handleClickDetailProduct(e, item)}
                                     >
-                                        {item.sale !== 0 && (
-                                            <span className='sale-off'>
-                                                Sale: {item.sale} %
-                                            </span>
-                                        )}
+                                        {item.sale !== 0 && <span className='sale-off'>Sale: {item.sale} %</span>}
                                         <div className='img-course'>
                                             <img
                                                 className='img-course-tieubieu'
@@ -125,24 +120,15 @@ function ContentUNICAView(prop) {
                                             />
                                         </div>
                                         <div className='content-title'>
-                                            <h3 className='content-tltle-sourse'>
-                                                {item.name}
-                                            </h3>
+                                            <h3 className='content-tltle-sourse'>{item.name}</h3>
                                             <div className='name-gv'>
                                                 <b>
                                                     {Object.keys(usersObj).length > 0 &&
-                                                        usersObj[`${item.author_id}`]
-                                                            .name}
+                                                        usersObj[`${item.author_id}`].name}
                                                 </b>
-                                                {item.price === 0 && (
+                                                {item.sale !== 0 && (
                                                     <span className='giamgia'>
-                                                        {item.price
-                                                            .toString()
-                                                            .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ',',
-                                                            )}{' '}
-                                                        $
+                                                        {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $
                                                     </span>
                                                 )}
                                             </div>
@@ -152,21 +138,18 @@ function ContentUNICAView(prop) {
                                                 <Rate tooltips={desc} value={5} />
                                                 <div className='chuagiatien'>
                                                     <span className='chuagiatien-price'>
-                                                        {(
-                                                            item.price -
-                                                            item.price * item.sale
+                                                        {(item.sale
+                                                            ? item.price - item.price * (item.sale / 100)
+                                                            : item.price
                                                         )
                                                             .toString()
-                                                            .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ',',
-                                                            )}{' '}
+                                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                                                         $
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             ))}
                         </div>

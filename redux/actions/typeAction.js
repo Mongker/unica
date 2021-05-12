@@ -56,6 +56,18 @@ const typeAction = {
         POST: 'POT_STUDY_VIDEO',
         PUT: 'PUT_STUDY_VIDEO',
     },
+    CART: {
+        GET_LIST: 'GET_LIST_STUDY_CART',
+        DEL: 'DEL_CART',
+        POST: 'POT_STUDY_CART',
+        PUT: 'PUT_STUDY_CART',
+    },
+    TRANSACTION: {
+        GET: 'GET_LIST_STUDY_TRANSACTION',
+        DEL: 'DEL_TRANSACTION',
+        POST: 'POT_STUDY_TRANSACTION',
+        PUT: 'PUT_STUDY_TRANSACTION',
+    },
 };
 
 export default typeAction;

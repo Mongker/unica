@@ -16,8 +16,7 @@ module.exports = {
             if (err) return res.status(404).json({ message: err });
             if (rows.length > 0) {
                 const dataUser = rows[0];
-                if (dataUser.status_user === 0)
-                    return res.status(200).json({ message: 'Tài khoản đã bị khóa' });
+                if (dataUser.status_user === 0) return res.status(200).json({ message: 'Tài khoản đã bị khóa' });
                 if (dataUser.password === req.body.password) {
                     return res.status(200).json({ message: 'OK', user: dataUser });
                 } else {
@@ -29,18 +28,7 @@ module.exports = {
 
     // Tạo tài khoản
     CREATE: function (req, res) {
-        const {
-            name,
-            phone,
-            email,
-            address,
-            info,
-            position,
-            role,
-            coin,
-            password,
-            status_user,
-        } = req.body;
+        const { name, phone, email, address, info, position, role, coin, password, status_user } = req.body;
         const data = {
             name: name || '',
             phone: phone || '',
@@ -65,13 +53,9 @@ module.exports = {
                         if (rows.length > 0) {
                             const dataUser = rows[0];
                             if (dataUser.password === req.body.password) {
-                                return res
-                                    .status(200)
-                                    .json({ message: 'OK', user: dataUser });
+                                return res.status(200).json({ message: 'OK', user: dataUser });
                             } else {
-                                return res
-                                    .status(200)
-                                    .json({ message: 'FALSE PASSWORD' });
+                                return res.status(200).json({ message: 'FALSE PASSWORD' });
                             }
                         } else return res.status(200).json({ message: 'FALSE EMAIL' });
                     });
@@ -89,9 +73,7 @@ module.exports = {
         Object.entries(req.query).map((item, index) => {
             const key = item[0];
             const value = typeof item[1] === 'string' ? `'${item[1]}'` : item[1];
-            index === 0
-                ? (querySQL = `${key} = ${value}`)
-                : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
+            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
         });
         UserModel.getList(req.con, querySQL, function (err, rows) {
             const rowNew = rows.map((item) => {
@@ -109,22 +91,45 @@ module.exports = {
     UPDATE: function (req, res) {
         let querySQL = '';
         const id = req.body && req.body.id;
+        const data = { email: req.body.email };
+        const new_password = req.body['new_password'];
+        console.log('new_password', new_password); // MongLV log fix bug
+        const password = req.body['password'];
         delete req.body.id;
         delete req.body.email;
         delete req.body.create;
+        delete req.body['new_password'];
+        delete req.body['password'];
+
         Object.entries(req.body).map((item, index) => {
             const key = item[0];
             const value = `'${item[1]}'`;
-            index === 0
-                ? (querySQL = `${key} = ${value}`)
-                : (querySQL = querySQL + ', ' + `${key} = ${value}`);
+            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ', ' + `${key} = ${value}`);
         });
-        if (querySQL.length > 0) {
-            UserModel.update(req.con, id, querySQL, function (err, data) {
-                if (err) return res.status(200).json({ message: err });
-                else return res.status(200).json({ message: 'OK' });
+
+        // Note: cập nhật lại mật khẩu
+        if (new_password) {
+            UserModel.checkEmail(req.con, data, function (err, rows) {
+                if (err) return res.status(404).json({ message: err });
+                if (rows.length > 0) {
+                    const dataUser = rows[0];
+                    if (dataUser.password === password) {
+                        UserModel.update(req.con, id, `password = '${new_password}'`, function (err, data) {
+                            if (err) return res.status(200).json({ message: err });
+                            else return res.status(200).json({ message: 'OK' });
+                        });
+                    } else {
+                        return res.status(200).json({ message: 'Mật khẩu không đúng' });
+                    }
+                } else return res.status(200).json({ message: 'Lỗi không xác định email' });
             });
-        } else
-            return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
+        } else {
+            if (querySQL.length > 0) {
+                UserModel.update(req.con, id, querySQL, function (err, data) {
+                    if (err) return res.status(200).json({ message: err });
+                    else return res.status(200).json({ message: 'OK' });
+                });
+            } else return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
+        }
     },
 };

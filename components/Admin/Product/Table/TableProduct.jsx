@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 01/05/2021
  * @email: monglv36@gmail.com
@@ -44,10 +44,16 @@ function TableProduct({ columnsTable, type, actionProduct, isFullWidth }) {
             item.rootId === type && arrCategoryAll.push(item.id);
             item.id === type && arrCategoryAll.push(item.id);
         });
-        dataSource = data.filter((item) => arrCategoryAll.includes(Number(item.catalog_id)));
+        dataSource = data.filter((item) =>
+            arrCategoryAll.includes(Number(item.catalog_id)),
+        );
     }
     return (
-        <div className={classNames(isFullWidth ? styles.controllerFull : styles.controller)}>
+        <div
+            className={classNames(
+                isFullWidth ? styles.controllerFull : styles.controller,
+            )}
+        >
             <Table columns={columns} dataSource={dataSource} />
         </div>
     );

@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 present, Đào Thị Thanh Mai.
+ * Copyright 2020 present, Lê Văn Mong.
  * All rights reserved.
  * @author Mongker on 04/05/2021
  * @email: monglv36@gmail.com
@@ -20,6 +20,8 @@ function useProductBase() {
     // hooks
     const product = useSelector((store) => store[typeStore.PRODUCT]);
     const dispatch = useDispatch();
+    let productObj = {};
+    product.map((item) => (productObj[item.id] = item));
 
     // handle func
     const postProduct = async (obj = {}) => {
@@ -45,7 +47,10 @@ function useProductBase() {
                 if (item.id === obj.id) return { ...item, ...obj };
                 return item;
             });
-            dispatch({ type: typeAction.PRODUCT.GET_LIST, payload: { data: [...newData] } });
+            dispatch({
+                type: typeAction.PRODUCT.GET_LIST,
+                payload: { data: [...newData] },
+            });
             messageAnt.success('Thành công');
         } else messageAnt.warn(message);
     };
@@ -58,6 +63,7 @@ function useProductBase() {
 
     return {
         product,
+        productObj,
         postProduct,
         getListProduct,
         hideProduct,

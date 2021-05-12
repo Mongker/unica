@@ -37,6 +37,7 @@ function App({ Component, pageProps }) {
     }, []);
     useEffect(() => {
         // Note: Hàm dùng để check xem đã tồn tại user chưa nếu chưa thì lấy dữ liệu từ localStorage lấp vào
+        console.log('user', user); // MongLV log fix bug
         if (user) {
             arrTypeUser.map((item) => {
                 localStorage.setItem(`${item}`, user[item]);
@@ -49,7 +50,7 @@ function App({ Component, pageProps }) {
                     name: localStorage.getItem(`${arrTypeUser[1]}`),
                     phone: localStorage.getItem(`${arrTypeUser[2]}`),
                     email: localStorage.getItem(`${arrTypeUser[3]}`),
-                    address: localStorage.getItem(`${arrTypeUser[5]}`),
+                    address: localStorage.getItem(`${arrTypeUser[4]}`),
                     info: localStorage.getItem(`${arrTypeUser[5]}`),
                     position: localStorage.getItem(`${arrTypeUser[6]}`),
                     role: localStorage.getItem(`${arrTypeUser[7]}`),
@@ -57,6 +58,8 @@ function App({ Component, pageProps }) {
                     password: localStorage.getItem(`${arrTypeUser[9]}`),
                     status_user: localStorage.getItem(`${arrTypeUser[10]}`),
                     create: localStorage.getItem(`${arrTypeUser[11]}`),
+                    gender: Number(localStorage.getItem(`${arrTypeUser[12]}`)),
+                    avatar: localStorage.getItem(`${arrTypeUser[14]}`),
                 });
         }
     }, [user]);

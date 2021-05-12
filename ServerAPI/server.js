@@ -14,6 +14,9 @@ const CategoryRouter = require('./routes/categoryRouter');
 const ProductRouter = require('./routes/productRouter');
 const StudyProgramRouter = require('./routes/studyProgramRouter');
 const VideoRouter = require('./routes/videoRouter');
+const CartRouter = require('./routes/cartRouter');
+const TransactionRouter = require('./routes/transactionRouter');
+const OpenProductRouter = require('./routes/opentProductRouter');
 
 // Using pug template engine
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +48,9 @@ app.use(CategoryRouter);
 app.use(ProductRouter);
 app.use(StudyProgramRouter);
 app.use(VideoRouter);
+app.use(CartRouter);
+app.use(TransactionRouter);
+app.use(OpenProductRouter);
 
 const PORT = 2020;
 // starting server
