@@ -41,12 +41,13 @@ function CategoryView({ id }) {
 
     const handleSearch = (arr) => {
         if (textSearch.length > 0) {
-            const newList = arr.filter(
-                (item) =>
-                    item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
-                    `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1,
-            );
-            return newList;
+            if (textSearch.length > 0)
+                return arr.filter(
+                    (item) =>
+                        item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                        `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || usersObj[item.author_id].name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                        usersObj[item.author_id].email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1
+                );
         } else return arr;
     };
 

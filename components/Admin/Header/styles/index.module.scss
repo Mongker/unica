@@ -35,3 +35,10 @@
   left: 90% !important;
   min-width: 100px !important;
 }
+.search {
+  width: 300px;
+  position: fixed;
+  top: 10px;
+  left: 15%;
+  z-index: 1000;
+}

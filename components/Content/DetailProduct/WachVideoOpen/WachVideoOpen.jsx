@@ -42,7 +42,7 @@ function WachVideoOpen({ id_product, headComponent }) {
             {headComponent}
             <div className={'flex_row'} style={{ height: '100%' }}>
                 <div className={styles.content_left}>
-                    <div className={styles.title}>Lội trình khóa học</div>
+                    <div className={styles.title}>Lộ trình khóa học</div>
                     <NoiDung
                         product_id={id_product}
                         onChangeCollapse={onChangeCollapse}

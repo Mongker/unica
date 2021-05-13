@@ -9,7 +9,7 @@
 
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Carousel, message, Rate } from 'antd';
+import { Avatar, Carousel, Empty, message, Rate } from 'antd';
 import { url_base_img } from '../../../util/TypeUI';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 import { UserOutlined } from '@ant-design/icons';
@@ -31,7 +31,7 @@ function ContentUNICAView(prop) {
     const { category } = useCategoryBase();
     const { product } = useProductBase();
     const { usersObj } = useUserBase();
-    const {textSearch} = useContext(ContextApp);
+    const { textSearch } = useContext(ContextApp);
 
     const key = 'updatable';
     const openMessage = () => {
@@ -51,12 +51,15 @@ function ContentUNICAView(prop) {
         router.push(`/category/${item.id}?rootId=${item.rootId}`);
     };
 
-
     const handleFilterSearch = (product) => {
-        if(textSearch.length > 0) {
-            const newList = product.filter((item) => (item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1));
-            return newList;
-        }
+        if (textSearch.length > 0)
+            return product.filter(
+                (item) =>
+                    item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    usersObj[item.author_id].name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    usersObj[item.author_id].email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1,
+            );
         return product;
     };
 
@@ -130,6 +133,19 @@ function ContentUNICAView(prop) {
                             {/*</a>*/}
                         </div>
                         <div className='content_card-chung'>
+                            {handleFilterSearch(product).length === 0 && (
+                                <div
+                                    className={'flex_row'}
+                                    style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '300',
+                                    }}
+                                >
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                </div>
+                            )}
                             {handleFilterSearch(product).map((item) => (
                                 <div className='content_card-chung-item'>
                                     <div

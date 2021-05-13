@@ -113,7 +113,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const showDrawerAdd = () => {
         refCallback.current.showDrawer();
         refCallback.current.setContent(null);
-        refCallback.current.form.setFieldsValue({
+        categoryObj && categoryObj[myUser.categoryFollow] && categoryObj[myUser.categoryFollow].name &&refCallback.current.form.setFieldsValue({
             name_category: categoryObj[myUser.categoryFollow].name
         });
     }
@@ -222,7 +222,9 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
     return (
         <React.Fragment>
-            <Button type="primary" onClick={showDrawerAdd} style={{marginBottom: 5, borderRadius: 20}}>Thêm khóa học</Button>
+            {
+                myUser.role === 'teacher' && <Button type="primary" onClick={showDrawerAdd} style={{marginBottom: 5, borderRadius: 20}}>Thêm khóa học</Button>
+            }
             <TableProduct
                 columnsTable={_columnsTable}
                 actionProduct={actionProduct}
