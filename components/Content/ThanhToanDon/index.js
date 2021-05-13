@@ -16,7 +16,6 @@ const layout = {
 };
 const { Option } = Select;
 function ContentThanhToan(props) {
-    console.log('props', props); // MongLV log fix bug
     const { router: routerCheck } = props;
     const { query } = routerCheck;
     // hooks
@@ -31,14 +30,12 @@ function ContentThanhToan(props) {
     const cartFilter = query.id
         ? cart.filter((item) => item.status === 0 && item.id === Number(query.id))
         : cart.filter((item) => item.status === 0);
-    console.log('query.id', query.id); // MongLV log fix bug
     const list_cart = query.id ? [Number(query.id)] : cart.map((item) => item.id);
-    console.log('list_cart', list_cart); // MongLV log fix bug
 
     // handle func
     const sumMoney = () => {
         let sum = 0;
-        cartFilter.map((item) => (sum = sum + productObj[item.product_id].price));
+        cartFilter.map((item) => (sum = sum + productObj[item.product_id].price - ((productObj[item.product_id].price*productObj[item.product_id].sale/100))));
         return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$';
     };
     const onFinish = (values) => {

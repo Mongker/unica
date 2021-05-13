@@ -103,7 +103,6 @@ function ModalStudyProgram({ refCallBack }) {
 
     const onFinish = (values) => {
         values['product_id'] = dataProduct['id'];
-        values['isPreview'] = checkedSwitch ? 1 : 0;
 
         // Note case: thực hiện tác vụ liên quan đến study program
         if (visibleStudyProgram) {
@@ -116,6 +115,8 @@ function ModalStudyProgram({ refCallBack }) {
             }
             onReset();
         } else if (linkFile) {
+            values['isPreview'] = checkedSwitch ? 1 : 0;
+
             // Note case: thực hiện tác vụ liên quan đến video
             values['link_video'] = linkFile;
             values['study_program_id'] = idEditStudyProgram;
@@ -405,10 +406,10 @@ function ModalStudyProgram({ refCallBack }) {
         >
             <div className={styles.title}>
                 Phần {Number(keyCollapse) + 1}:{' '}
-                {keyCollapse && studyProgramFilterStatus[keyCollapse].name}
+                {keyCollapse && studyProgramFilterStatus[keyCollapse] && studyProgramFilterStatus[keyCollapse].name}
             </div>
             <div style={{ padding: 20, width: '100%', overflow: 'auto' }}>
-                {keyCollapse && (
+                {keyCollapse && studyProgramFilterStatus[keyCollapse] && studyProgramFilterStatus[keyCollapse].content && (
                     <div
                         dangerouslySetInnerHTML={{
                             __html: studyProgramFilterStatus[keyCollapse].content,

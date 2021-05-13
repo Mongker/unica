@@ -29,9 +29,11 @@ function App({ Component, pageProps }) {
     // state
     const [user, setUser] = React.useState(null);
     const [keyTreeActive, setKeyTreeActive] = useState(null);
+    const [textSearch, setTextSearch] = useState('');
+    console.log('textSearch', textSearch); // MongLV log fix bug
 
     useEffect(() => {
-        getListProduct();
+        getListProduct({status: 1});
         getListCategory();
         getListUser();
     }, []);
@@ -60,6 +62,9 @@ function App({ Component, pageProps }) {
                     create: localStorage.getItem(`${arrTypeUser[11]}`),
                     gender: Number(localStorage.getItem(`${arrTypeUser[12]}`)),
                     avatar: localStorage.getItem(`${arrTypeUser[14]}`),
+                    list_product_open: localStorage.getItem(`${arrTypeUser[15]}`),
+                    introduce: localStorage.getItem(`${arrTypeUser[16]}`),
+                    categoryFollow: localStorage.getItem(`${arrTypeUser[17]}`),
                 });
         }
     }, [user]);
@@ -81,6 +86,8 @@ function App({ Component, pageProps }) {
                 setUser,
                 keyTreeActive,
                 setKeyTreeActive,
+                textSearch,
+                setTextSearch,
             }}
         >
             <Component {...pageProps} />

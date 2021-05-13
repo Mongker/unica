@@ -45,8 +45,9 @@ function HistoryTransaction() {
     const Cart = (item) => (
         <div className={'flex_col'} style={{ justifyContent: 'center' }}>
             {item.list_cart.map((id) => {
-                const dataProduct = cartObj[id].product_id && productObj[cartObj[id].product_id];
+                const dataProduct = id && cartObj[id] && cartObj[id].product_id && productObj[cartObj[id].product_id];
                 console.log('dataProduct', dataProduct); // MongLV log fix bug
+                if(!dataProduct) return null;
                 return (
                     <React.Fragment>
                         <div
@@ -55,13 +56,13 @@ function HistoryTransaction() {
                         >
                             <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
                                 <img
-                                    src={url_base_img + dataProduct.image_link}
+                                    src={`${url_base_img}${dataProduct && dataProduct.image_link && dataProduct.image_link}`}
                                     style={{ width: 50, height: 50, objectFit: 'cover' }}
                                 />
-                                <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>{dataProduct.name}</div>
+                                <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>{dataProduct && dataProduct.name}</div>
                             </div>
                             <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
-                                {(cartObj[id].sale ? dataProduct.price * (cartObj[id].sale / 100) : dataProduct.price)
+                                {(cartObj[id].sale ? dataProduct.price - dataProduct.price * (cartObj[id].sale / 100) : dataProduct.price)
                                     .toString()
                                     .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
                             </div>

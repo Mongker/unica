@@ -18,7 +18,17 @@ module.exports = {
                 const dataUser = rows[0];
                 if (dataUser.status_user === 0) return res.status(200).json({ message: 'Tài khoản đã bị khóa' });
                 if (dataUser.password === req.body.password) {
-                    return res.status(200).json({ message: 'OK', user: dataUser });
+                    console.log('dataUser.info', dataUser.info); // MongLV log fix bug
+                    let info = {}
+                    try {
+                        info = JSON.parse(dataUser.info)
+                        console.log('SON.parse(rows[0].info)', JSON.parse(rows[0].info)); // MongLV log fix bug
+                    } catch (e) {}
+                    delete dataUser.info
+                    console.log('info', info);
+                    const dataNew = {...dataUser, ...info}
+                    console.log('dataNew', dataNew); // MongLV log fix bug
+                    return res.status(200).json({ message: 'OK', user: dataNew });
                 } else {
                     return res.status(200).json({ message: 'Mật khẩu sai' });
                 }

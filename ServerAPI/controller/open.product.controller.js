@@ -54,14 +54,12 @@ module.exports = {
                                                                     .status(200)
                                                                     .json({
                                                                         message: 'OK',
-                                                                        data: [
-                                                                            {
-                                                                                ...uses[0],
-                                                                                list_product_open: JSON.stringify(
-                                                                                    list_product_open,
-                                                                                ),
-                                                                            },
-                                                                        ],
+                                                                        data: {
+                                                                            ...uses[0],
+                                                                            list_product_open: JSON.stringify(
+                                                                                list_product_open,
+                                                                            ),
+                                                                        },
                                                                     });
                                                         },
                                                     );

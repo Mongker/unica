@@ -51,6 +51,8 @@ function useTransactionBase() {
     };
 
     const putTransaction = async (obj = {}, callBack = () => {}) => {
+        delete obj.created;
+
         const dataConvert = { ...obj };
         dataConvert.list_cart = JSON.stringify(dataConvert.list_cart);
         const { message } = await baseAPI.update(url_api.TRANSACTION, dataConvert);

@@ -23,6 +23,9 @@ const arrTypeUser = [
     'gender',
     'gender',
     'avatar',
+    'list_product_open',
+    'introduce',
+    'categoryFollow',
 ];
 const typeStore = {
     USER: 'users',
@@ -41,6 +44,7 @@ const url_api = {
     VIDEO: '/video',
     CART: '/cart',
     TRANSACTION: '/transaction',
+    OPEN: '/open',
 };
 const url_base = 'http://localhost:2020/api';
 const url_base_img = `${url_base}/file/`;

@@ -8,7 +8,9 @@
  */
 module.exports = {
     create: function (con, querySQL, callback) {
-        con.query(`INSERT INTO study_program SET ` + querySQL, callback);
+        const _query = `INSERT INTO study_program SET ` + querySQL;
+        console.log('_query', _query); // MongLV log fix bug
+        con.query(_query, callback);
     },
     update: function (con, id, querySQL, callback) {
         const query = `UPDATE study_program SET ${querySQL} WHERE id = ${id}`;

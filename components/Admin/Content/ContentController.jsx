@@ -18,6 +18,7 @@ import ProductView from '../Product/ProductView';
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
 import TransactionView from '../Transaction/TransactionView';
+
 function ContentController({ activeMenu, refModalProduct }) {
     let Component;
     switch (activeMenu) {

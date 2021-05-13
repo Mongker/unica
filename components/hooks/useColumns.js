@@ -23,6 +23,7 @@ function useColumns(props) {
         columnsTable,
         actionDelete,
         handleActionTable,
+        handleEdit: handleEditTable,
     } = props;
     const dispatch = useDispatch();
 
@@ -39,8 +40,12 @@ function useColumns(props) {
     };
 
     const handleEdit = (item) => {
-        setVisibleEdit(!visibleEdit);
-        setItem(item);
+        if(handleEditTable) {
+            handleEditTable(item)
+        } else {
+            setVisibleEdit(!visibleEdit);
+            setItem(item);
+        }
     };
 
     // vòng đời

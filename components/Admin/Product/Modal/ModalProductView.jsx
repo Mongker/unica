@@ -37,7 +37,7 @@ const layout = {
 };
 
 let dataSale = [];
-for (let i = 1; i <= 100; i++) {
+for (let i = 0; i <= 100; i++) {
     dataSale.push(i);
 }
 function ModalProductView({ refFunc, idCategory }) {
@@ -95,10 +95,12 @@ function ModalProductView({ refFunc, idCategory }) {
     };
 
     const onFinish = (values) => {
+        debugger; // MongLV
         if (imgFile && videoFile) {
             values['image_link'] = imgFile;
             values['trailer_link'] = videoFile;
             values['catalog_id'] = IdCategory;
+            myUser && myUser.role === 'teacher' && myUser.categoryFollow && (values['catalog_id'] = myUser.categoryFollow);
             values['content_full'] = content;
 
             delete values['name_category'];
@@ -136,6 +138,7 @@ function ModalProductView({ refFunc, idCategory }) {
             refVideoFile,
             setIdCategory,
             setDataEdit,
+            setContent,
         };
     });
     React.useEffect(() => {

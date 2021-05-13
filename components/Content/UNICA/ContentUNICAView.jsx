@@ -7,7 +7,7 @@
  * @slogan: "Mọi thứ đều bắt đầu từ việc nhỏ, những khát vọng phải lớn"
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar, Carousel, message, Rate } from 'antd';
 import { url_base_img } from '../../../util/TypeUI';
@@ -16,6 +16,7 @@ import { UserOutlined } from '@ant-design/icons';
 import useProductBase from '../../hooks/LogicData/useProductBase';
 import useUserBase from '../../hooks/LogicData/useUserBase';
 import { useRouter } from 'next/router';
+import ContextApp from '../../../util/ContextApp';
 
 // const
 const contentStyle = {
@@ -30,6 +31,7 @@ function ContentUNICAView(prop) {
     const { category } = useCategoryBase();
     const { product } = useProductBase();
     const { usersObj } = useUserBase();
+    const {textSearch} = useContext(ContextApp);
 
     const key = 'updatable';
     const openMessage = () => {
@@ -43,6 +45,21 @@ function ContentUNICAView(prop) {
         router.push(`/detail/${item.id}`);
         openMessage();
     };
+    const hanNexPageCategory = (e, item) => {
+        e.preventDefault();
+        console.log('item', item); // MongLV log fix bug
+        router.push(`/category/${item.id}?rootId=${item.rootId}`);
+    };
+
+
+    const handleFilterSearch = (product) => {
+        if(textSearch.length > 0) {
+            const newList = product.filter((item) => (item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1));
+            return newList;
+        }
+        return product;
+    };
+
     return (
         <div className='contentc'>
             <div className='grid'>
@@ -53,7 +70,10 @@ function ContentUNICAView(prop) {
                                 (item) =>
                                     item.rootId === 1 && (
                                         <li className='content_category-list-item'>
-                                            <a className='content_category-list-item-link' href='#'>
+                                            <div
+                                                className='content_category-list-item-link'
+                                                onClick={(e) => hanNexPageCategory(e, item)}
+                                            >
                                                 <Avatar
                                                     size={14}
                                                     shape='square'
@@ -61,7 +81,7 @@ function ContentUNICAView(prop) {
                                                     src={`${url_base_img}${item.icon}`}
                                                 />
                                                 <p style={{ paddingLeft: 8 }}>{item.name}</p>
-                                            </a>
+                                            </div>
                                             <div className='menuhover'>
                                                 <div className='menuhover_row'>
                                                     <ul>
@@ -69,9 +89,14 @@ function ContentUNICAView(prop) {
                                                             (value) =>
                                                                 value.rootId === item.id && (
                                                                     <li className='menuhover_row-item'>
-                                                                        <a href='' className='menuhover-link'>
+                                                                        <div
+                                                                            onClick={(e) =>
+                                                                                hanNexPageCategory(e, value)
+                                                                            }
+                                                                            className='menuhover-link'
+                                                                        >
                                                                             {value.name}
-                                                                        </a>
+                                                                        </div>
                                                                     </li>
                                                                 ),
                                                         )}
@@ -98,14 +123,14 @@ function ContentUNICAView(prop) {
                     </div>
                     <div className='content_card'>
                         <div className='content_card-title'>
-                            <h4>TOP BÁN CHẠY</h4>
+                            <h4>KHÓA HỌC MỚI</h4>
                             {/*<a className='content_card-title-link' href=''>*/}
                             {/*    Xem thêm*/}
                             {/*    <i className='fa fa-angle-double-right'></i>*/}
                             {/*</a>*/}
                         </div>
                         <div className='content_card-chung'>
-                            {product.concat(product).map((item) => (
+                            {handleFilterSearch(product).map((item) => (
                                 <div className='content_card-chung-item'>
                                     <div
                                         className='content_card-chung-item-link'

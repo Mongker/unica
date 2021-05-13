@@ -4,7 +4,7 @@ import style from './style.module.scss';
 
 function Footer() {
     return (
-        <div>
+        <div style={{marginTop: 65}}>
             <div className={style.footer1}>
                 <div className={style.container}>
                     <div className={style.row}>

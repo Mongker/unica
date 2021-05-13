@@ -77,24 +77,19 @@ module.exports = {
         } else return res.status(200).json({ message: 'Không có dữ liệu nào được gửi lên' });
     },
     DELETE: function (req, res) {
-        let querySQL = '';
-        Object.entries(req.params).map((item, index) => {
-            const key = item[0];
-            const value = `'${item[1]}'`;
-            index === 0 ? (querySQL = `${key} = ${value}`) : (querySQL = querySQL + ' and ' + `${key} = ${value}`);
-        });
-        console.log('querySQL', querySQL); // MongLV log fix bug
-        CartModel.getList(req.con, querySQL, function (err, row) {
-            if (err) return res.status(404).json({ message: err });
-            console.log('row', row[0]); // MongLV log fix bug
-            if (row[0].status === 0) {
-                CartModel.delete(req.con, req.params.id, function (err) {
-                    if (err) return res.status(404).json({ message: err });
-                    return res.status(200).json({ message: 'OK' });
-                });
-            } else {
-                return res.status(200).json({ message: 'Bạn không có quyền xóa' });
-            }
-        });
+        if(req.params.id) {
+            CartModel.getList(req.con, `id = ${req.params.id}`, function (err, row) {
+                if (err) return res.status(404).json({ message: err });
+                console.log('row', row[0]); // MongLV log fix bug
+                if (row[0].status === 0) {
+                    CartModel.delete(req.con, req.params.id, function (err) {
+                        if (err) return res.status(404).json({ message: err });
+                        return res.status(200).json({ message: 'OK' });
+                    });
+                } else {
+                    return res.status(200).json({ message: 'Bạn không có quyền xóa' });
+                }
+            });
+        } else return res.status(200).json({ message: 'Không xác định được id để xóa' });
     },
 };

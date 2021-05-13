@@ -21,16 +21,22 @@ import ContextApp from 'util/ContextApp';
 import { url_base_img } from 'util/TypeUI';
 // styles
 import styles from './styles/index.module.scss';
-import { Badge, Dropdown, Menu } from 'antd';
+import { Badge, Dropdown, Input, Menu, Modal } from 'antd';
 import useCartBase from '../../hooks/LogicData/useCartBase';
 import UseLogoutUser from '../../hooks/useLogoutUser';
+import useOpenProduct from '../../hooks/LogicData/useOpenProduct';
+import useProductBase from '../../hooks/LogicData/useProductBase';
 
 function HeaderUNICAView(props) {
     // hooks
     const router = useRouter();
     const { cart, getListCart } = useCartBase();
-    const { user } = React.useContext(ContextApp);
+    const {handleOpenProduct} = useOpenProduct()
+    const {getListProduct} = useProductBase();
+    const { user, setTextSearch } = React.useContext(ContextApp);
     const handleLogOut = UseLogoutUser();
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [code, setCode] = React.useState('');
 
     // const
     const cartFilter = cart.filter((item) => item.status === 0);
@@ -48,7 +54,36 @@ function HeaderUNICAView(props) {
         e.preventDefault();
         router.push('/admin');
     };
+
+    const handleChangeCode = (e) => {
+        setCode(e.target.value)
+    }
+    const handleSearchText = (event) => {
+        setTextSearch(event.target.value)
+    }
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    const handleCallBack = () => {
+        getListCart({ user_id: user.id })
+        getListProduct()
+        router.push('/account?show=1')
+    }
+
+    const handleOk = () => {
+        handleOpenProduct({code: code}, handleCallBack);
+        setIsModalVisible(false);
+        setCode('')
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setCode('')
+    };
+
     const handleMenu = (event) => {
+        event.key === 'PRODUCT' && router.push('/account?show=1');
         event.key === 'USER' && router.push('/account?show=2');
         event.key === 'LOGOUT' && handleLogOut();
     };
@@ -62,6 +97,7 @@ function HeaderUNICAView(props) {
     const menu = (
         <Menu className={styles.menu} onClick={handleMenu}>
             <Menu.Item key={'USER'}>Tài khoản</Menu.Item>
+            <Menu.Item key={'PRODUCT'}>Khóa học của tôi</Menu.Item>
             <Menu.Item key={'LOGOUT'}>Đăng xuất</Menu.Item>
         </Menu>
     );
@@ -83,7 +119,8 @@ function HeaderUNICAView(props) {
                             <input
                                 className={styles['header_input-input']}
                                 type='text'
-                                placeholder='Tìm khóa học, giảng viên'
+                                placeholder='Tìm khóa học nhanh theo tên và giá tiền'
+                                onChange={handleSearchText}
                             />
                             <button className={styles['header_input-button']} type='submit'>
                                 <SearchOutlined />
@@ -91,10 +128,16 @@ function HeaderUNICAView(props) {
                         </form>
                     </div>
                     <div className={styles.header_giohang}>
-                        <div className={styles['header_giohang-link-kichhoat']} href=''>
+                        <div className={styles['header_giohang-link-kichhoat']} onClick={showModal}>
                             <p>Kích hoạt khóa học</p>
                             <UnlockOutlined />
                         </div>
+                        <Modal title={'Mã kích hoạt khóa học của bạn'} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <div className={'flex_col'}>
+                                <div>Mã khóa học của bạn là:</div>
+                                <Input onChange={handleChangeCode} />
+                            </div>
+                        </Modal>
                         <a className={styles['header_giohang-icon']} onClick={() => router.push('/cart')}>
                             <Badge count={cartFilter.length}>
                                 <ShoppingCartOutlined

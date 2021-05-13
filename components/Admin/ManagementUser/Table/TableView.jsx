@@ -16,7 +16,7 @@ import useColumns from '../../../hooks/useColumns';
 import useUserBase from '../../../hooks/LogicData/useUserBase';
 
 const funcDefault = () => {};
-function TableView({ handleDidMount, actionDelete, columnsTable, type }) {
+function TableView({ handleDidMount, actionDelete, columnsTable, type, handleEdit }) {
     // hooks
     const { users, updateUser } = useUserBase();
 
@@ -35,6 +35,7 @@ function TableView({ handleDidMount, actionDelete, columnsTable, type }) {
         handleDidMount,
         columnsTable,
         actionDelete: handleUpdateUser,
+        handleEdit: handleEdit,
     });
 
     const dataSource = type !== 'ALL' ? data.filter((item) => item.role === type) : data;
@@ -48,11 +49,13 @@ function TableView({ handleDidMount, actionDelete, columnsTable, type }) {
 TableView.propTypes = {
     handleDidMount: PropTypes.func,
     actionDelete: PropTypes.func,
+    handleEdit: PropTypes.func,
 };
 
 TableView.defaultProps = {
     handleDidMount: funcDefault,
     actionDelete: funcDefault,
+    handleEdit: funcDefault,
 };
 
 export default React.memo(TableView);

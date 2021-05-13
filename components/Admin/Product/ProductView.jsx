@@ -9,7 +9,7 @@
 
 import React from 'react';
 import TableProduct from './Table/TableProduct';
-import { Avatar, Image, Popconfirm, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Image, Popconfirm, Tag, Tooltip } from 'antd';
 import {
     AppstoreOutlined,
     EditOutlined,
@@ -24,13 +24,20 @@ import PropTypes from 'prop-types';
 import style from '../../hooks/styles/index.module.scss';
 import useProductBase from '../../hooks/LogicData/useProductBase';
 import ModalStudyProgram from './Modal/ModalStudyProgram';
+import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
 
 function ProductView({ refCallback, isMenu, keyTreeActive }) {
-    const { usersObj } = useUserBase();
-    const { hideProduct } = useProductBase();
+    const { usersObj, myUser } = useUserBase();
+    const { categoryObj } = useCategoryBase();
+    const { hideProduct, getListProduct } = useProductBase();
 
     // ref
     const refModalStudyProgram = React.useRef();
+
+    // Vòng đời
+    React.useEffect(() => {
+        myUser && myUser.role === 'teacher' ? getListProduct({author_id: Number(myUser.id)}) : getListProduct();
+    }, []);
 
     // handle func
     const handleShow = (data) => {
@@ -103,6 +110,14 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
         }
     };
 
+    const showDrawerAdd = () => {
+        refCallback.current.showDrawer();
+        refCallback.current.setContent(null);
+        refCallback.current.form.setFieldsValue({
+            name_category: categoryObj[myUser.categoryFollow].name
+        });
+    }
+
     // JSX
     const columnsTable = [
         {
@@ -110,11 +125,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             dataIndex: 'image_link',
             width: widthTable.image_link[typeWidthTable],
             render: (image_link) => {
-                <Avatar
-                    style={{ backgroundColor: '#87d068' }}
-                    icon={<UserOutlined />}
-                    src={''}
-                />;
+                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} src={''} />;
                 return (
                     <Avatar
                         icon={<UserOutlined />}
@@ -128,19 +139,13 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             title: 'Tên khóa học',
             dataIndex: 'name',
             width: widthTable.name[typeWidthTable],
-            render: (name) => (
-                <div style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>
-                    {name}
-                </div>
-            ),
+            render: (name) => <div style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>{name}</div>,
         },
         {
             title: 'Giá sản phẩm',
             dataIndex: 'price',
             width: widthTable.price[typeWidthTable],
-            render: (price) => (
-                <a>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</a>
-            ),
+            render: (price) => <a>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</a>,
         },
         {
             title: 'Giảm giá',
@@ -154,21 +159,10 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             width: widthTable.author_id[typeWidthTable],
             // render: (author_id) => <div>{usersObj[author_id].name}</div>,
             render: (author_id) => (
-                <div
-                    className={'flex_col'}
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                    <div
-                        className={'flex_row'}
-                        style={{ justifyContent: 'center', alignItems: 'center' }}
-                    >
-                        <Avatar
-                            icon={<UserOutlined />}
-                            src={url_base_img + usersObj[author_id].avatar}
-                        />
-                        <p style={{ marginLeft: 3, fontWeight: 'bold' }}>
-                            {usersObj[author_id].name}
-                        </p>
+                <div className={'flex_col'} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <div className={'flex_row'} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Avatar icon={<UserOutlined />} src={url_base_img + usersObj[author_id].avatar} />
+                        <p style={{ marginLeft: 3, fontWeight: 'bold' }}>{usersObj[author_id].name}</p>
                     </div>
                     <p>({usersObj[author_id].email})</p>
                 </div>
@@ -179,10 +173,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const actionProduct = (_, data) => {
         return (
             <div className={style.action}>
-                <EditOutlined
-                    onClick={() => handleShow(data)}
-                    className={style.item_action}
-                />
+                <EditOutlined onClick={() => handleShow(data)} className={style.item_action} />
                 <Tooltip title='Quản trị chương trình học'>
                     <AppstoreOutlined
                         onClick={() => showDrawer(data)}
@@ -198,10 +189,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
                         okText='Phải'
                         cancelText='Không'
                     >
-                        <EyeOutlined
-                            style={{ color: '#0b8f01' }}
-                            className={style.item_action}
-                        />
+                        <EyeOutlined style={{ color: '#0b8f01' }} className={style.item_action} />
                     </Popconfirm>
                 ) : (
                     <Popconfirm
@@ -234,6 +222,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
     return (
         <React.Fragment>
+            <Button type="primary" onClick={showDrawerAdd} style={{marginBottom: 5, borderRadius: 20}}>Thêm khóa học</Button>
             <TableProduct
                 columnsTable={_columnsTable}
                 actionProduct={actionProduct}

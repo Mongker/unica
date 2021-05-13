@@ -22,10 +22,11 @@ import { url_base_img } from '../../../util/TypeUI';
 import { Player } from 'video-react';
 import useUserBase from '../../hooks/LogicData/useUserBase';
 import useCartBase from '../../hooks/LogicData/useCartBase';
+import WachVideoOpen from './WachVideoOpen/WachVideoOpen';
 
 function ContentDetail(props) {
     let videoRef = null;
-    const { name, content, number_user, trailer_link, image_link, author_id, content_full, id, sale, price } = props;
+    const { name, content, number_user, trailer_link, image_link, author_id, content_full, id, sale, price, list_number } = props;
 
     // hooks
     const { usersObj, myUser } = useUserBase();
@@ -34,6 +35,14 @@ function ContentDetail(props) {
 
     // const
     const cartFilter = cart.filter((item) => item.product_id === id && item.status === 0);
+    let arrListNumber = [];
+    let isShowVideo = false;
+    try {
+        arrListNumber = JSON.parse(list_number);
+        isShowVideo = arrListNumber.includes(Number(myUser.id))
+    } catch (e) {
+        console.log('error file ContentDetail'); // MongLV log fix bug
+    }
 
     // handle func
     const addCart = () => {
@@ -69,57 +78,57 @@ function ContentDetail(props) {
             console.log('e', videoRef.duration); // MongLV log fix bug
         }
     };
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className={style.u_course_highlight}>
-                <div className={style.container}>
-                    <div className={style.breadcumb_detail_course}>
-                        <a href={'/'} className={style.a}>
-                            UTT Learning
-                        </a>
-                        {/*<DoubleRightOutlined className={style.icon} />*/}
-                        {/*<a href='' className={style.a}>*/}
-                        {/*    Ngoại ngữ*/}
-                        {/*</a>*/}
-                        <DoubleRightOutlined className={style.icon} />
-                        <a href='#' className={style.a}>
-                            {name}
-                        </a>
+    // JSX
+    const headComponent = <div className={style.u_course_highlight}>
+        <div className={style.container}>
+            <div className={style.breadcumb_detail_course}>
+                <a href={'/'} className={style.a}>
+                    UTT Learning
+                </a>
+                <DoubleRightOutlined className={style.icon} />
+                <a href={'#'} className={style.a}>
+                    {name}
+                </a>
+            </div>
+            <div className={style.u_detail_block_title}>
+                <h1 className={style.itemReviewed}>
+                    <span>{name}</span>
+                </h1>
+                <div className={style.u_detail_desc}>{content}</div>
+                <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <div className={style.u_detail_tea}>
+                        <Avatar
+                            icon={<UserOutlined />}
+                            src={`${url_base_img}${
+                                author_id &&
+                                usersObj[author_id.toString()] &&
+                                usersObj[author_id.toString()].avatar &&
+                                usersObj[author_id.toString()].avatar
+                            }`}
+                        />
+                        <p style={{ marginLeft: 5 }}>
+                            {usersObj[`${author_id}`] && usersObj[`${author_id}`].name
+                                ? usersObj[`${author_id}`].name
+                                : '[Loading]'}
+                        </p>
                     </div>
-                    <div className={style.u_detail_block_title}>
-                        <h1 className={style.itemReviewed}>
-                            <span>{name}</span>
-                        </h1>
-                        <div className={style.u_detail_desc}>{content}</div>
-                        <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <div className={style.u_detail_tea}>
-                                <Avatar
-                                    icon={<UserOutlined />}
-                                    src={`${url_base_img}${
-                                        author_id &&
-                                        usersObj[author_id.toString()] &&
-                                        usersObj[author_id.toString()].avatar &&
-                                        usersObj[author_id.toString()].avatar
-                                    }`}
-                                />
-                                <p style={{ marginLeft: 5 }}>
-                                    {usersObj[`${author_id}`] && usersObj[`${author_id}`].name
-                                        ? usersObj[`${author_id}`].name
-                                        : '[Loading]'}
-                                </p>
-                            </div>
-                            <div className={style.u_detail_tea}>
-                                <Rate allowHalf defaultValue={2.5} className={style.icon} />
-                                <span style={{ marginLeft: 5 }}>0 đánh giá</span>
-                            </div>
-                            <div className={style.u_detail_tea}>
-                                <TeamOutlined />
-                                <span style={{ marginLeft: 5 }}>{number_user} học viên</span>
-                            </div>
-                        </div>
+                    <div className={style.u_detail_tea}>
+                        <Rate allowHalf defaultValue={2.5} className={style.icon} />
+                        <span style={{ marginLeft: 5 }}>0 đánh giá</span>
+                    </div>
+                    <div className={style.u_detail_tea}>
+                        <TeamOutlined />
+                        <span style={{ marginLeft: 5 }}>{number_user} học viên</span>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    if(isShowVideo) return <WachVideoOpen id_product={id} headComponent={headComponent} />
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {headComponent}
             <div className={style.u_detail_course}>
                 <div className={style.container_video}>
                     <div className={style.row}>
@@ -132,22 +141,6 @@ function ContentDetail(props) {
                                 src={url_base_img + trailer_link}
                             />
                         </div>
-                        {/*<div className={style.tab_detail}>*/}
-                        {/*    <ul>*/}
-                        {/*        <li>*/}
-                        {/*            <a href=''>Giới thiệu</a>*/}
-                        {/*        </li>*/}
-                        {/*        <li>*/}
-                        {/*            <a href=''>Nội dung khóa học</a>*/}
-                        {/*        </li>*/}
-                        {/*        <li>*/}
-                        {/*            <a href=''>Thông tin giảng viên</a>*/}
-                        {/*        </li>*/}
-                        {/*        <li>*/}
-                        {/*            <a href=''>Đánh giá</a>*/}
-                        {/*        </li>*/}
-                        {/*    </ul>*/}
-                        {/*</div>*/}
                     </div>
                     <div className={style.form_menu_noi}>
                         {/*menu*/}

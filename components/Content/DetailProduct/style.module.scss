@@ -13,8 +13,7 @@
     font-weight: 600;
 }
 .container {
-    min-height: 267px;
-    width: 1170px;
+    width: auto;
     margin-right: 100px;
     margin-left: 100px;
     padding-left: 10px;
@@ -292,5 +291,11 @@
     //}
     .container_destination {
         width: 750px;
+    }
+}
+.item_video {
+    cursor: pointer;
+    :hover {
+        color: #1d9fc7;
     }
 }

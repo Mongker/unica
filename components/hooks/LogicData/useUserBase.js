@@ -31,7 +31,7 @@ function useUserBase() {
     users.map((item) => (usersObj[item.id] = item));
 
     // handle func
-    const updateUser = async (data = {}) => {
+    const updateUser = async (data = {}, callback = () => {}) => {
         const { message } = await baseAPI.update(url_api.USER, data);
         const id = data.id;
         if (message === 'OK') {
@@ -44,6 +44,7 @@ function useUserBase() {
                 payload: { users: [...newData] },
             });
             messageAnt.success('Cập nhật thành công');
+            callback()
         } else messageAnt.warn(message);
 
         // Update chính bản thân mình

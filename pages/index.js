@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import MetaView from '../components/MetaView';
 import HeaderController from '../components/Header/HeaderController';
 import ContentController from '../components/Content/ContentController';
+import Footer from '../components/Footer/Footer';
 
 // icon
 function Index(props) {
@@ -24,6 +25,7 @@ function Index(props) {
             <MetaView {...dataMeta} />
             <HeaderController />
             <ContentController />
+            <Footer />
             {/* Note 4: Thêm footer vào đây nhé */}
         </React.Fragment>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Collapse, List, Modal } from 'antd';
-import { CaretRightOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, ContainerOutlined, SettingOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import useStudyProgramBase from '../../../hooks/LogicData/useStudyProgramBase';
 import useVideoBase from '../../../hooks/LogicData/useVideoBase';
@@ -11,7 +11,7 @@ const { Panel } = Collapse;
 import style from '../style.module.scss';
 import _style from './styles.module.scss';
 
-function NoiDung({ product_id }) {
+function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVideoActive }) {
     // Hooks
     const { getListStudyProgram, studyProgram } = useStudyProgramBase();
     const { video, getListStudyVideo } = useVideoBase();
@@ -47,6 +47,17 @@ function NoiDung({ product_id }) {
         return [...arrVideo];
     };
 
+    const genExtra = (_, id) => (
+        <ContainerOutlined
+            onClick={event => {
+                // If you don't want click extra trigger collapse, you can prevent this:
+                event.stopPropagation();
+                onChangeCollapse(id)
+            }}
+            style={{marginLeft: 5, color: '#4266ba'}}
+        />
+    );
+
     // Vòng đời
     React.useEffect(() => {
         getListStudyProgram({ product_id, status: 1 });
@@ -57,17 +68,18 @@ function NoiDung({ product_id }) {
         <div className={style.panel_group}>
             <Collapse
                 bordered={false}
-                defaultActiveKey={['1']}
                 expandIcon={({ isActive }) => (
                     <CaretRightOutlined rotate={isActive ? 90 : 0} />
                 )}
                 className={style.site_collapse_custom_collapse}
+                // onChange={onChangeCollapse}
             >
                 {arrStudyProgramFilter.map((item) => (
                     <Panel
-                        header={<div className={style.title_khoa_hoc}>{item.name}</div>}
+                        header={item.name}
                         key={item.id}
                         className='site-collapse-custom-panel'
+                        extra={genExtra(null, item.id)}
                     >
                         <List
                             size='small'
@@ -75,7 +87,7 @@ function NoiDung({ product_id }) {
                             dataSource={arrVideoOfStudyProgram(item.id)}
                             renderItem={(item) => {
                                 const arrAction = [];
-                                item.isPreview &&
+                                isButton && item.isPreview &&
                                     arrAction.push(
                                         <Button
                                             className={style.btn_hoc_thu}
@@ -98,8 +110,8 @@ function NoiDung({ product_id }) {
                                     >
                                         <List.Item.Meta
                                             title={
-                                                <a href='https://ant.design'>
-                                                    <div style={{ display: 'flex' }}>
+                                                <div className={style.item_video} style={{color: item.id === idVideoActive ? 'red' : 'black'}}>
+                                                    <div style={{ display: 'flex' }} onClick={() => onChangeVideo(item)}>
                                                         <VideoCameraOutlined
                                                             style={{
                                                                 marginTop: 4,
@@ -108,7 +120,7 @@ function NoiDung({ product_id }) {
                                                         />
                                                         <div>{item.name}</div>
                                                     </div>
-                                                </a>
+                                                </div>
                                             }
                                         />
                                     </List.Item>
@@ -139,8 +151,16 @@ function NoiDung({ product_id }) {
 
 NoiDung.propTypes = {
     product_id: PropTypes.number,
+    onChangeCollapse: PropTypes.func,
+    onChangeVideo: PropTypes.func,
+    isButton: PropTypes.bool,
+    idVideoActive: PropTypes.number,
 };
 
-NoiDung.defaultProps = {};
+NoiDung.defaultProps = {
+    onChangeCollapse: () => {},
+    onChangeVideo: () => {},
+    isButton: true
+};
 
 export default React.memo(NoiDung);
