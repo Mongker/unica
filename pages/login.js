@@ -73,8 +73,8 @@ function Login(props) {
             <MetaView title={'Login - Unica'} />
             <div className={style.limiter}>
                 <div className={style.container_login}>
-                    <div className={`${style.text_center} ${style.form_group}`}>
-                        <img src={'https://id.unica.vn/images/logo.png'} alt={'logo'} />
+                    <div className={`${style.text_center} ${style.form_group}`} onClick={() => router.push('/')}>
+                        UTT Learning
                     </div>
                     <div className={style.login}>
                         <div className={style.form_login}>
@@ -107,9 +107,7 @@ function Login(props) {
                                     justifyItems: 'center',
                                 }}
                             >
-                                <div style={{ marginRight: 10 }}>
-                                    Bạn chưa có tài khoản ?
-                                </div>
+                                <div style={{ marginRight: 10 }}>Bạn chưa có tài khoản ?</div>
                                 <a onClick={handleSingUp}>Đăng ký</a>
                             </div>
                         </div>

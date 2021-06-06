@@ -26,12 +26,12 @@ import ContextApp from '../../../util/ContextApp';
 // import PropTypes from 'prop-types';
 const setLocalStore = (myUser) => {
     myUser &&
-    Object.keys(myUser).map((item) => {
-        localStorage.setItem(item, myUser[item]);
-    });
+        Object.keys(myUser).map((item) => {
+            localStorage.setItem(item, myUser[item]);
+        });
 };
 function useOpenProduct() {
-    const {updateUser, myUser, users} = useUserBase()
+    const { updateUser, myUser, users } = useUserBase();
     const { setUser } = React.useContext(ContextApp);
     const dispatch = useDispatch();
     const handleOpenProduct = async (obj, handleCallBack = () => {}) => {
@@ -47,16 +47,20 @@ function useOpenProduct() {
                 payload: { users: [...newData] },
             });
             // Update chính bản thân mình
-            if (data.id === myUser.id) {
+            if (data.id === Number(myUser.id)) {
                 setLocalStore({ ...myUser, ...data });
+                console.log('myUser', myUser); // MongLV log fix bug
+                console.log('data', data); // MongLV log fix bug
+                console.log('xxxx', { ...myUser, ...data }); // MongLV log fix bug
+                debugger; // MongLV
                 setUser({ ...myUser, ...data });
             }
             messageAnt.success('Cập nhật thành công');
         } else messageAnt.warn(message);
-    }
+    };
 
     return {
-        handleOpenProduct
+        handleOpenProduct,
     };
 }
 

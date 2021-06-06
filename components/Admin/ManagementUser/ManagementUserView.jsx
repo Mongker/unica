@@ -54,7 +54,7 @@ function ManagementUserView() {
     // hooks
     const { user } = React.useContext(ContextApp);
     const { category } = useCategoryBase();
-    const {updateUser} = useUserBase();
+    const { updateUser } = useUserBase();
     const [form] = Form.useForm();
 
     // state
@@ -68,24 +68,23 @@ function ManagementUserView() {
 
     // handle func
     const callback = (key) => {
-        localStorage.setItem('ManagementUserView', key);
         setKeyActive(key);
     };
 
     const onFinish = (values) => {
-        let info = {}
+        let info = {};
         try {
             info = {
                 introduce: content,
-                categoryFollow: values['categoryFollow']
-            }
+                categoryFollow: values['categoryFollow'],
+            };
         } catch (e) {}
         const dataPut = {
             info: JSON.stringify(info),
             role: values['role'],
             id: idEdit,
-        }
-        idEdit && updateUser(dataPut, reset)
+        };
+        idEdit && updateUser(dataPut, reset);
     };
 
     const showModal = () => {
@@ -99,22 +98,21 @@ function ManagementUserView() {
 
     const handleCancel = () => {
         setIsModalVisible(false);
-        reset()
+        reset();
     };
     const reset = () => {
         form.resetFields();
         setIdEdit(null);
         setContent(null);
         setIsModalVisible(false);
-    }
+    };
 
     const handleEdit = (value) => {
-        console.log('value', value); // MongLV log fix bug
-        form.setFieldsValue(value)
+        form.setFieldsValue(value);
         setIdEdit(value.id);
-        value.introduce && setContent(value.introduce)
+        value.introduce && setContent(value.introduce);
         showModal();
-    }
+    };
 
     React.useEffect(() => {
         setKeyActive(
@@ -169,7 +167,6 @@ function ManagementUserView() {
     ];
     return (
         <React.Fragment>
-            <Button onClick={showModal}>x</Button>
             <Tabs onChange={callback} type='card' activeKey={keyActive}>
                 <TabPane tab={'Tất cả thành viên'} key={TypeTabs.ALL}>
                     <TableView columnsTable={columnsTableUser} type={keyActive} handleEdit={handleEdit} />

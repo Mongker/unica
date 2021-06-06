@@ -25,6 +25,10 @@
 }
 .form_group {
     margin-bottom: 1rem;
+    font-size: 41px;
+    font-weight: bold;
+    color: #ffb18c;
+    cursor: pointer;
 }
 .login {
     width: 680px;

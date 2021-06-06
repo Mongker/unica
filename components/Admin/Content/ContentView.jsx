@@ -9,7 +9,6 @@
 
 import React from 'react';
 import { Breadcrumb } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
 // import PropTypes from 'prop-types';
 
 // Component
@@ -24,14 +23,8 @@ function ContentView({ activeMenu, refModalProduct }) {
                 {/*</Breadcrumb.Item>*/}
                 {/*<Breadcrumb.Item>Bill</Breadcrumb.Item>*/}
             </Breadcrumb>
-            <div
-                className='site-layout-background'
-                style={{ padding: 24, minHeight: '95%' }}
-            >
-                <ContentController
-                    refModalProduct={refModalProduct}
-                    activeMenu={activeMenu}
-                />
+            <div className='site-layout-background' style={{ padding: 24, minHeight: '95%' }}>
+                <ContentController refModalProduct={refModalProduct} activeMenu={activeMenu} />
             </div>
         </React.Fragment>
     );

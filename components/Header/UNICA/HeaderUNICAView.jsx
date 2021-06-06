@@ -31,8 +31,8 @@ function HeaderUNICAView(props) {
     // hooks
     const router = useRouter();
     const { cart, getListCart } = useCartBase();
-    const {handleOpenProduct} = useOpenProduct()
-    const {getListProduct} = useProductBase();
+    const { handleOpenProduct } = useOpenProduct();
+    const { getListProduct } = useProductBase();
     const { user, setTextSearch } = React.useContext(ContextApp);
     const handleLogOut = UseLogoutUser();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -56,30 +56,30 @@ function HeaderUNICAView(props) {
     };
 
     const handleChangeCode = (e) => {
-        setCode(e.target.value)
-    }
+        setCode(e.target.value);
+    };
     const handleSearchText = (event) => {
-        setTextSearch(event.target.value)
-    }
+        setTextSearch(event.target.value);
+    };
 
     const showModal = () => {
         setIsModalVisible(true);
     };
     const handleCallBack = () => {
-        getListCart({ user_id: user.id })
-        getListProduct()
-        router.push('/account?show=1')
-    }
+        getListCart({ user_id: user.id });
+        getListProduct();
+        router.push('/account?show=1');
+    };
 
     const handleOk = () => {
-        handleOpenProduct({code: code}, handleCallBack);
+        handleOpenProduct({ code: code }, handleCallBack);
         setIsModalVisible(false);
-        setCode('')
+        setCode('');
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
-        setCode('')
+        setCode('');
     };
 
     const handleMenu = (event) => {
@@ -106,13 +106,14 @@ function HeaderUNICAView(props) {
             <div className={styles.grid}>
                 <div className={styles.header_grid}>
                     <div className={styles.header_logo} onClick={() => router.push('/')}>
-                        <Image
-                            width={150}
-                            height={33}
-                            src={'/logo2.png'}
-                            alt={'logo'}
-                            styles={{ backgroundColor: 'red' }}
-                        />
+                        <p>UTT Learning</p>
+                        {/*<img*/}
+                        {/*    src={`${url_base_img}utt-big.png`}*/}
+                        {/*    style={{*/}
+                        {/*        width: 150,*/}
+                        {/*        height: 50,*/}
+                        {/*    }}*/}
+                        {/*/>*/}
                     </div>
                     <div className={styles.header_input}>
                         <form className={styles['header_input-form']} action=''>
@@ -132,7 +133,12 @@ function HeaderUNICAView(props) {
                             <p>Kích hoạt khóa học</p>
                             <UnlockOutlined />
                         </div>
-                        <Modal title={'Mã kích hoạt khóa học của bạn'} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                        <Modal
+                            title={'Mã kích hoạt khóa học của bạn'}
+                            visible={isModalVisible}
+                            onOk={handleOk}
+                            onCancel={handleCancel}
+                        >
                             <div className={'flex_col'}>
                                 <div>Mã khóa học của bạn là:</div>
                                 <Input onChange={handleChangeCode} />

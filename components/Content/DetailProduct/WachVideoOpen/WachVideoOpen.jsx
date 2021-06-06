@@ -52,7 +52,7 @@ function WachVideoOpen({ id_product, headComponent }) {
                     />
                 </div>
                 <div className={styles.content_right}>
-                    <ContentRight itemVideo={itemVideo} id_study_program={keyActive} />
+                    <ContentRight itemVideo={itemVideo} id_study_program={keyActive} product_id={id_product} />
                 </div>
             </div>
         </div>

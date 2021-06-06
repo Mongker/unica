@@ -14,11 +14,13 @@ import PropTypes from 'prop-types';
 // hooks
 import useColumns from '../../../hooks/useColumns';
 import useUserBase from '../../../hooks/LogicData/useUserBase';
+import ContextApp from '../../../../util/ContextApp';
 
 const funcDefault = () => {};
 function TableView({ handleDidMount, actionDelete, columnsTable, type, handleEdit }) {
     // hooks
     const { users, updateUser } = useUserBase();
+    const { textSearch } = React.useContext(ContextApp);
 
     // handle func
     const handleUpdateUser = (id) => {
@@ -37,11 +39,21 @@ function TableView({ handleDidMount, actionDelete, columnsTable, type, handleEdi
         actionDelete: handleUpdateUser,
         handleEdit: handleEdit,
     });
+    const handleSearch = (arr) => {
+        if (textSearch.length > 0)
+            return arr.filter(
+                (item) =>
+                    item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    item.phone.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    item.email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1,
+            );
+        else return arr;
+    };
 
     const dataSource = type !== 'ALL' ? data.filter((item) => item.role === type) : data;
     return (
         <React.Fragment>
-            <Table columns={columns} dataSource={dataSource} />
+            <Table columns={columns} dataSource={handleSearch(dataSource)} />
         </React.Fragment>
     );
 }

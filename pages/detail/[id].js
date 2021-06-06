@@ -8,27 +8,39 @@ import { url_api } from '../../util/TypeUI';
 import useUserBase from '../../components/hooks/LogicData/useUserBase';
 // import PropTypes from 'prop-types';
 
-export async function getStaticPaths() {
-    return { paths: [], fallback: true };
+/* Note bye MongLV: static  */
+// export async function getStaticPaths() {
+//     return { paths: [], fallback: true };
+// }
+//
+// export async function getStaticProps(params) {
+//     const { message, data } = await baseAPI.getAll(url_api.PRODUCT, {
+//         id: params['params'].id,
+//     });
+//     return {
+//         props: { ...data[0] },
+//     };
+// }
+
+/* Note by MongLV: Server side render */
+export async function getServerSideProps(context) {
+    const { params } = context;
+    const { data } = await baseAPI.getAll(url_api.PRODUCT, {
+        id: params.id,
+    });
+    return { props: { ...data[0] } };
 }
 
-export async function getStaticProps(params) {
-    const { message, data } = await baseAPI.getAll(url_api.PRODUCT, {
-        id: params['params'].id,
-    });
-    return {
-        props: { ...data[0] },
-    };
-}
 function DetailProduct(props) {
     const { name, author_id } = props;
     const { getListUser } = useUserBase();
     React.useEffect(() => {
         getListUser({ id: author_id });
     }, []);
+    console.log('props', props); // MongLV log fix bug
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <MetaView title={`${name} - Unica`} />
+            <MetaView title={`${name} - UTT Learning`} />
             <HeaderUNICAView />
             <ContentDetail {...props} />
             <Footer />

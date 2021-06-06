@@ -72,6 +72,8 @@ function* watcherDeleteCategory() {
         if (message === 'OK') {
             const { category } = yield select();
             const newState = category.filter((item) => item.id !== id);
+            console.log('newState', newState); // MongLV log fix bug
+            console.log('category', category); // MongLV log fix bug
             yield put({
                 type: typeAction.CATEGORY.DEL,
                 payload: { category: [...newState] },
@@ -79,9 +81,4 @@ function* watcherDeleteCategory() {
         }
     }
 }
-export {
-    watcherGetCategory,
-    watcherPostCategory,
-    watcherDeleteCategory,
-    watcherPutCategory,
-};
+export { watcherGetCategory, watcherPostCategory, watcherDeleteCategory, watcherPutCategory };

@@ -21,9 +21,7 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
     const [itemStartVideo, setItemStartVideo] = React.useState(null); // objet
 
     // const
-    const arrStudyProgramFilter = studyProgram.filter(
-        (item) => (item.product_id = product_id),
-    );
+    const arrStudyProgramFilter = studyProgram.filter((item) => item.product_id === product_id);
 
     // handle func
     const showModal = (item) => {
@@ -41,22 +39,21 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
         setItemStartVideo(null);
     };
     const arrVideoOfStudyProgram = (study_program_id) => {
-        const arrVideo = video.filter(
-            (item) => item.study_program_id === study_program_id,
-        );
+        const arrVideo = video.filter((item) => item.study_program_id === study_program_id);
         return [...arrVideo];
     };
 
     const genExtra = (_, id) => (
         <ContainerOutlined
-            onClick={event => {
+            onClick={(event) => {
                 // If you don't want click extra trigger collapse, you can prevent this:
                 event.stopPropagation();
-                onChangeCollapse(id)
+                onChangeCollapse(id);
             }}
-            style={{marginLeft: 5, color: '#4266ba'}}
+            style={{ marginLeft: 5, color: '#4266ba' }}
         />
     );
+    console.log('arrStudyProgramFilter', arrStudyProgramFilter); // MongLV log fix bug
 
     // Vòng đời
     React.useEffect(() => {
@@ -68,9 +65,7 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
         <div className={style.panel_group}>
             <Collapse
                 bordered={false}
-                expandIcon={({ isActive }) => (
-                    <CaretRightOutlined rotate={isActive ? 90 : 0} />
-                )}
+                expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                 className={style.site_collapse_custom_collapse}
                 // onChange={onChangeCollapse}
             >
@@ -87,12 +82,10 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
                             dataSource={arrVideoOfStudyProgram(item.id)}
                             renderItem={(item) => {
                                 const arrAction = [];
-                                isButton && item.isPreview &&
+                                isButton &&
+                                    item.isPreview &&
                                     arrAction.push(
-                                        <Button
-                                            className={style.btn_hoc_thu}
-                                            onClick={() => showModal(item)}
-                                        >
+                                        <Button className={style.btn_hoc_thu} onClick={() => showModal(item)}>
                                             Học thử
                                         </Button>,
                                     );
@@ -110,8 +103,14 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
                                     >
                                         <List.Item.Meta
                                             title={
-                                                <div className={style.item_video} style={{color: item.id === idVideoActive ? 'red' : 'black'}}>
-                                                    <div style={{ display: 'flex' }} onClick={() => onChangeVideo(item)}>
+                                                <div
+                                                    className={style.item_video}
+                                                    style={{ color: item.id === idVideoActive ? 'red' : 'black' }}
+                                                >
+                                                    <div
+                                                        style={{ display: 'flex' }}
+                                                        onClick={() => onChangeVideo(item)}
+                                                    >
                                                         <VideoCameraOutlined
                                                             style={{
                                                                 marginTop: 4,
@@ -139,10 +138,7 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
                     onCancel={handleCancel}
                     width={900}
                 >
-                    <VideoPlayBase
-                        image_link={itemStartVideo.img}
-                        trailer_link={itemStartVideo.link_video}
-                    />
+                    <VideoPlayBase image_link={itemStartVideo.img} trailer_link={itemStartVideo.link_video} />
                 </Modal>
             )}
         </div>
@@ -160,7 +156,7 @@ NoiDung.propTypes = {
 NoiDung.defaultProps = {
     onChangeCollapse: () => {},
     onChangeVideo: () => {},
-    isButton: true
+    isButton: true,
 };
 
 export default React.memo(NoiDung);

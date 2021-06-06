@@ -76,7 +76,9 @@ function Admin(props) {
 
     React.useEffect(() => {
         const handleLoading = setTimeout(() => setIsLoading(false), 1000);
-        const defaultActiveMenu = localStorage.getItem('activeMenuAdmin') ? localStorage.getItem('activeMenuAdmin') : TYPE_MENU.CATEGORY;
+        const defaultActiveMenu = localStorage.getItem('activeMenuAdmin')
+            ? localStorage.getItem('activeMenuAdmin')
+            : TYPE_MENU.CATEGORY;
         handleSetActiveMenu(defaultActiveMenu);
         dispatch(getList());
         return () => clearTimeout(handleLoading);
@@ -84,9 +86,23 @@ function Admin(props) {
     // JSX
     const ComponentContent = (
         <Layout style={{ minHeight: '100vh' }}>
-            <MetaView title={'Quản trị - Unica'} />
+            <MetaView title={'Quản trị  UTT Learning'} />
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className='logo' onClick={() => router.push('/')} style={{ background: `url(${url_base_img}logo-unica.svg) no-repeat` }} />
+                {!collapsed && (
+                    <div
+                        className='logo'
+                        onClick={() => router.push('/')}
+                        // style={{ background: `url(${url_base_img}utt-big.png) no-repeat` }}
+                    >
+                        <img
+                            src={`${url_base_img}utt-big.png`}
+                            style={{
+                                width: 150,
+                                height: 50,
+                            }}
+                        />
+                    </div>
+                )}
                 <MenuView setActiveMenu={handleSetActiveMenu} activeMenu={activeMenu} TYPE_MENU={TYPE_MENU} />
             </Sider>
             <Layout className='site-layout'>

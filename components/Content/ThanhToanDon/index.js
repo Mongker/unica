@@ -27,22 +27,40 @@ function ContentThanhToan(props) {
     const { postTransaction } = useTransactionBase();
 
     // const
-    const cartFilter = query.id
-        ? cart.filter((item) => item.status === 0 && item.id === Number(query.id))
-        : cart.filter((item) => item.status === 0);
-    const list_cart = query.id ? [Number(query.id)] : cart.map((item) => item.id);
+    const cartFilter =
+        query && query.id
+            ? cart.filter((item) => item.status === 0 && item.id === Number(query.id))
+            : cart.filter((item) => item.status === 0);
+
+    const list_cart = query && query.id ? [Number(query.id)] : cartFilter.map((item) => item.id);
 
     // handle func
     const sumMoney = () => {
-        let sum = 0;
-        cartFilter.map((item) => (sum = sum + productObj[item.product_id].price - ((productObj[item.product_id].price*productObj[item.product_id].sale/100))));
-        return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$';
+        if (Object.keys(productObj).length > 0) {
+            let sum = 0;
+            cartFilter.map(
+                (item) =>
+                    (sum =
+                        sum +
+                        productObj[item.product_id].price -
+                        (productObj[item.product_id].price * productObj[item.product_id].sale) / 100),
+            );
+            debugger; // MongLV
+            return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$';
+        }
+        return '0 $';
     };
     const onFinish = (values) => {
         let sum = 0;
         cartFilter.map((item) => (sum = sum + productObj[item.product_id].price));
         values['amount'] = sum;
-        values['list_cart'] = JSON.stringify(list_cart);
+        try {
+            values['list_cart'] = JSON.stringify(list_cart);
+        } catch (e) {
+            console.log('e', e); // MongLV log fix bug
+        }
+
+        debugger; // MongLV
         values['user_id'] = Number(myUser.id);
         delete values['name'];
         delete values['email'];

@@ -48,9 +48,10 @@ MetaView.propTypes = {
 
 MetaView.defaultProps = {
     image: 'https://static.unica.vn/media/images/unica-hoctuchuyengia.jpg',
-    title: 'Unica.vn - Học online cùng chuyên gia',
+    title: 'UTT Learning - Học online cùng chuyên gia',
     name: 'Mongker',
-    description: 'Unica.vn - Hệ thống khóa học trực tuyến dành cho người đi làm với hơn 500.000 học viên đang theo học và 2.000 khóa học từ chuyên gia hàng đầu mọi lĩnh vực',
+    description:
+        'UTT Learning - Hệ thống khóa học trực tuyến dành cho người đi làm với hơn 500.000 học viên đang theo học và 2.000 khóa học từ chuyên gia hàng đầu mọi lĩnh vực',
     icon: 'https://static.unica.vn/icon/favicon.ico',
     url: 'https://unica.vercel.app/',
 };

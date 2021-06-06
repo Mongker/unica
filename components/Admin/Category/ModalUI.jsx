@@ -55,6 +55,7 @@ function ModalUI(props) {
         refUpdateFile.current && refUpdateFile.current.setLinkFile('');
         itemEdit && setItemEdit(null);
     };
+
     const handleCancel = () => {
         setIsModalVisible(false);
         handleResetState();
@@ -67,9 +68,11 @@ function ModalUI(props) {
     const handleChangeInputName = (e) => {
         setName(e.target.value);
     };
+
     const handleChangeInputDescription = (e) => {
         setDescription(e.target.value);
     };
+
     const handleOk = () => {
         data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : `${url_base_img}operation.png`;
         itemEdit ? dispatch(put({ ...itemEdit, ...data })) : dispatch(post(data));
@@ -109,7 +112,13 @@ function ModalUI(props) {
 
     return (
         <React.Fragment>
-            <Modal title={title} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className={styles.modal_add}>
+            <Modal
+                title={title}
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                className={styles.modal_add}
+            >
                 <div className={classNames('flex_col', styles.category_add)}>
                     {/* name */}
                     <div className={classNames('flex_row', styles.item_category)}>
@@ -120,14 +129,22 @@ function ModalUI(props) {
                     {/* description */}
                     <div className={classNames('flex_row', styles.item_category)}>
                         <div className={styles.item_name_category}>Nội dung:</div>
-                        <Input.TextArea onChange={handleChangeInputDescription} value={description} className={styles.item_input_category} />
+                        <Input.TextArea
+                            onChange={handleChangeInputDescription}
+                            value={description}
+                            className={styles.item_input_category}
+                        />
                     </div>
 
                     {/* icon */}
                     <div className={classNames('flex_row', styles.item_category)}>
                         <div className={styles.item_name_category}>Icon:</div>
                         <div className={styles.item_input_category}>
-                            <UploadFileView refFunc={refUpdateFile} styles={styles} Img={{ width: '20px', height: '20px' }} />
+                            <UploadFileView
+                                refFunc={refUpdateFile}
+                                styles={styles}
+                                Img={{ width: '20px', height: '20px' }}
+                            />
                         </div>
                     </div>
                 </div>

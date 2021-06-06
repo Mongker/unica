@@ -26,7 +26,19 @@ import WachVideoOpen from './WachVideoOpen/WachVideoOpen';
 
 function ContentDetail(props) {
     let videoRef = null;
-    const { name, content, number_user, trailer_link, image_link, author_id, content_full, id, sale, price, list_number } = props;
+    const {
+        name,
+        content,
+        number_user,
+        trailer_link,
+        image_link,
+        author_id,
+        content_full,
+        id,
+        sale,
+        price,
+        list_number,
+    } = props;
 
     // hooks
     const { usersObj, myUser } = useUserBase();
@@ -39,7 +51,7 @@ function ContentDetail(props) {
     let isShowVideo = false;
     try {
         arrListNumber = JSON.parse(list_number);
-        isShowVideo = arrListNumber.includes(Number(myUser.id))
+        isShowVideo = arrListNumber.includes(Number(myUser.id));
     } catch (e) {
         console.log('error file ContentDetail'); // MongLV log fix bug
     }
@@ -79,53 +91,55 @@ function ContentDetail(props) {
         }
     };
     // JSX
-    const headComponent = <div className={style.u_course_highlight}>
-        <div className={style.container}>
-            <div className={style.breadcumb_detail_course}>
-                <a href={'/'} className={style.a}>
-                    UTT Learning
-                </a>
-                <DoubleRightOutlined className={style.icon} />
-                <a href={'#'} className={style.a}>
-                    {name}
-                </a>
-            </div>
-            <div className={style.u_detail_block_title}>
-                <h1 className={style.itemReviewed}>
-                    <span>{name}</span>
-                </h1>
-                <div className={style.u_detail_desc}>{content}</div>
-                <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <div className={style.u_detail_tea}>
-                        <Avatar
-                            icon={<UserOutlined />}
-                            src={`${url_base_img}${
-                                author_id &&
-                                usersObj[author_id.toString()] &&
-                                usersObj[author_id.toString()].avatar &&
-                                usersObj[author_id.toString()].avatar
-                            }`}
-                        />
-                        <p style={{ marginLeft: 5 }}>
-                            {usersObj[`${author_id}`] && usersObj[`${author_id}`].name
-                                ? usersObj[`${author_id}`].name
-                                : '[Loading]'}
-                        </p>
-                    </div>
-                    <div className={style.u_detail_tea}>
-                        <Rate allowHalf defaultValue={2.5} className={style.icon} />
-                        <span style={{ marginLeft: 5 }}>0 đánh giá</span>
-                    </div>
-                    <div className={style.u_detail_tea}>
-                        <TeamOutlined />
-                        <span style={{ marginLeft: 5 }}>{number_user} học viên</span>
+    const headComponent = (
+        <div className={style.u_course_highlight}>
+            <div className={style.container}>
+                <div className={style.breadcumb_detail_course}>
+                    <a href={'/'} className={style.a}>
+                        UTT Learning
+                    </a>
+                    <DoubleRightOutlined className={style.icon} />
+                    <a href={'#'} className={style.a}>
+                        {name}
+                    </a>
+                </div>
+                <div className={style.u_detail_block_title}>
+                    <h1 className={style.itemReviewed}>
+                        <span>{name}</span>
+                    </h1>
+                    <div className={style.u_detail_desc}>{content}</div>
+                    <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <div className={style.u_detail_tea}>
+                            <Avatar
+                                icon={<UserOutlined />}
+                                src={`${url_base_img}${
+                                    author_id &&
+                                    usersObj[author_id.toString()] &&
+                                    usersObj[author_id.toString()].avatar &&
+                                    usersObj[author_id.toString()].avatar
+                                }`}
+                            />
+                            <p style={{ marginLeft: 5 }}>
+                                {usersObj[`${author_id}`] && usersObj[`${author_id}`].name
+                                    ? usersObj[`${author_id}`].name
+                                    : '[Loading]'}
+                            </p>
+                        </div>
+                        <div className={style.u_detail_tea}>
+                            <Rate allowHalf defaultValue={2.5} className={style.icon} />
+                            <span style={{ marginLeft: 5 }}>0 đánh giá</span>
+                        </div>
+                        <div className={style.u_detail_tea}>
+                            <TeamOutlined />
+                            <span style={{ marginLeft: 5 }}>{number_user} học viên</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    );
 
-    if(isShowVideo) return <WachVideoOpen id_product={id} headComponent={headComponent} />
+    if (isShowVideo) return <WachVideoOpen id_product={id} headComponent={headComponent} />;
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             {headComponent}
@@ -298,6 +312,7 @@ function ContentDetail(props) {
                                     usersObj[author_id.toString()].avatar
                                 }`}
                             />
+
                             {/*<div className={style.u_detail_students}>*/}
                             {/*    <GiftOutlined className={style.icon} />*/}
                             {/*    <span>*/}
@@ -324,6 +339,11 @@ function ContentDetail(props) {
                                     usersObj[author_id.toString()].name &&
                                     usersObj[author_id.toString()].name}
                             </div>
+                            {myUser && myUser.introduce ? (
+                                <div dangerouslySetInnerHTML={{ __html: myUser.introduce ? myUser.introduce : ' ' }} />
+                            ) : (
+                                '[Hãy cập nhật]'
+                            )}
                             <br></br>
                             <div
                                 dangerouslySetInnerHTML={{

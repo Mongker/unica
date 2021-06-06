@@ -19,6 +19,7 @@ import { url_base_img } from '../../../util/TypeUI';
 // style
 import styles from './styles/index.module.scss';
 import { UserOutlined } from '@ant-design/icons';
+import ContextApp from '../../../util/ContextApp';
 
 // const
 const { TabPane } = Tabs;
@@ -34,6 +35,7 @@ function TransactionView() {
     const { productObj } = useProductBase();
     const { cartObj, getListCart } = useCartBase();
     const { myUser, usersObj } = useUserBase();
+    const { textSearch } = React.useContext(ContextApp);
 
     const callback = (key) => {
         console.log(key);
@@ -50,77 +52,91 @@ function TransactionView() {
         item.status_transaction = 0;
         putTransaction(item);
     };
-    const Cart = (item) => {
-        console.log('item', item); // MongLV log fix bug
-        console.log('item', item.list_cart); // MongLV log fix bug
-        return (
-            <React.Fragment>
-                <div className={'flex_col'} style={{ justifyContent: 'center' }}>
-                    {item.list_cart.map((id) => {
-                        const dataProduct = cartObj[id] && cartObj[id].product_id && productObj[cartObj[id].product_id];
-                        return (
-                            <React.Fragment>
-                                <div
-                                    className={'flex_row'}
-                                    style={{ justifyContent: 'space-between', alignItems: 'center' }}
-                                >
-                                    <div
-                                        className={'flex_row'}
-                                        style={{ justifyContent: 'flex-start', alignItems: 'center' }}
-                                    >
-                                        <img
-                                            src={`${url_base_img}${dataProduct && dataProduct.image_link}`}
-                                            style={{ width: 50, height: 50, objectFit: 'cover' }}
-                                        />
-                                        <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>{`${
-                                            dataProduct && dataProduct.name
-                                        }`}</div>
-                                    </div>
-                                    <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
-                                        {`${
-                                            id && cartObj[id] && cartObj[id].sale
-                                                ? dataProduct.price * (cartObj[id].sale / 100)
-                                                : (dataProduct && dataProduct.price) || 0
-                                        }`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
-                                    </div>
-                                    <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
-                                        Mã code: {id && cartObj[id] && cartObj[id].code}
-                                    </div>
-                                </div>
-                                {item.status_transaction < 3 && (
-                                    <Button type='primary' onClick={() => handleNext(item)}>
-                                        Xác nhận
-                                    </Button>
-                                )}
-                                {item.status_transaction < 3 && (
-                                    <Button type='primary' danger onClick={() => handleRemove(item)}>
-                                        Hủy đơn hàng
-                                    </Button>
-                                )}
-                                {item.status_transaction === 4 && (
-                                    <Button type='primary' onClick={() => handleStartTransaction(item)}>
-                                        Đặt lại
-                                    </Button>
-                                )}
-                            </React.Fragment>
-                        );
-                    })}
-                </div>
-            </React.Fragment>
-        );
-    };
 
     const transactionFilterStatus = (number) => {
         const arr = transaction.filter((item) => item['status_transaction'] === number);
-        return arr;
+        console.log('arr', arr); // MongLV log fix bug
+        return handleSearch(arr.reverse());
+    };
+    const handleSearch = (arr) => {
+        if (textSearch.length > 0)
+            return arr.filter(
+                (item) =>
+                    item.phone.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    `${item.amount}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    usersObj[item.user_id].name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                    usersObj[item.user_id].email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1,
+            );
+        else return arr;
     };
 
     React.useEffect(() => {
-        getListTransaction({ user_id: myUser.id });
+        getListTransaction();
         getListCart({ code: true });
     }, []);
 
     // JSX
+    const Cart = (item) => {
+        return (
+            <React.Fragment>
+                <div className={'flex_col'} style={{ justifyContent: 'center' }}>
+                    {item.list_cart &&
+                        item.list_cart.map((id) => {
+                            const dataProduct =
+                                cartObj[id] && cartObj[id].product_id && productObj[cartObj[id].product_id];
+                            return (
+                                <React.Fragment>
+                                    <div
+                                        className={'flex_row'}
+                                        style={{ justifyContent: 'space-between', alignItems: 'center' }}
+                                    >
+                                        <div
+                                            className={'flex_row'}
+                                            style={{ justifyContent: 'flex-start', alignItems: 'center' }}
+                                        >
+                                            <img
+                                                src={`${url_base_img}${dataProduct && dataProduct.image_link}`}
+                                                style={{ width: 50, height: 50, objectFit: 'cover' }}
+                                            />
+                                            <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>{`${
+                                                dataProduct && dataProduct.name
+                                            }`}</div>
+                                        </div>
+                                        <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
+                                            {`${
+                                                id && cartObj[id] && cartObj[id].sale
+                                                    ? dataProduct.price * (cartObj[id].sale / 100)
+                                                    : (dataProduct && dataProduct.price) || 0
+                                            }`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
+                                        </div>
+                                        <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
+                                            Mã code: {id && cartObj[id] && cartObj[id].code}
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            );
+                        })}
+                    <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                        {item.status_transaction < 3 && (
+                            <Button type='primary' style={{ width: 200 }} onClick={() => handleNext(item)}>
+                                Xác nhận
+                            </Button>
+                        )}
+                        {item.status_transaction < 3 && (
+                            <Button type='primary' style={{ width: 200 }} danger onClick={() => handleRemove(item)}>
+                                Hủy đơn hàng
+                            </Button>
+                        )}
+                        {item.status_transaction === 4 && (
+                            <Button type='primary' style={{ width: 200 }} onClick={() => handleStartTransaction(item)}>
+                                Đặt lại
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            </React.Fragment>
+        );
+    };
     const Title = (item) => (
         <div className={'flex_col'}>
             <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center' }}>

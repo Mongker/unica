@@ -46,16 +46,21 @@ const CategoryView = ({ refModalProduct }) => {
     const onSelect = (selectedKeys, info) => {
         setKeyTreeActive(selectedKeys[0]);
     };
-    const showModalAdd = (item) => {
+
+    const showModalAdd = (item, event) => {
+        event.stopPropagation();
         refModalAdd.current && refModalAdd.current.showModal();
         refModalAdd.current && refModalAdd.current.setRootId(item.id);
         // refModalAdd.current && refModalAdd.current.setItemEdit(item);
     };
-    const showModalEdit = (item) => {
+
+    const showModalEdit = (item, event) => {
+        event.stopPropagation();
         refModalAdd.current && refModalAdd.current.showModal();
         refModalAdd.current && refModalAdd.current.setItemEdit(item);
         refModalAdd.current && refModalAdd.current.setItemEdit(item);
     };
+
     const setChildren = (id, key) => {
         const children = [];
         let dem = 0;
@@ -64,7 +69,9 @@ const CategoryView = ({ refModalProduct }) => {
                 const _key = `${key}-${dem}`;
                 const img = itemChildren.icon ? `${urlImg}${itemChildren.icon}` : urlImg + 'operation.png';
                 children.push({
-                    title: <TitleTreeView item={itemChildren} showModalAdd={showModalAdd} showModalEdit={showModalEdit} />,
+                    title: (
+                        <TitleTreeView item={itemChildren} showModalAdd={showModalAdd} showModalEdit={showModalEdit} />
+                    ),
                     // title: itemChildren.name,
                     key: itemChildren.id,
                     icon: <img src={img} alt={'icon'} style={{ width: 20, height: 17, objectFit: 'cover' }} />,
@@ -108,16 +115,24 @@ const CategoryView = ({ refModalProduct }) => {
 
     return (
         <React.Fragment>
-            <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+            <div
+                className={'flex_row'}
+                style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}
+            >
                 <div className={styles.btn_add_category}>
                     <Button type='primary' onClick={() => refModalAdd.current && refModalAdd.current.showModal()}>
                         Thêm danh mục
                     </Button>
                 </div>
-                <h2 style={{ fontWeight: 'bold' }}>Danh sách {keyTreeActive ? categoryObj[keyTreeActive].name : 'ALL'} </h2>
+                <h2 style={{ fontWeight: 'bold' }}>
+                    Danh sách {keyTreeActive ? categoryObj[keyTreeActive].name : 'ALL'}{' '}
+                </h2>
                 {keyTreeActive ? (
                     <div className={styles.btn_add_category}>
-                        <Button type='primary' onClick={() => refModalAddProduct.current && refModalAddProduct.current.showDrawer()}>
+                        <Button
+                            type='primary'
+                            onClick={() => refModalAddProduct.current && refModalAddProduct.current.showDrawer()}
+                        >
                             Thêm khóa học
                         </Button>
                     </div>

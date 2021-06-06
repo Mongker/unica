@@ -33,7 +33,7 @@ const typeAction = {
     PRODUCT: {
         GET_LIST: 'GET_LIST_PRODUCT',
         GET_LOGIC: 'GET_PRODUCT_LOGIC',
-        DEL: 'DEL_CATEGORY',
+        DEL: 'DEL_PRODUCT',
         DEL_LOGIC: 'DEL_PRODUCT_LOGIC',
         POST: 'POT_PRODUCT',
         POST_LOGIC: 'POT_PRODUCT_LOGIC',

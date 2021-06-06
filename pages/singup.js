@@ -82,22 +82,36 @@ function SingUp(props) {
     return (
         <div className={style.limiter}>
             <div className={style.container_login}>
-                <div className={`${style.text_center} ${style.form_group}`}>
-                    <img src={'https://id.unica.vn/images/logo.png'} alt={'logo'} />
+                <div className={`${style.text_center} ${style.form_group}`} onClick={() => router.push('/')}>
+                    UTT Learning
                 </div>
                 <div className={style.login}>
                     <div className={style.form_login}>
                         <div className={style.title}>
-                            <h3>ĐĂNG NHẬP</h3>
+                            <h3>ĐĂNG KÝ</h3>
                         </div>
                         <div className={style.wrap_input}>
-                            <input onChange={handleChangeEmail} placeholder={'Email đăng ký'} className={style.input0} />
+                            <input
+                                onChange={handleChangeEmail}
+                                placeholder={'Email đăng ký'}
+                                className={style.input0}
+                            />
                         </div>
                         <div className={style.wrap_input}>
-                            <input type={'password'} onChange={handleChangePassword} placeholder={'Mật khẩu của bạn'} className={style.input0} />
+                            <input
+                                type={'password'}
+                                onChange={handleChangePassword}
+                                placeholder={'Mật khẩu của bạn'}
+                                className={style.input0}
+                            />
                         </div>
                         <div className={style.wrap_input}>
-                            <input type={'password'} onChange={handleChangePasswordCheck} placeholder={'Mật khẩu xác nhận'} className={style.input0} />
+                            <input
+                                type={'password'}
+                                onChange={handleChangePasswordCheck}
+                                placeholder={'Mật khẩu xác nhận'}
+                                className={style.input0}
+                            />
                         </div>
                         <div className={style.title_login} onClick={handleSave}>
                             Đăng ký

@@ -30,10 +30,10 @@ function App({ Component, pageProps }) {
     const [user, setUser] = React.useState(null);
     const [keyTreeActive, setKeyTreeActive] = useState(null);
     const [textSearch, setTextSearch] = useState('');
-    console.log('textSearch', textSearch); // MongLV log fix bug
+    console.log('user', user); // MongLV log fix bug
 
     useEffect(() => {
-        getListProduct({status: 1});
+        getListProduct({ status: 1 });
         getListCategory();
         getListUser();
     }, []);

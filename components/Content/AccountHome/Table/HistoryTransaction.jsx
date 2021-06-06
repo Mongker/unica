@@ -43,44 +43,57 @@ function HistoryTransaction() {
         putTransaction(item);
     };
     const Cart = (item) => (
-        <div className={'flex_col'} style={{ justifyContent: 'center' }}>
-            {item.list_cart.map((id) => {
-                const dataProduct = id && cartObj[id] && cartObj[id].product_id && productObj[cartObj[id].product_id];
-                console.log('dataProduct', dataProduct); // MongLV log fix bug
-                if(!dataProduct) return null;
-                return (
-                    <React.Fragment>
-                        <div
-                            className={'flex_row'}
-                            style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}
-                        >
-                            <div className={'flex_row'} style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                                <img
-                                    src={`${url_base_img}${dataProduct && dataProduct.image_link && dataProduct.image_link}`}
-                                    style={{ width: 50, height: 50, objectFit: 'cover' }}
-                                />
-                                <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>{dataProduct && dataProduct.name}</div>
-                            </div>
-                            <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
-                                {(cartObj[id].sale ? dataProduct.price - dataProduct.price * (cartObj[id].sale / 100) : dataProduct.price)
-                                    .toString()
-                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
-                            </div>
-                        </div>
-                        {item.status_transaction < 1 && (
-                            <Button type='primary' danger onClick={() => handleRemove(item)}>
-                                Hủy đơn hàng
-                            </Button>
-                        )}
-                        {item.status_transaction === 4 && (
-                            <Button type='primary' onClick={() => handleStartTransaction(item)}>
-                                Đặt lại
-                            </Button>
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </div>
+        <React.Fragment>
+            <div className={'flex_col'} style={{ justifyContent: 'center' }}>
+                {typeof item.list_cart === 'object' &&
+                    item.list_cart.map((id) => {
+                        const dataProduct =
+                            id && cartObj[id] && cartObj[id].product_id && productObj[cartObj[id].product_id];
+                        if (!dataProduct) return null;
+                        return (
+                            <React.Fragment>
+                                <div
+                                    className={'flex_row'}
+                                    style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}
+                                >
+                                    <div
+                                        className={'flex_row'}
+                                        style={{ justifyContent: 'flex-start', alignItems: 'center' }}
+                                    >
+                                        <img
+                                            src={`${url_base_img}${
+                                                dataProduct && dataProduct.image_link && dataProduct.image_link
+                                            }`}
+                                            style={{ width: 50, height: 50, objectFit: 'cover' }}
+                                        />
+                                        <div style={{ fontSize: 20, color: 'red', marginLeft: 5 }}>
+                                            {dataProduct && dataProduct.name}
+                                        </div>
+                                    </div>
+                                    <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
+                                        {(cartObj[id].sale
+                                            ? dataProduct.price - dataProduct.price * (cartObj[id].sale / 100)
+                                            : dataProduct.price
+                                        )
+                                            .toString()
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        );
+                    })}
+            </div>
+            {item.status_transaction < 1 && (
+                <Button type='primary' danger onClick={() => handleRemove(item)}>
+                    Hủy đơn hàng
+                </Button>
+            )}
+            {item.status_transaction === 4 && (
+                <Button type='primary' onClick={() => handleStartTransaction(item)}>
+                    Đặt lại
+                </Button>
+            )}
+        </React.Fragment>
     );
 
     const transactionFilterStatus = (number) => {

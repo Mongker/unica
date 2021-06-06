@@ -1,28 +1,36 @@
 import React from 'react';
 import style from './style.module.scss';
+import { url_base_img } from '../../util/TypeUI';
 // import PropTypes from 'prop-types';
 
 function Footer() {
     return (
-        <div style={{marginTop: 65}}>
+        <div style={{ marginTop: 65 }}>
             <div className={style.footer1}>
                 <div className={style.container}>
                     <div className={style.row}>
                         <div className={style.cot_1}>
                             <span>
                                 <a>
-                                    <img src={'/media/images_v2018/logo-unica.png'} />
+                                    <img
+                                        src={`${url_base_img}123.jpeg`}
+                                        style={{
+                                            width: 150,
+                                            height: 50,
+                                        }}
+                                    />
                                 </a>
                             </span>
                             <ul>
                                 <li>
-                                    <div>
-                                        <span style={{ color: 'white' }}> 247 Cầu Giấy, Hà Nội</span>
-                                    </div>
+                                    <div>{/*<span style={{ color: 'white' }}> 247 Cầu Giấy, Hà Nội</span>*/}</div>
                                 </li>
                                 <li>
                                     <div>
-                                        <span style={{ color: 'white' }}> P503, 20 Phan Đình Giót, P.2, Q. Tân Bình</span>
+                                        {/*<span style={{ color: 'white' }}>*/}
+                                        {/*    {' '}*/}
+                                        {/*    P503, 20 Phan Đình Giót, P.2, Q. Tân Bình*/}
+                                        {/*</span>*/}
                                     </div>
                                 </li>
                                 <li>
@@ -37,7 +45,7 @@ function Footer() {
                                 </li>
                                 <li>
                                     <div>
-                                        <span style={{ color: 'white' }}> cskh@unica.vn </span>
+                                        <span style={{ color: 'white' }}> cskh@utt_learning.vn </span>
                                     </div>
                                 </li>
                                 <li>
@@ -48,10 +56,10 @@ function Footer() {
                             </ul>
                         </div>
                         <div className={style.cot_2}>
-                            <h4 className={style.title_footer}>Về Unica</h4>
+                            <h4 className={style.title_footer}>UTT Learning</h4>
                             <ul>
                                 <li>
-                                    <a>Giới thiệu về Unica</a>
+                                    <a>Giới thiệu về Utt Learning</a>
                                 </li>
                                 <li>
                                     <a>Câu hỏi thường gặp</a>
@@ -103,18 +111,16 @@ function Footer() {
                             </ul>
                         </div>
                         <div className={style.cot_2}>
-                            <h4 className={style.title_footer}>Tải app Unica</h4>
+                            <h4 className={style.title_footer}>Địa chỉ Đại học Công Nghệ Giao Thông Vận Tải</h4>
                             <ul>
-                                <li>
-                                    <a>
-                                        <img src={'https://unica.vn/media/images_v2018/appstore.png'} />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <img src={'https://unica.vn/media/images_v2018/playstore.png'} />
-                                    </a>
-                                </li>
+                                <iframe
+                                    src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.1956757379703!2d105.79664331494561!3d20.98479198602226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acc6bdc7f95f%3A0x58ffc66343a45247!2sUniversity%20of%20Transport%20Technology!5e0!3m2!1sen!2s!4v1620999771572!5m2!1sen!2s'
+                                    width={400}
+                                    height={225}
+                                    // style={border:0;}
+                                    allowFullScreen=''
+                                    loading='lazy'
+                                />
                             </ul>
                         </div>
                     </div>
@@ -123,7 +129,10 @@ function Footer() {
             <div className={style.footer2}>
                 <div className={style.container}>
                     <div className={style.row}>
-                        <div style={{ width: 800, color: 'white', marginLeft: 100 }}>© Công ty cổ phần đào tạo trực tuyến Unica - ĐKKD: 0107695756 - Khóa học trực tuyến dành cho người đi làm</div>
+                        <div style={{ width: 800, color: 'white', marginLeft: 100 }}>
+                            © Công ty cổ phần đào tạo trực tuyến Unica - ĐKKD: 0107695756 - Khóa học trực tuyến dành cho
+                            người đi làm
+                        </div>
                         <div>
                             <img src={'https://unica.vn/media/images_v2017/bct.png'} />
                         </div>

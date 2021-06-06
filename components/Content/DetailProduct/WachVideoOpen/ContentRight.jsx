@@ -18,9 +18,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import VideoPlayBase from '../../../base/VideoPlayBase';
 import useStudyProgramBase from '../../../hooks/LogicData/useStudyProgramBase';
+import useProductBase from '../../../hooks/LogicData/useProductBase';
 
-function ContentRight({ itemVideo, id_study_program }) {
+function ContentRight({ itemVideo, id_study_program, product_id }) {
     const { studyProgramObj } = useStudyProgramBase();
+    const { productObj } = useProductBase();
     if (itemVideo)
         return (
             <div>
@@ -42,7 +44,11 @@ function ContentRight({ itemVideo, id_study_program }) {
                 <div dangerouslySetInnerHTML={{ __html: studyProgramObj[id_study_program].content }} />
             </div>
         );
-    return <div>Giow</div>;
+    return (
+        <div className={'flex_col'} style={{ justifyContent: 'center', alignItems: 'center', margin: 20 }}>
+            <div dangerouslySetInnerHTML={{ __html: productObj[product_id].content_full }} />
+        </div>
+    );
 }
 
 ContentRight.propTypes = {

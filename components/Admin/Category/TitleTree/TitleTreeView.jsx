@@ -24,7 +24,8 @@ function TitleTreeView({ item, showModalAdd, showModalEdit }) {
     const dispatch = useDispatch();
 
     // handle func
-    const onDelete = (id) => {
+    const onDelete = (id, event) => {
+        event.stopPropagation();
         dispatch(remove(id));
     };
 
@@ -32,13 +33,13 @@ function TitleTreeView({ item, showModalAdd, showModalEdit }) {
         <div style={{ width: 'auto' }} className={styles.controller}>
             <div style={{ fontSize: 15 }}>{item.name}</div>
             <div style={{ fontSize: '25px' }} className={styles.event}>
-                <div className={styles.event_item} onClick={() => showModalAdd(item)}>
+                <div className={styles.event_item} onClick={(event) => showModalAdd(item, event)}>
                     <AppstoreAddOutlined />
                 </div>
-                <div className={styles.event_item} onClick={() => showModalEdit(item)}>
+                <div className={styles.event_item} onClick={(event) => showModalEdit(item, event)}>
                     <EditOutlined />
                 </div>
-                <div className={styles.event_item} onClick={() => onDelete(item.id)}>
+                <div className={styles.event_item} onClick={(event) => onDelete(item.id, event)}>
                     <DeleteOutlined />
                 </div>
             </div>

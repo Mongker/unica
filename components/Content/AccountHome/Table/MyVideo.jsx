@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 
 function MyVideo() {
     const { myUser } = useUserBase();
-    const router = useRouter()
+    const router = useRouter();
     const { productObj } = useProductBase();
     let arrMyProduct = [];
     try {
@@ -29,8 +29,8 @@ function MyVideo() {
         console.log('e', e); // MongLV log fix bug
     }
     const handleNextPageView = (id) => {
-        router.push(`/detail/${id}`)
-    }
+        router.push(`/detail/${id}`);
+    };
 
     const Cart = (id) => {
         if (!productObj[id]) return null;
