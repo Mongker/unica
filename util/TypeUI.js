@@ -47,6 +47,7 @@ const url_api = {
     OPEN: '/open',
 };
 // const url_base = 'http://localhost:2020/api';
-const url_base = 'https://e90502fe5484.ngrok.io/api';
+// const url_base = 'https://e90502fe5484.ngrok.io/api';
+const url_base = 'http://192.168.20.103:2020/api';
 const url_base_img = `${url_base}/file/`;
 export { arrTypeUser, typeStore, url_api, url_base_img, url_base };
