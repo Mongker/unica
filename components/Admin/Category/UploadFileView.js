@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 
 // styles
 import _styles from './styles/index.module.scss';
-import { url_base_img } from '../../../util/TypeUI';
+import { url_base, url_base_img } from '../../../util/TypeUI';
 
 // const
 const getBase64 = (file) => {
@@ -26,7 +26,17 @@ const getBase64 = (file) => {
 };
 
 function UploadFileView(props) {
-    const { refFunc, Img, styles, imgDefault, callback = () => {}, fileListUtil, linkFileUtil, setLinkFileUtil, setFileListUtil } = props;
+    const {
+        refFunc,
+        Img,
+        styles,
+        imgDefault,
+        callback = () => {},
+        fileListUtil,
+        linkFileUtil,
+        setLinkFileUtil,
+        setFileListUtil,
+    } = props;
     const [linkFile, setLinkFile] = React.useState('');
     const [fileList, setFileList] = React.useState([]);
 
@@ -55,7 +65,7 @@ function UploadFileView(props) {
     // Props
     const UpFile = {
         name: 'file',
-        action: `http://localhost:2020/api/file/upload`,
+        action: `${url_base}/file/upload`,
         multiple: true,
         onChange: (info) => onChange(info),
     };
@@ -81,7 +91,9 @@ function UploadFileView(props) {
     return (
         <div className={styles.upload_file}>
             <Upload {...UpFile} fileList={fileList} listType='picture-card'>
-                {linkFile.length <= 0 ? <img alt='example' src={linkFileView} style={{ width: Img.width, height: Img.height }} /> : null}
+                {linkFile.length <= 0 ? (
+                    <img alt='example' src={linkFileView} style={{ width: Img.width, height: Img.height }} />
+                ) : null}
             </Upload>
         </div>
     );

@@ -17,6 +17,7 @@ import axios from 'axios';
 // Context
 import ContextApp from '../util/ContextApp';
 import { url_api, url_base } from '../util/TypeUI';
+import validateEmail from '../util/validateEmail';
 
 export function postUser(data, setUser) {
     try {
@@ -24,12 +25,11 @@ export function postUser(data, setUser) {
             .post(`${url_base}${url_api.USER}`, data)
             .then((res) => res.data)
             .then((result) => {
-                console.log(result);
                 if (result.message === 'OK') {
                     message.success('Tạo thành công');
                     setUser(result.user);
                 } else if (result.message === 'LIMIT') {
-                    message.warn('Đã tồn tại email');
+                    message.warn('Đã tồn tại email hoặc số điện thoại');
                 } else {
                     message.error('Lỗi truyền');
                 }
@@ -43,6 +43,7 @@ export function postUser(data, setUser) {
 function SingUp(props) {
     // state
     const [email, setEmail] = React.useState('');
+    const [phone, setPhone] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordCheck, setPasswordCheck] = React.useState('');
 
@@ -61,18 +62,30 @@ function SingUp(props) {
     const handleChangePasswordCheck = (e) => {
         setPasswordCheck(e.target.value);
     };
+    const handleChangePhone = (e) => {
+        setPhone(e.target.value);
+    };
 
     const handleSave = () => {
-        if (email.length > 0 && password.length > 0 && passwordCheck.length > 0) {
-            password === passwordCheck
-                ? postUser(
-                      {
-                          email: email,
-                          password: password,
-                      },
-                      setUser,
-                  )
-                : message.warn('Mật khẩu không khớp nhau');
+        if (email.length > 0 && password.length > 0 && passwordCheck.length > 0 && phone.length > 0) {
+            if (phone.toString().length >= 9 && phone.toString().length <= 11) {
+                if (validateEmail(email)) {
+                    password === passwordCheck
+                        ? postUser(
+                              {
+                                  email: email,
+                                  password: password,
+                                  phone: `${phone}`,
+                              },
+                              setUser,
+                          )
+                        : message.warn('Mật khẩu không khớp nhau');
+                } else {
+                    message.warn('Đây phải là 1 email');
+                }
+            } else {
+                message.warn('Số điện thoại không hợp lệ!');
+            }
         } else message.warn('Không được bỏ trống thông tin');
     };
 
@@ -92,8 +105,17 @@ function SingUp(props) {
                         </div>
                         <div className={style.wrap_input}>
                             <input
+                                type='email'
                                 onChange={handleChangeEmail}
                                 placeholder={'Email đăng ký'}
+                                className={style.input0}
+                            />
+                        </div>
+                        <div className={style.wrap_input}>
+                            <input
+                                type={'number'}
+                                onChange={handleChangePhone}
+                                placeholder={'Số điện thoại đăng ký'}
                                 className={style.input0}
                             />
                         </div>

@@ -15,6 +15,7 @@ import useUserBase from '../../../hooks/LogicData/useUserBase';
 import useProductBase from '../../../hooks/LogicData/useProductBase';
 import useCartBase from '../../../hooks/LogicData/useCartBase';
 import { url_base_img } from '../../../../util/TypeUI';
+import convertDateVN from '../../../../util/xx';
 
 const { TabPane } = Tabs;
 const TYPE_TAB = {
@@ -117,7 +118,10 @@ function HistoryTransaction() {
             <div className={'flex_col'}>Tin nhắn: {item.message}</div>
             <div className={'flex_col'}>Số điện thoại nhận hàng: {item.phone}</div>
             <div className={'flex_col'}>Địa chỉ nhận: {item.address}</div>
-            <div className={'flex_col'}>Ngày đặt hàng: {item.created}</div>
+            <div className={'flex_col'}>
+                Ngày đặt hàng: {item.created && convertDateVN(item.created)}
+                {/*Ngày đặt hàng: {item.created && new Date(item.created).toLocaleDateString()}*/}
+            </div>
         </div>
     );
 

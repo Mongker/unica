@@ -25,8 +25,18 @@ const getLoginUser = async (data, dataUser) => {
     try {
         return axios
             .post(`${url_base}${url_api.USER}/login`, data)
-            .then((res) => dataUser(res.data['user']))
-            .catch((error) => message.error('Tài khoản hoặc mật khẩu không đúng'));
+            .then((res) => res.data)
+            .then((result) => {
+                console.log('result', result); // MongLV log fix bug
+                // dataUser(res.data['user']);
+                if (result.message === 'OK') {
+                    console.log('message', result.message); // MongLV log fix bug
+                    dataUser(result['user']);
+                } else {
+                    message.warning(result.message);
+                }
+            })
+            .catch((error) => message.error('Lỗi đường truyền, kiểm tra lại mạng:', error));
     } catch (e) {
         message.error(e);
     }

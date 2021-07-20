@@ -50,19 +50,8 @@ const tailLayout = {
 function ModalStudyProgram({ refCallBack }) {
     // hooks
     const [form] = Form.useForm();
-    const {
-        studyProgram,
-        postStudyProgram,
-        getListStudyProgram,
-        putStudyProgram,
-    } = useStudyProgramBase();
-    const {
-        video,
-        postStudyVideo,
-        getListStudyVideo,
-        putStudyVideo,
-        deleteVideo,
-    } = useVideoBase();
+    const { studyProgram, postStudyProgram, getListStudyProgram, putStudyProgram } = useStudyProgramBase();
+    const { video, postStudyVideo, getListStudyVideo, putStudyVideo, deleteVideo } = useVideoBase();
 
     // ref
     const refVideo = React.useRef();
@@ -239,17 +228,12 @@ function ModalStudyProgram({ refCallBack }) {
     });
     React.useEffect(() => {
         getListStudyProgram();
-        dataProduct &&
-            dataProduct.id &&
-            getListStudyVideo({ product_id: dataProduct.id });
+        dataProduct && dataProduct.id && getListStudyVideo({ product_id: dataProduct.id });
     }, [dataProduct]);
 
     // JSX
     const GenExtra = ({ itemStudyProgram }) => (
-        <div
-            className={'flex_row'}
-            style={{ justifyContent: 'space-between', alignItems: 'center', width: 50 }}
-        >
+        <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center', width: 50 }}>
             <EditOutlined
                 style={{ color: '#0343c6', cursor: 'pointer' }}
                 onClick={(event) => {
@@ -280,10 +264,7 @@ function ModalStudyProgram({ refCallBack }) {
         </div>
     );
     const title = (
-        <div
-            className={'flex_row'}
-            style={{ alignItems: 'center', justifyContent: 'space-around' }}
-        >
+        <div className={'flex_row'} style={{ alignItems: 'center', justifyContent: 'space-around' }}>
             <div className={styles.title}>
                 {dataProduct && dataProduct.name
                     ? 'Quản lý chương trình học: ' + dataProduct.name
@@ -336,28 +317,12 @@ function ModalStudyProgram({ refCallBack }) {
     );
     const componentVideo = (
         <div className={styles.controller_video}>
-            <Form
-                {...layout}
-                name='video'
-                form={form}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-            >
-                <Form.Item
-                    label='Tên'
-                    name='name'
-                    rules={[{ required: true, message: 'Không được bỏ trống tên!' }]}
-                >
+            <Form {...layout} name='video' form={form} initialValues={{ remember: true }} onFinish={onFinish}>
+                <Form.Item label='Tên' name='name' rules={[{ required: true, message: 'Không được bỏ trống tên!' }]}>
                     <Input width={260} />
                 </Form.Item>
-                <Form.Item
-                    label='Video học thử'
-                    rules={[{ required: true, message: 'Không được bỏ trống tên!' }]}
-                >
-                    <Switch
-                        checked={checkedSwitch}
-                        onChange={(checked) => setCheckedSwitch(checked)}
-                    />
+                <Form.Item label='Video học thử' rules={[{ required: true, message: 'Không được bỏ trống tên!' }]}>
+                    <Switch checked={checkedSwitch} onChange={(checked) => setCheckedSwitch(checked)} />
                 </Form.Item>
 
                 <Form.Item label='Ảnh nền'>
@@ -400,10 +365,7 @@ function ModalStudyProgram({ refCallBack }) {
     );
 
     const componentRight = (
-        <div
-            className={'flex_col'}
-            style={{ alignItems: 'center', justifyContent: 'center' }}
-        >
+        <div className={'flex_col'} style={{ alignItems: 'center', justifyContent: 'center' }}>
             <div className={styles.title}>
                 Phần {Number(keyCollapse) + 1}:{' '}
                 {keyCollapse && studyProgramFilterStatus[keyCollapse] && studyProgramFilterStatus[keyCollapse].name}
@@ -435,10 +397,7 @@ function ModalStudyProgram({ refCallBack }) {
                     <Collapse onChange={callback} expandIconPosition={'left'}>
                         {dataProduct &&
                             studyProgram
-                                .filter(
-                                    (item) =>
-                                        item.status && item.product_id === dataProduct.id,
-                                )
+                                .filter((item) => item.status && item.product_id === dataProduct.id)
                                 .map((item, index) => (
                                     <Panel
                                         header={`Phần ${index + 1}: ${item.name}`}
@@ -446,15 +405,11 @@ function ModalStudyProgram({ refCallBack }) {
                                         extra={<GenExtra itemStudyProgram={item} />}
                                     >
                                         {video
-                                            .filter((v) => v.study_program_id === item.id)
+                                            .filter((v) => v && v.study_program_id && v.study_program_id === item.id)
                                             .map((v) => (
-                                                <div
-                                                    className={styles.item_video}
-                                                    onClick={() => handleActiveVideo(v)}
-                                                >
+                                                <div className={styles.item_video} onClick={() => handleActiveVideo(v)}>
                                                     <div>
-                                                        {objVideoActive &&
-                                                        objVideoActive.id === v.id ? (
+                                                        {objVideoActive && objVideoActive.id === v.id ? (
                                                             <PauseCircleOutlined
                                                                 style={{
                                                                     marginLeft: 10,
@@ -507,9 +462,7 @@ function ModalStudyProgram({ refCallBack }) {
                                     </Panel>
                                 ))}
                     </Collapse>
-                    <div className={styles.content_right}>
-                        {keyCollapse && componentRight}
-                    </div>
+                    <div className={styles.content_right}>{keyCollapse && componentRight}</div>
                 </div>
                 {/* Modal StudyProgram */}
                 <Modal
@@ -545,26 +498,14 @@ function ModalStudyProgram({ refCallBack }) {
                         onClose={handleCloseModalVideoWatch}
                         visible={objVideoActive}
                     >
-                        <div
-                            className={'flex_col'}
-                            style={{ justifyContent: 'center', alignItems: 'center' }}
-                        >
+                        <div className={'flex_col'} style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Player
                                 ref={refVideo}
                                 muted={!objVideoActive}
                                 playsInline
-                                poster={`${url_base_img}${
-                                    objVideoActive.img
-                                        ? objVideoActive.img
-                                        : 'startVideo.jpg'
-                                }`}
+                                poster={`${url_base_img}${objVideoActive.img ? objVideoActive.img : 'startVideo.jpg'}`}
                             >
-                                {
-                                    <source
-                                        src={url_base_img + objVideoActive.link_video}
-                                        type='video/mp4'
-                                    />
-                                }
+                                {<source src={url_base_img + objVideoActive.link_video} type='video/mp4' />}
                             </Player>
                             <a
                                 className={'flex_col'}

@@ -45,14 +45,24 @@ function ContentThanhToan(props) {
                         productObj[item.product_id].price -
                         (productObj[item.product_id].price * productObj[item.product_id].sale) / 100),
             );
-            debugger; // MongLV
-            return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$';
+            return (
+                sum
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$'
+            );
         }
         return '0 $';
     };
     const onFinish = (values) => {
         let sum = 0;
-        cartFilter.map((item) => (sum = sum + productObj[item.product_id].price));
+        cartFilter.map((item) => {
+            const money = productObj[item.product_id].sale
+                ? productObj[item.product_id].price -
+                  productObj[item.product_id].price * (productObj[item.product_id].sale / 100)
+                : productObj[item.product_id].price;
+            return (sum = sum + money);
+        });
         values['amount'] = sum;
         try {
             values['list_cart'] = JSON.stringify(list_cart);
@@ -200,10 +210,15 @@ function ContentThanhToan(props) {
                                     <div className={style.price_cart}>
                                         <p style={{ float: 'right' }}>
                                             {/*549,000 <sup style={{ fontSize: 14 }}>đ</sup>*/}
-                                            {productObj[item.product_id] &&
-                                                productObj[item.product_id].price
-                                                    .toString()
-                                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                                            {(productObj[item.product_id] && productObj[item.product_id].sale
+                                                ? productObj[item.product_id].price -
+                                                  productObj[item.product_id].price *
+                                                      (productObj[item.product_id].sale / 100)
+                                                : productObj[item.product_id].price
+                                            )
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                                             $
                                         </p>
                                         {/*<span>700,000</span>*/}

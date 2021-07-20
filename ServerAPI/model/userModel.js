@@ -19,6 +19,9 @@ module.exports = {
     checkEmail: function (con, data, callback) {
         con.query(`SELECT * FROM user WHERE email = '${data.email}'`, callback);
     },
+    checkPhone: function (con, data, callback) {
+        con.query(`SELECT * FROM user WHERE phone = '${data.phone}'`, callback);
+    },
 
     create: function (con, data, callback) {
         con.query(

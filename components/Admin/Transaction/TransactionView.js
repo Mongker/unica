@@ -20,6 +20,7 @@ import { url_base_img } from '../../../util/TypeUI';
 import styles from './styles/index.module.scss';
 import { UserOutlined } from '@ant-design/icons';
 import ContextApp from '../../../util/ContextApp';
+import convertDateVN from '../../../util/xx';
 
 // const
 const { TabPane } = Tabs;
@@ -105,7 +106,7 @@ function TransactionView() {
                                         <div style={{ fontSize: 20, color: 'green', marginLeft: 5 }}>
                                             {`${
                                                 id && cartObj[id] && cartObj[id].sale
-                                                    ? dataProduct.price * (cartObj[id].sale / 100)
+                                                    ? dataProduct.price - dataProduct.price * (cartObj[id].sale / 100)
                                                     : (dataProduct && dataProduct.price) || 0
                                             }`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $'}
                                         </div>
@@ -170,7 +171,7 @@ function TransactionView() {
                 </div>
             </div>
             <div className={'flex_row'} style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                <div className={'flex_col'}>Ngày đặt hàng: {item.created}</div>
+                <div className={'flex_col'}>Ngày đặt hàng: {item.created && convertDateVN(item.created)}</div>
             </div>
         </div>
     );

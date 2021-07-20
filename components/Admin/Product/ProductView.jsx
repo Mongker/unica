@@ -36,7 +36,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
 
     // Vòng đời
     React.useEffect(() => {
-        myUser && myUser.role === 'teacher' ? getListProduct({author_id: Number(myUser.id)}) : getListProduct();
+        myUser && myUser.role === 'teacher' ? getListProduct({ author_id: Number(myUser.id) }) : getListProduct();
     }, []);
 
     // handle func
@@ -113,10 +113,13 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const showDrawerAdd = () => {
         refCallback.current.showDrawer();
         refCallback.current.setContent(null);
-        categoryObj && categoryObj[myUser.categoryFollow] && categoryObj[myUser.categoryFollow].name &&refCallback.current.form.setFieldsValue({
-            name_category: categoryObj[myUser.categoryFollow].name
-        });
-    }
+        categoryObj &&
+            categoryObj[myUser.categoryFollow] &&
+            categoryObj[myUser.categoryFollow].name &&
+            refCallback.current.form.setFieldsValue({
+                name_category: categoryObj[myUser.categoryFollow].name,
+            });
+    };
 
     // JSX
     const columnsTable = [
@@ -142,7 +145,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
             render: (name) => <div style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>{name}</div>,
         },
         {
-            title: 'Giá sản phẩm',
+            title: 'Giá khóa học',
             dataIndex: 'price',
             width: widthTable.price[typeWidthTable],
             render: (price) => <a>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</a>,
@@ -222,9 +225,11 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     const _columnsTable = isMenu ? columnsTable.concat(columnsTableOfMenu) : columnsTable;
     return (
         <React.Fragment>
-            {
-                myUser.role === 'teacher' && <Button type="primary" onClick={showDrawerAdd} style={{marginBottom: 5, borderRadius: 20}}>Thêm khóa học</Button>
-            }
+            {myUser.role === 'teacher' && (
+                <Button type='primary' onClick={showDrawerAdd} style={{ marginBottom: 5, borderRadius: 20 }}>
+                    Thêm khóa học
+                </Button>
+            )}
             <TableProduct
                 columnsTable={_columnsTable}
                 actionProduct={actionProduct}

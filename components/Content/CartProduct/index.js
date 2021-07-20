@@ -25,7 +25,14 @@ function CartProduct() {
     };
     const sumMoney = () => {
         let sum = 0;
-        cartFilter.map((item) => (sum = sum + productObj[item.product_id].price));
+
+        cartFilter.map((item) => {
+            const money = productObj[item.product_id].sale
+                ? productObj[item.product_id].price -
+                  productObj[item.product_id].price * (productObj[item.product_id].sale / 100)
+                : productObj[item.product_id].price;
+            return (sum = sum + money);
+        });
         return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$';
     };
 
@@ -53,11 +60,18 @@ function CartProduct() {
                                                         fontWeight: 'bold',
                                                     }}
                                                 >
-                                                    {productObj[item.product_id] &&
-                                                        productObj[item.product_id].price
-                                                            .toString()
-                                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                                                    $
+                                                    {/*{productObj[item.product_id] &&*/}
+                                                    {/*    productObj[item.product_id].price*/}
+                                                    {/*        .toString()*/}
+                                                    {/*        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}*/}
+                                                    {/*$*/}
+                                                    {`${
+                                                        productObj[item.product_id].sale
+                                                            ? productObj[item.product_id].price -
+                                                              productObj[item.product_id].price *
+                                                                  (productObj[item.product_id].sale / 100)
+                                                            : productObj[item.product_id].price
+                                                    }`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '$'}
                                                 </p>
                                                 {/*<span*/}
                                                 {/*    style={{*/}

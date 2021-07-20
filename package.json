@@ -4,9 +4,10 @@
   "license": "MIT",
   "scripts": {
     "dev:server": "nodemon ./ServerAPI/server.js",
-    "dev": "next",
+    "dev:server2": "node ./ServerAPI/server.js",
+    "dev": "next dev -p 2000",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 1919",
     "install:unica": "npm install && npm install ./ServerAPI"
   },
   "dependencies": {

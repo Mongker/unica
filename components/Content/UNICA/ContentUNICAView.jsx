@@ -169,7 +169,11 @@ function ContentUNICAView(prop) {
                                                 </b>
                                                 {item.sale !== 0 && (
                                                     <span className='giamgia'>
-                                                        {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $
+                                                        {item.price
+                                                            .toFixed(2)
+                                                            .toString()
+                                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                                                        $
                                                     </span>
                                                 )}
                                             </div>
@@ -183,6 +187,7 @@ function ContentUNICAView(prop) {
                                                             ? item.price - item.price * (item.sale / 100)
                                                             : item.price
                                                         )
+                                                            .toFixed(2)
                                                             .toString()
                                                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                                                         $

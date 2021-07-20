@@ -125,7 +125,10 @@ const CategoryView = ({ refModalProduct }) => {
                     </Button>
                 </div>
                 <h2 style={{ fontWeight: 'bold' }}>
-                    Danh sách {keyTreeActive ? categoryObj[keyTreeActive].name : 'ALL'}{' '}
+                    Danh sách{' '}
+                    {keyTreeActive && categoryObj[keyTreeActive] && categoryObj[keyTreeActive].name
+                        ? categoryObj[keyTreeActive].name
+                        : 'ALL'}
                 </h2>
                 {keyTreeActive ? (
                     <div className={styles.btn_add_category}>

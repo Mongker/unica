@@ -58,24 +58,32 @@ function ContentDetail(props) {
 
     // handle func
     const addCart = () => {
-        const data = {
-            product_id: id,
-            user_id: Number(myUser.id),
-            sale: sale,
-        };
-        postCart(data);
+        if (myUser && myUser.id) {
+            const data = {
+                product_id: id,
+                user_id: Number(myUser.id),
+                sale: sale,
+            };
+            postCart(data);
+        } else {
+            router.push('/login');
+        }
     };
 
     const handleOk = (data) => {
         router.push(`/thanhtoan?id=${data.id}`);
     };
     const handleDangKyHoc = () => {
-        const data = {
-            product_id: id,
-            user_id: Number(myUser.id),
-            sale: sale,
-        };
-        postCart(data, handleOk);
+        if (myUser && myUser.id) {
+            const data = {
+                product_id: id,
+                user_id: Number(myUser.id),
+                sale: sale,
+            };
+            postCart(data, handleOk);
+        } else {
+            router.push('/login');
+        }
     };
 
     React.useEffect(() => {
