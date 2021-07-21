@@ -31,6 +31,6 @@ export default function convertDateVN(time_data) {
 
         return date + '-' + month + '-' + year + ', ' + hours + ':' + minutes + ':' + seconds;
     } catch (err) {
-        console.log('err', err); // MongLV log fix bug
+        console.log('err', err);
     }
 }

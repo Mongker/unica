@@ -1,6 +1,6 @@
 import { wrapper } from 'redux/store';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // import * as gtag from '../lib/gtag';
 import 'antd/dist/antd.css';
 import '../styles/index.css';
@@ -21,7 +21,7 @@ import useUserBase from '../components/hooks/LogicData/useUserBase';
 
 function App({ Component, pageProps }) {
     // hooks
-    const router = useRouter();
+    // const router = useRouter();
     const { getListProduct } = useProductBase();
     const { getListCategory } = useCategoryBase();
     const { getListUser } = useUserBase();
@@ -30,7 +30,6 @@ function App({ Component, pageProps }) {
     const [user, setUser] = React.useState(null);
     const [keyTreeActive, setKeyTreeActive] = useState(null);
     const [textSearch, setTextSearch] = useState('');
-    console.log('user', user); // MongLV log fix bug
 
     useEffect(() => {
         getListProduct({ status: 1 });
@@ -39,7 +38,6 @@ function App({ Component, pageProps }) {
     }, []);
     useEffect(() => {
         // Note: Hàm dùng để check xem đã tồn tại user chưa nếu chưa thì lấy dữ liệu từ localStorage lấp vào
-        console.log('user', user); // MongLV log fix bug
         if (user) {
             arrTypeUser.map((item) => {
                 localStorage.setItem(`${item}`, user[item]);

@@ -20,7 +20,7 @@ import { url_base_img } from '../../../util/TypeUI';
 import styles from './styles/index.module.scss';
 import { UserOutlined } from '@ant-design/icons';
 import ContextApp from '../../../util/ContextApp';
-import convertDateVN from '../../../util/xx';
+import convertDateVN from '../../../util/convertDateVN';
 
 // const
 const { TabPane } = Tabs;
@@ -56,7 +56,6 @@ function TransactionView() {
 
     const transactionFilterStatus = (number) => {
         const arr = transaction.filter((item) => item['status_transaction'] === number);
-        console.log('arr', arr); // MongLV log fix bug
         return handleSearch(arr.reverse());
     };
     const handleSearch = (arr) => {

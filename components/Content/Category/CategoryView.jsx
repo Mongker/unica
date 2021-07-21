@@ -45,8 +45,9 @@ function CategoryView({ id }) {
                 return arr.filter(
                     (item) =>
                         item.name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
-                        `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || usersObj[item.author_id].name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
-                        usersObj[item.author_id].email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1
+                        `${item.price}`.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                        usersObj[item.author_id].name.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 ||
+                        usersObj[item.author_id].email.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1,
                 );
         } else return arr;
     };
@@ -60,17 +61,9 @@ function CategoryView({ id }) {
         return handleSearch(MergeArr(arr, arrChildren));
     };
 
-    const key = 'updatable';
-    const openMessage = () => {
-        message.loading({ content: 'Loading...', key });
-        setTimeout(() => {
-            message.success({ content: 'Ok', key, duration: 2 });
-        }, 5000);
-    };
     const handleClickDetailProduct = (e, item) => {
         e.preventDefault();
         router.push(`/detail/${item.id}`);
-        openMessage();
     };
 
     if (!(categoryObj[id] && categoryObj[id]))

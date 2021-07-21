@@ -33,17 +33,9 @@ function ContentUNICAView(prop) {
     const { usersObj } = useUserBase();
     const { textSearch } = useContext(ContextApp);
 
-    const key = 'updatable';
-    const openMessage = () => {
-        message.loading({ content: 'Loading...', key });
-        setTimeout(() => {
-            message.success({ content: 'Ok', key, duration: 2 });
-        }, 5000);
-    };
     const handleClickDetailProduct = (e, item) => {
         e.preventDefault();
         router.push(`/detail/${item.id}`);
-        openMessage();
     };
     const hanNexPageCategory = (e, item) => {
         e.preventDefault();

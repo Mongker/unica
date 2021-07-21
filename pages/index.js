@@ -9,24 +9,27 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 
 // Component
 import MetaView from '../components/MetaView';
-import HeaderController from '../components/Header/HeaderController';
-import ContentController from '../components/Content/ContentController';
-import Footer from '../components/Footer/Footer';
+
+// const component
+const HeaderController = dynamic(() => import('../components/Header/HeaderController'), { loading: () => <p>...</p> });
+const ContentController = dynamic(() => import('../components/Content/ContentController'), {
+    loading: () => <p>...</p>,
+});
+const Footer = dynamic(() => import('../components/Footer/Footer'), { loading: () => <p>...</p> });
 
 // icon
 function Index(props) {
     const { dataMeta } = props;
     return (
         <React.Fragment>
-            {/* Note 5: Thêm các thẻ meta cần sử dụng */}
             <MetaView {...dataMeta} />
             <HeaderController />
             <ContentController />
             <Footer />
-            {/* Note 4: Thêm footer vào đây nhé */}
         </React.Fragment>
     );
 }

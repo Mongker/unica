@@ -14,8 +14,8 @@ import useTransactionBase from '../../../hooks/LogicData/useTransactionBase';
 import useUserBase from '../../../hooks/LogicData/useUserBase';
 import useProductBase from '../../../hooks/LogicData/useProductBase';
 import useCartBase from '../../../hooks/LogicData/useCartBase';
-import { url_base_img } from '../../../../util/TypeUI';
-import convertDateVN from '../../../../util/xx';
+import { url_base_img } from 'util/TypeUI';
+import convertDateVN from 'util/convertDateVN';
 
 const { TabPane } = Tabs;
 const TYPE_TAB = {

@@ -40,6 +40,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(methodOverride('_method'));
+
 // routing
 app.use('/biodata', biodataRouter);
 app.use('/api/file', uploadRouter); // Thao tác với dữ liệu người dùng
