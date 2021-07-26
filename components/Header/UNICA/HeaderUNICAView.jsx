@@ -107,13 +107,6 @@ function HeaderUNICAView(props) {
                 <div className={styles.header_grid}>
                     <div className={styles.header_logo} onClick={() => router.push('/')}>
                         <p>UTT Learning</p>
-                        {/*<img*/}
-                        {/*    src={`${url_base_img}utt-big.png`}*/}
-                        {/*    style={{*/}
-                        {/*        width: 150,*/}
-                        {/*        height: 50,*/}
-                        {/*    }}*/}
-                        {/*/>*/}
                     </div>
                     <div className={styles.header_input}>
                         <form className={styles['header_input-form']} action=''>

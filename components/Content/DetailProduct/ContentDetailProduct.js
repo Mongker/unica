@@ -1,28 +1,31 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
+import { Affix, Avatar, Button, Rate } from 'antd';
+import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import style from './style.module.scss';
+import { Player } from 'video-react';
 import {
-    CaretRightOutlined,
     DoubleRightOutlined,
-    FieldTimeOutlined,
-    GiftOutlined,
     ShoppingCartOutlined,
     UserOutlined,
-    VideoCameraAddOutlined,
-    VideoCameraOutlined,
     TeamOutlined,
     CheckCircleTwoTone,
 } from '@ant-design/icons';
-import { Affix, Avatar, Button, Collapse, Input, List, Rate } from 'antd';
-import CommentDetail from './Comment/CommentDetail';
-import NoiDung from './NoiDungKH/NoiDung';
-import KhoaHoc from './KhoaHocLQ/KhoaHocLQ';
-import { url_base_img } from '../../../util/TypeUI';
-import { Player } from 'video-react';
+
+// hooks
 import useUserBase from '../../hooks/LogicData/useUserBase';
 import useCartBase from '../../hooks/LogicData/useCartBase';
-import WachVideoOpen from './WachVideoOpen/WachVideoOpen';
+
+// util
+import { url_base_img } from '../../../util/TypeUI';
+
+// style
+import style from './style.module.scss';
+
+// component lazy
+const CommentDetail = dynamic(() => import('./Comment/CommentDetail'));
+const WachVideoOpen = dynamic(() => import('./WachVideoOpen/WachVideoOpen'));
+const NoiDung = dynamic(() => import('./NoiDungKH/NoiDung'));
 
 function ContentDetail(props) {
     let videoRef = null;
@@ -52,9 +55,7 @@ function ContentDetail(props) {
     try {
         arrListNumber = JSON.parse(list_number);
         isShowVideo = arrListNumber.includes(Number(myUser.id));
-    } catch (e) {
-        console.log('error file ContentDetail'); // MongLV log fix bug
-    }
+    } catch (e) {}
 
     // handle func
     const addCart = () => {
@@ -95,7 +96,6 @@ function ContentDetail(props) {
     const getVideoRef = (e) => {
         if (e) {
             videoRef = e.video.video;
-            console.log('e', videoRef.duration); // MongLV log fix bug
         }
     };
     // JSX

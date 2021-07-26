@@ -7,20 +7,16 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-import { Layout, Menu, message, notification, Spin } from 'antd';
+import React from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { Layout, notification, Spin } from 'antd';
+
 // context
 import ContextApp from '../util/ContextApp';
 
 // component
 import MetaView from '../components/MetaView';
-
-// style
-import styles from '../components/Admin/styles/index.module.scss';
-import MenuView from '../components/Admin/Menu/MenuView';
 
 // util
 import { TYPE_MENU } from 'util/TypeMenu';
@@ -29,18 +25,25 @@ import { getList } from 'redux/actions/userAction';
 import { useDispatch } from 'react-redux';
 import ModalProductView from '../components/Admin/Product/Modal/ModalProductView';
 
+// style
+import styles from '../components/Admin/styles/index.module.scss';
+
 // const
 const { Header, Content, Sider } = Layout;
+
+// component
 const ContentView = dynamic(import('../components/Admin/Content/ContentView'), { ssr: false });
 const HeaderView = dynamic(import('../components/Admin/Header/HeaderView'), { ssr: false });
+const MenuView = dynamic(import('../components/Admin/Menu/MenuView'), { ssr: false });
+const ImageUI = dynamic(import('designUI/ImageUI'));
 
 notification.config({
     duration: 2,
 });
 
-function Admin(props) {
+function Admin() {
     // context
-    const { user, keyTreeActive, setKeyTreeActive } = React.useContext(ContextApp);
+    const { user, keyTreeActive } = React.useContext(ContextApp);
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -94,7 +97,7 @@ function Admin(props) {
                         onClick={() => router.push('/')}
                         // style={{ background: `url(${url_base_img}utt-big.png) no-repeat` }}
                     >
-                        <img
+                        <ImageUI
                             src={`${url_base_img}utt-big.png`}
                             style={{
                                 width: 150,
@@ -129,9 +132,5 @@ function Admin(props) {
         </React.Fragment>
     );
 }
-
-Admin.propTypes = {};
-
-Admin.defaultProps = {};
 
 export default React.memo(Admin);

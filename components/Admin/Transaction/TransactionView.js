@@ -38,9 +38,7 @@ function TransactionView() {
     const { myUser, usersObj } = useUserBase();
     const { textSearch } = React.useContext(ContextApp);
 
-    const callback = (key) => {
-        console.log(key);
-    };
+    const callback = (key) => {};
     const handleNext = (item) => {
         item.status_transaction = item.status_transaction + 1;
         putTransaction(item);

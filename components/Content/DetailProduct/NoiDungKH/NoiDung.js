@@ -53,7 +53,6 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
             style={{ marginLeft: 5, color: '#4266ba' }}
         />
     );
-    console.log('arrStudyProgramFilter', arrStudyProgramFilter); // MongLV log fix bug
 
     // Vòng đời
     React.useEffect(() => {
@@ -67,7 +66,7 @@ function NoiDung({ product_id, onChangeCollapse, isButton, onChangeVideo, idVide
                 bordered={false}
                 expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                 className={style.site_collapse_custom_collapse}
-                // onChange={onChangeCollapse}
+            // onChange={onChangeCollapse}
             >
                 {arrStudyProgramFilter.map((item) => (
                     <Panel
@@ -154,8 +153,8 @@ NoiDung.propTypes = {
 };
 
 NoiDung.defaultProps = {
-    onChangeCollapse: () => {},
-    onChangeVideo: () => {},
+    onChangeCollapse: () => { },
+    onChangeVideo: () => { },
     isButton: true,
 };
 

@@ -32,9 +32,7 @@ function HistoryTransaction() {
     const { cartObj } = useCartBase();
     const { myUser } = useUserBase();
 
-    const callback = (key) => {
-        console.log(key);
-    };
+    const callback = (key) => {};
     const handleRemove = (item) => {
         item.status_transaction = 4;
         putTransaction(item);

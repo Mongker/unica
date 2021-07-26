@@ -33,6 +33,7 @@ function Index(props) {
         </React.Fragment>
     );
 }
+
 Index.propTypes = {
     dataMeta: PropTypes.object,
 };

@@ -1,6 +1,5 @@
 import { wrapper } from 'redux/store';
 import React, { useEffect, useState } from 'react';
-// import { useRouter } from 'next/router';
 // import * as gtag from '../lib/gtag';
 import 'antd/dist/antd.css';
 import '../styles/index.css';
@@ -18,6 +17,12 @@ import { arrTypeUser } from 'util/TypeUI';
 import useProductBase from '../components/hooks/LogicData/useProductBase';
 import useCategoryBase from '../components/hooks/LogicData/useCategoryBase';
 import useUserBase from '../components/hooks/LogicData/useUserBase';
+
+export function reportWebVitals(metric) {
+    if (metric.label === 'custom') {
+        console.log('metric:', metric); // TODO by MongLV: log ra xem hiệu năng của website
+    }
+}
 
 function App({ Component, pageProps }) {
     // hooks
@@ -77,17 +82,20 @@ function App({ Component, pageProps }) {
     //         router.events.off('routeChangeComplete', handleRouteChange);
     //     };
     // }, [router.events]);
+
+    const valueContextApp = React.useMemo(
+        () => ({
+            user,
+            setUser,
+            keyTreeActive,
+            setKeyTreeActive,
+            textSearch,
+            setTextSearch,
+        }),
+        [user, keyTreeActive, textSearch],
+    );
     return (
-        <ContextApp.Provider
-            value={{
-                user,
-                setUser,
-                keyTreeActive,
-                setKeyTreeActive,
-                textSearch,
-                setTextSearch,
-            }}
-        >
+        <ContextApp.Provider value={valueContextApp}>
             <Component {...pageProps} />
         </ContextApp.Provider>
     );

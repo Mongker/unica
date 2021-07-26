@@ -1,9 +1,11 @@
 import React from 'react';
-import HeaderUNICAView from '../components/Header/UNICA/HeaderUNICAView';
-import Footer from '../components/Footer/Footer';
-import CartProduct from '../components/Content/CartProduct';
+import dynamic from 'next/dynamic';
 // import PropTypes from 'prop-types';
 
+// component
+const HeaderUNICAView = dynamic(() => import('../components/Header/UNICA/HeaderUNICAView'));
+const Footer = dynamic(() => import('../components/Footer/Footer'));
+const CartProduct = dynamic(() => import('../components/Content/CartProduct'));
 function cart() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

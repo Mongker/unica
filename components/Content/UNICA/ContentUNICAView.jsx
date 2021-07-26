@@ -39,7 +39,6 @@ function ContentUNICAView(prop) {
     };
     const hanNexPageCategory = (e, item) => {
         e.preventDefault();
-        console.log('item', item); // MongLV log fix bug
         router.push(`/category/${item.id}?rootId=${item.rootId}`);
     };
 
