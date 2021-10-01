@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { Layout, notification, Spin } from 'antd';
 
 // context
-import ContextApp from '../util/ContextApp';
+import ContextApp from '../context/ContextApp';
 
 // component
 import MetaView from '../components/MetaView';
@@ -27,6 +27,7 @@ import ModalProductView from '../components/Admin/Product/Modal/ModalProductView
 
 // style
 import styles from '../components/Admin/styles/index.module.scss';
+import WrapperModalProduct from '../components/Admin/WrapperModalProduct';
 
 // const
 const { Header, Content, Sider } = Layout;
@@ -35,7 +36,6 @@ const { Header, Content, Sider } = Layout;
 const ContentView = dynamic(import('../components/Admin/Content/ContentView'), { ssr: false });
 const HeaderView = dynamic(import('../components/Admin/Header/HeaderView'), { ssr: false });
 const MenuView = dynamic(import('../components/Admin/Menu/MenuView'), { ssr: false });
-const ImageUI = dynamic(import('designUI/ImageUI'));
 
 notification.config({
     duration: 2,
@@ -54,7 +54,6 @@ function Admin() {
 
     // ref
     const numberRender = React.useRef(0);
-    const refModalProduct = React.useRef(null);
 
     // handle func
     const onCollapse = () => {
@@ -86,6 +85,7 @@ function Admin() {
         dispatch(getList());
         return () => clearTimeout(handleLoading);
     }, []);
+
     // JSX
     const ComponentContent = (
         <Layout style={{ minHeight: '100vh' }}>
@@ -93,17 +93,11 @@ function Admin() {
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
                 {!collapsed && (
                     <div
-                        className='logo'
+                        className={styles.logo}
                         onClick={() => router.push('/')}
                         // style={{ background: `url(${url_base_img}utt-big.png) no-repeat` }}
                     >
-                        <ImageUI
-                            src={`${url_base_img}utt-big.png`}
-                            style={{
-                                width: 150,
-                                height: 50,
-                            }}
-                        />
+                        UTT Learning
                     </div>
                 )}
                 <MenuView setActiveMenu={handleSetActiveMenu} activeMenu={activeMenu} TYPE_MENU={TYPE_MENU} />
@@ -113,15 +107,15 @@ function Admin() {
                     <HeaderView activeMenu={activeMenu} />
                 </Header>
                 <Content style={{ margin: '0 10px' }}>
-                    <ContentView activeMenu={activeMenu} refModalProduct={refModalProduct} />
+                    <ContentView activeMenu={activeMenu} />
                 </Content>
                 {/*<Footer style={{ textAlign: 'center' }}>Quản trị hệ thống của</Footer>*/}
             </Layout>
-            <ModalProductView refFunc={refModalProduct} idCategory={keyTreeActive} />
+            <ModalProductView idCategory={keyTreeActive} />
         </Layout>
     );
     return (
-        <React.Fragment>
+        <WrapperModalProduct>
             {isLoading ? (
                 <div className={styles.spin_loading}>
                     <Spin size='large' />
@@ -129,7 +123,7 @@ function Admin() {
             ) : (
                 ComponentContent
             )}
-        </React.Fragment>
+        </WrapperModalProduct>
     );
 }
 

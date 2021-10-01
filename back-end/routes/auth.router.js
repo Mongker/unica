@@ -1,15 +1,33 @@
 /**
- * Copyright 2016-present, Bkav, Corp.
+ * Copyright 2020 present,Lê Văn Mong.
  * All rights reserved.
- *
- * This source code is licensed under the Bkav license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @author monglv@bkav.com on 01/10/2021
- *
- * History:
- * @modifier abc@bkav.com on xx/xx/xxxx đã chỉnh sửa abcxyx (Chỉ các thay đổi quan trọng mới cần ghi lại note này)
+ * @author Mongker on 03/09/2021
+ * @email: monglv36@gmail.com
+ * @student_code: 68DCHT20091
+ * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
+const express = require('express');
+const authorRoutes = express.Router();
 
-'use strict';
+// container
+const refreshToken = require('../controller/auth/refreshToken.controller');
+const login = require('../controller/auth/login.controller');
+const createUser = require('../controller/auth/resquister.controller');
+
+// middleware
+const checkLogin = require('../middleware/checkLogin.middleware');
+const checkEmailRegister = require('../middleware/checkEmailRegister.middleware');
+const checkPhoneRegister = require('../middleware/checkPhoneRegister.middleware');
+const checkAccount = require('../middleware/checkAccount.middleware');
+const checkLoginTypeGoogle = require('../middleware/checkLoginTypeGoogle.middleware');
+const isAuth = require('../middleware/isAuth.middleware');
+
+authorRoutes.route('/api/login').post(checkAccount, checkLogin, login);
+authorRoutes.route('/api/login_google').post(checkLoginTypeGoogle, createUser, checkLogin, login);
+authorRoutes
+    .route('/api/register')
+    .post(checkEmailRegister, checkPhoneRegister, createUser, checkAccount, checkLogin, login);
+authorRoutes.route('/api/refresh-token').post(refreshToken);
+authorRoutes.route('/api/check-point').post(isAuth, checkLogin, login);
+
+module.exports = authorRoutes;

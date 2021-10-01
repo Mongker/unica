@@ -37,7 +37,7 @@ module.exports = {
     },
     DELETE: function (req, res) {
         CategoryModel.delete(req.con, req.params.id, function (err, row) {
-            if (err) return res.status(404).json({ message: err });
+            if (err) return res.status(200).json({ message: 'Bạn không thể xóa nó vì đang là cha của nhiều sản phẩm khác' });
             return res.status(200).json({ message: 'OK' });
         });
     },

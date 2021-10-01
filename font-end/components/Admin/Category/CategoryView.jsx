@@ -7,10 +7,9 @@
  * @slogan: "Mọi thứ đều bắt đầu từ việc nhỏ, những khát vọng phải lớn"
  */
 
-import React, { useState } from 'react';
-import { Button, message, Tree } from 'antd';
-import { CarryOutOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useState } from 'react';
+import { Button, Tree } from 'antd';
+import { useDispatch } from 'react-redux';
 
 // action
 import * as categoryAction from 'redux/actions/categoryAction';
@@ -24,7 +23,8 @@ import TitleTreeView from './TitleTree/TitleTreeView';
 import { url_base_img } from '../../../util/TypeUI';
 import ProductView from '../Product/ProductView';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
-import ContextApp from '../../../util/ContextApp';
+import ContextApp from '../../../context/ContextApp';
+import ContextModalProduct from '../../../context/ContextModalProduct';
 
 const CategoryView = ({ refModalProduct }) => {
     // redux
@@ -32,12 +32,19 @@ const CategoryView = ({ refModalProduct }) => {
     const { category, categoryObj } = useCategoryBase();
     const { keyTreeActive, setKeyTreeActive } = React.useContext(ContextApp);
 
+    // store context
+    const { setVisible } = useContext(ContextModalProduct);
+
     // state
     const [treeData, setTreeData] = useState([]);
+    const [itemEdit, setItemEdit] = useState(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [rootId, setRootId] = useState('1');
 
-    // ref
-    const refModalAdd = React.useRef(null);
-    const refModalAddProduct = React.useRef(null);
+    // callback
+    const _setIsModalVisible = React.useCallback((isValue = false) => setIsModalVisible(isValue), [isModalVisible]);
+    const _setItemEdit = React.useCallback((value) => setItemEdit(value), [itemEdit]);
+    const _setRootId = React.useCallback((value) => setRootId(value), [rootId]);
 
     // const
     const urlImg = url_base_img;
@@ -49,16 +56,16 @@ const CategoryView = ({ refModalProduct }) => {
 
     const showModalAdd = (item, event) => {
         event.stopPropagation();
-        refModalAdd.current && refModalAdd.current.showModal();
-        refModalAdd.current && refModalAdd.current.setRootId(item.id);
-        // refModalAdd.current && refModalAdd.current.setItemEdit(item);
+        setIsModalVisible(true);
+        setRootId(item.id);
     };
 
     const showModalEdit = (item, event) => {
         event.stopPropagation();
-        refModalAdd.current && refModalAdd.current.showModal();
-        refModalAdd.current && refModalAdd.current.setItemEdit(item);
-        refModalAdd.current && refModalAdd.current.setItemEdit(item);
+
+        setItemEdit(item);
+        setIsModalVisible(true);
+        setRootId(item.id);
     };
 
     const setChildren = (id, key) => {
@@ -87,12 +94,20 @@ const CategoryView = ({ refModalProduct }) => {
         let dem = 0;
         category.map((item) => {
             const img = item.icon ? `${urlImg}${item.icon}` : urlImg + 'operation.png';
+            const children = setChildren(item.id, `${dem}`);
             if (`${item.rootId}` === '1') {
                 newTreeData.push({
-                    title: <TitleTreeView item={item} showModalAdd={showModalAdd} showModalEdit={showModalEdit} />,
+                    title: (
+                        <TitleTreeView
+                            item={item}
+                            showModalAdd={showModalAdd}
+                            showModalEdit={showModalEdit}
+                            isDelete={!children.length > 0}
+                        />
+                    ),
                     key: item.id,
                     icon: <img src={img} alt={'icon'} style={{ width: 20, height: 17, objectFit: 'cover' }} />,
-                    children: setChildren(item.id, `${dem}`),
+                    children: children,
                 });
                 dem = dem + 1;
             }
@@ -109,10 +124,6 @@ const CategoryView = ({ refModalProduct }) => {
         updateTreeData();
     }, [category]);
 
-    React.useEffect(() => {
-        refModalAddProduct.current = refModalProduct.current;
-    });
-
     return (
         <React.Fragment>
             <div
@@ -120,7 +131,7 @@ const CategoryView = ({ refModalProduct }) => {
                 style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}
             >
                 <div className={styles.btn_add_category}>
-                    <Button type='primary' onClick={() => refModalAdd.current && refModalAdd.current.showModal()}>
+                    <Button type='primary' onClick={() => _setIsModalVisible(true)}>
                         Thêm danh mục
                     </Button>
                 </div>
@@ -132,10 +143,7 @@ const CategoryView = ({ refModalProduct }) => {
                 </h2>
                 {keyTreeActive ? (
                     <div className={styles.btn_add_category}>
-                        <Button
-                            type='primary'
-                            onClick={() => refModalAddProduct.current && refModalAddProduct.current.showDrawer()}
-                        >
+                        <Button type='primary' onClick={() => setVisible(true)}>
                             Thêm khóa học
                         </Button>
                     </div>
@@ -144,13 +152,19 @@ const CategoryView = ({ refModalProduct }) => {
                 )}
             </div>
             <div className={'flex_row'}>
-                <ModalUI refFunc={refModalAdd} />
+                <ModalUI
+                    isModalVisible={isModalVisible}
+                    setIsModalVisible={_setIsModalVisible}
+                    itemEdit={itemEdit}
+                    setItemEdit={_setItemEdit}
+                    rootId={rootId}
+                    setRootId={_setRootId}
+                />
                 <div className={styles.custom_tree_antd}>
                     <Tree onSelect={onSelect} treeData={treeData} showIcon draggable />
                 </div>
-                <ProductView keyTreeActive={keyTreeActive} refCallback={refModalAddProduct} />
+                <ProductView keyTreeActive={keyTreeActive} />
             </div>
-            {/*<ModalProductView refFunc={refModalAddProduct} idCategory={keyTreeActive} />*/}
         </React.Fragment>
     );
 };

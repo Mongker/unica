@@ -6,26 +6,19 @@
  * @student_code: 68DCHT20091
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
-import React from 'react';
-import {
-    Button,
-    Drawer,
-    Form,
-    Input,
-    Checkbox,
-    InputNumber,
-    message,
-    Select,
-} from 'antd';
+import React, { useContext } from 'react';
+import { Button, Drawer, Form, Input, Checkbox, InputNumber, message, Select } from 'antd';
 import PropTypes from 'prop-types';
 import useUserBase from '../../../hooks/LogicData/useUserBase';
 import useProductBase from '../../../hooks/LogicData/useProductBase';
 import { useSelector } from 'react-redux';
 import { typeStore, url_base_img } from 'util/TypeUI';
 import UploadFileView from '../../Category/UploadFileView';
-import styles from '../Modal/styles/index.module.scss';
+import styles from './styles/index.module.scss';
 import EditerBase from '../../../base/EditerBase';
 import { Player } from 'video-react';
+import ContextModalProduct from '../../../../context/ContextModalProduct';
+import ContextApp from '../../../../context/ContextApp';
 
 // const
 const tailLayout = {
@@ -40,29 +33,38 @@ let dataSale = [];
 for (let i = 0; i <= 100; i++) {
     dataSale.push(i);
 }
-function ModalProductView({ refFunc, idCategory }) {
+function ModalProductView({ idCategory }) {
     // hooks
-    const [form] = Form.useForm();
     const { myUser } = useUserBase();
     const { postProduct, updateProduct } = useProductBase();
     const category = useSelector((state) => state[typeStore.CATEGORY]);
 
-    // state
-    const [typeModal, setTypeModal] = React.useState('ADD'); // Note: type này để xác "EDIT" sửa hay "ADD"
-    const [visible, setVisible] = React.useState(false);
-    const [imgFile, setImgFile] = React.useState('');
-    const [videoFile, setVideoFile] = React.useState('');
-    const [IdCategory, setIdCategory] = React.useState(null);
-    const [dataEdit, setDataEdit] = React.useState({}); // Note: dành cho trạng thái typeModal === "EDIT"
-    const [content, setContent] = React.useState();
-
-    // ref
-    const refImgFile = React.useRef(null);
-    const refVideoFile = React.useRef(null);
-    const refEditor = React.useRef(null);
+    // store context
+    const {
+        typeModal,
+        setTypeModal,
+        visible,
+        setVisible,
+        imgFile,
+        setImgFile,
+        videoFile,
+        setVideoFile,
+        IdCategory,
+        setIdCategory,
+        dataEdit,
+        // setDataEdit,
+        content,
+        setContent,
+        form,
+        refVideoFile,
+        refImgFile,
+    } = useContext(ContextModalProduct);
+    const { keyTreeActive } = React.useContext(ContextApp);
 
     // const
-    const arr = IdCategory ? category.filter((item) => item.id === IdCategory) : [];
+    const catalog_id =
+        (form.getFieldValue() && form.getFieldValue().catalog_id && form.getFieldValue().catalog_id) || keyTreeActive;
+    const arr = catalog_id ? category.filter((item) => item.id === catalog_id) : [];
     const nameCategory = arr.length > 0 && arr[0].name;
 
     // handle func
@@ -95,12 +97,14 @@ function ModalProductView({ refFunc, idCategory }) {
     };
 
     const onFinish = (values) => {
-        debugger; // MongLV
         if (imgFile && videoFile) {
             values['image_link'] = imgFile;
             values['trailer_link'] = videoFile;
-            values['catalog_id'] = IdCategory;
-            myUser && myUser.role === 'teacher' && myUser.categoryFollow && (values['catalog_id'] = myUser.categoryFollow);
+            catalog_id && (values['catalog_id'] = catalog_id);
+            myUser &&
+                myUser.role === 'teacher' &&
+                myUser.categoryFollow &&
+                (values['catalog_id'] = myUser.categoryFollow);
             values['content_full'] = content;
 
             delete values['name_category'];
@@ -121,35 +125,22 @@ function ModalProductView({ refFunc, idCategory }) {
     };
 
     const handleSelect = (optionA, optionB) => {
-        return optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase());
+        return optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase());
     };
 
-    // Vòng đời
-    React.useEffect(() => {
-        refFunc.current = {
-            visible,
-            showDrawer,
-            onClose,
-            setTypeModal,
-            form,
-            refImgFile,
-            refVideoFile,
-            setIdCategory,
-            setDataEdit,
-            setContent,
-        };
-    });
     React.useEffect(() => {
         idCategory && !IdCategory && setIdCategory(idCategory);
     }, [idCategory]);
-    React.useEffect(() => {
-        form.setFieldsValue({ name_category: nameCategory });
-    }, [IdCategory]);
+
     React.useEffect(() => {
         dataEdit['content_full'] && setContent(dataEdit['content_full']);
-    }, [visible]);
+        catalog_id && form.setFieldsValue({ name_category: nameCategory });
+    }, [visible, catalog_id]);
+
+    const content_full =
+        (form.getFieldValue() && form.getFieldValue().content_full && form.getFieldValue().content_full) || '';
+
+    console.log('form.getFieldValue()', form.getFieldValue()); // MongLV log fix bug
 
     return (
         <React.Fragment>
@@ -161,7 +152,7 @@ function ModalProductView({ refFunc, idCategory }) {
                 placement='right'
                 onClose={onClose}
                 visible={visible}
-                width={'40%'}
+                width={'65%'}
             >
                 <Form
                     {...layout}
@@ -185,12 +176,8 @@ function ModalProductView({ refFunc, idCategory }) {
                     >
                         <Input.TextArea />
                     </Form.Item>
-                    <Form.Item label='Giới thiệu chi tiết'>
-                        <EditerBase
-                            content={content}
-                            setContent={setContent}
-                            refFunc={refEditor}
-                        />
+                    <Form.Item label='Giới thiệu chi tiết' name='content_full'>
+                        {visible && <EditerBase content={content_full} setContent={setContent} />}
                     </Form.Item>
                     <Form.Item
                         label='Giá khóa học'
@@ -199,9 +186,7 @@ function ModalProductView({ refFunc, idCategory }) {
                     >
                         <InputNumber
                             style={{ width: 200 }}
-                            formatter={(value) =>
-                                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                            }
+                            formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                         />
                     </Form.Item>
@@ -212,9 +197,7 @@ function ModalProductView({ refFunc, idCategory }) {
                             placeholder='Chọn % giảm giá'
                             optionFilterProp='children'
                             filterOption={(input, option) =>
-                                option.children
-                                    .toLowerCase()
-                                    .indexOf(input.toLowerCase()) >= 0
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                             filterSort={handleSelect}
                         >
@@ -223,12 +206,9 @@ function ModalProductView({ refFunc, idCategory }) {
                             ))}
                         </Select>
                     </Form.Item>
-                    <Form.Item
-                        label='Ảnh nền'
-                        rules={[{ required: true, message: 'Không được bỏ trống!' }]}
-                    >
+                    <Form.Item label='Ảnh nền' rules={[{ required: true, message: 'Không được bỏ trống!' }]}>
                         <UploadFileView
-                            refFunc={refImgFile}
+                            ref={refImgFile}
                             styles={styles}
                             Image={{ width: 260, height: 130 }}
                             callback={setImgFile}
@@ -241,7 +221,7 @@ function ModalProductView({ refFunc, idCategory }) {
                     >
                         <UploadFileView
                             type={'mp4'}
-                            refFunc={refVideoFile}
+                            ref={refVideoFile}
                             styles={styles}
                             Image={{ width: 260, height: 130 }}
                             imgDefault={`${url_base_img}video.png`}
@@ -262,18 +242,9 @@ function ModalProductView({ refFunc, idCategory }) {
                         </Button>
                     </Form.Item>
                     {videoFile && (
-                        <div
-                            className={'flex_row'}
-                            style={{ justifyContent: 'center', alignItems: 'center' }}
-                        >
-                            <video
-                                style={{ width: 260, height: 130, marginLeft: 20 }}
-                                controls
-                            >
-                                <source
-                                    src={`${url_base_img}${videoFile}`}
-                                    type='video/mp4'
-                                />
+                        <div className={'flex_row'} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <video style={{ width: 260, height: 130, marginLeft: 20 }} controls>
+                                <source src={`${url_base_img}${videoFile}`} type='video/mp4' />
                             </video>
                         </div>
                     )}
@@ -283,12 +254,4 @@ function ModalProductView({ refFunc, idCategory }) {
     );
 }
 
-ModalProductView.propTypes = {
-    refFunc: PropTypes.object,
-};
-
-ModalProductView.defaultProps = {
-    refFunc: { current: {} },
-};
-
-export default ModalProductView;
+export default React.memo(ModalProductView);

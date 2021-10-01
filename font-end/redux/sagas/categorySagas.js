@@ -6,7 +6,7 @@
  * @student_code: 68DCHT20091
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
-
+import { message as messageAnt } from 'antd';
 import typeAction from 'redux/actions/typeAction';
 import { call, take, put, select } from 'redux-saga/effects';
 import categoryAPI from 'redux/api/categoryAPI';
@@ -26,9 +26,9 @@ function* watcherGetCategory() {
 function* watcherPostCategory() {
     while (true) {
         const dataTake = yield take(typeAction.CATEGORY.POST_LOGIC);
-        debugger; // MongLV
         const { data } = dataTake.payload;
         const { item, message } = yield categoryAPI.add(data);
+        debugger; // Todo by MongLV
         if (message === 'OK' && item) {
             const { category } = yield select();
             category.push(item);
@@ -65,6 +65,7 @@ function* watcherPutCategory() {
 function* watcherDeleteCategory() {
     while (true) {
         const dataTake = yield take(typeAction.CATEGORY.DEL_LOGIC);
+        debugger; // Todo by MongLV
 
         const { id } = dataTake.payload;
         const { message } = yield categoryAPI.delete(id);
@@ -72,12 +73,12 @@ function* watcherDeleteCategory() {
         if (message === 'OK') {
             const { category } = yield select();
             const newState = category.filter((item) => item.id !== id);
-            console.log('newState', newState); // MongLV log fix bug
-            console.log('category', category); // MongLV log fix bug
             yield put({
                 type: typeAction.CATEGORY.DEL,
                 payload: { category: [...newState] },
             });
+        } else {
+            messageAnt.warn(message)
         }
     }
 }

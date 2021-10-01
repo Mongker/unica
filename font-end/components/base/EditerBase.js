@@ -11,24 +11,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Editor } from '@tinymce/tinymce-react';
 
-function EditorBase({ content, setContent, refFunc }) {
+function EditorBase({ content, setContent }) {
+    const _content = React.useMemo(() => content, []);
     const onChange = (e) => {
         setContent(e.target.getContent());
     };
 
-    const showFullEdit = () => {
-        window.tinymce.activeEditor.execCommand('mceFullScreen');
-    };
-
-    React.useEffect(() => {
-        refFunc.current = {
-            showFullEdit,
-        };
-    });
+    // const showFullEdit = () => {
+    //     window.tinymce.activeEditor.execCommand('mceFullScreen');
+    // };
 
     return (
         <Editor
-            value={content}
+            initialValue={_content}
             apiKey='4k95hdk87th2mmwysccl9lvu2ap1ehtwjn1hd7qnkk4d6ziv'
             onChange={onChange}
             init={{
@@ -79,8 +74,7 @@ function EditorBase({ content, setContent, refFunc }) {
                                     necessary, as we are looking to handle it internally.
                                 */
                                 var id = 'blobid' + new Date().getTime();
-                                var blobCache =
-                                    window.tinymce.activeEditor.editorUpload.blobCache;
+                                var blobCache = window.tinymce.activeEditor.editorUpload.blobCache;
                                 var base64 = reader.result.split(',')[1];
                                 var blobInfo = blobCache.create(id, file, base64);
                                 blobCache.add(blobInfo);
@@ -94,8 +88,7 @@ function EditorBase({ content, setContent, refFunc }) {
                         input.click();
                     } catch (e) {}
                 },
-                content_style:
-                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
             }}
         />
     );
@@ -104,13 +97,11 @@ function EditorBase({ content, setContent, refFunc }) {
 EditorBase.propTypes = {
     content: PropTypes.string,
     setContent: PropTypes.func,
-    refFunc: PropTypes.object,
 };
 
 EditorBase.defaultProps = {
     content: '',
-    setContent: () => {},
-    refFunc: { current: null },
+    setContent: () => null,
 };
 
-export default EditorBase;
+export default React.memo(EditorBase);

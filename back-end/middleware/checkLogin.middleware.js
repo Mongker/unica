@@ -7,7 +7,7 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-const UserModel = require('../model/user.model');
+const UserModel = require('../model/userModel');
 const md5 = require('md5');
 
 /**

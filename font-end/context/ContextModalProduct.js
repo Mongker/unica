@@ -6,9 +6,25 @@
  * @student_code: 68DCHT20091
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 
-const ContextAdmin = createContext({
-
+const funcDefault = () => null;
+const ContextModalProduct = createContext({
+    typeModal: 'ADD',
+    setTypeModal: funcDefault,
+    visible: false,
+    setVisible: funcDefault,
+    imgFile: '',
+    setImgFile: funcDefault,
+    videoFile: '',
+    setVideoFile: funcDefault,
+    IdCategory: null,
+    setIdCategory: funcDefault,
+    dataEdit: {},
+    setDataEdit: funcDefault,
+    content: '',
+    setContent: funcDefault,
+    refVideoFile: {},
+    refImgFile: {},
 });
-export default ContextAdmin;
+export default ContextModalProduct;

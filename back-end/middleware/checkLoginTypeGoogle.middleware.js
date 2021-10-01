@@ -14,7 +14,7 @@
 
 'use strict';
 
-const UserModel = require('../model/user.model');
+const UserModel = require('../model/userModel');
 
 /**
  * checkLoginTypeGoogle: Kiểm tra xem thông tin đăng nhập qua google

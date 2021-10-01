@@ -15,7 +15,7 @@ import { Avatar, Dropdown, Menu, Input } from 'antd';
 
 // Util
 import { TYPE_MENU } from 'util/TypeMenu';
-import ContextApp from 'util/ContextApp';
+import ContextApp from 'context/ContextApp';
 
 // styles
 import styles from './styles/index.module.scss';
@@ -67,8 +67,6 @@ function HeaderView({ activeMenu }) {
     // JSX
     const menu = (
         <Menu className={styles.menu} onClick={handleClick}>
-            {/*<Menu.Item key='0'>1st menu item</Menu.Item>*/}
-            {/*<Menu.Item key='1'>2nd menu item</Menu.Item>*/}
             <Menu.Item key='LOGOUT' icon={<LogoutOutlined />}>
                 Đăng xuất
             </Menu.Item>

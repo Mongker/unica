@@ -7,7 +7,7 @@
  * @slogan: "Mọi thứ đều bắt đầu từ việc nhỏ, những khát vọng phải lớn"
  */
 
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { Upload, message } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -25,7 +25,7 @@ const getBase64 = (file) => {
     });
 };
 
-function UploadFileView(props) {
+const UploadFileView = forwardRef((props, ref) => {
     const {
         refFunc,
         Img,
@@ -70,15 +70,12 @@ function UploadFileView(props) {
         onChange: (info) => onChange(info),
     };
 
-    // Vòng đời
-    React.useEffect(() => {
-        // Gán ref cho phần tử cha sử dụng lại
-        refFunc.current = {
-            linkFile,
-            setLinkFile,
-            setFileList,
-        };
-    });
+    useImperativeHandle(ref, () => ({
+        linkFile,
+        setLinkFile,
+        setFileList,
+    }));
+
     React.useEffect(() => {
         linkFile && callback(linkFile);
     }, [linkFile, fileList]);
@@ -97,7 +94,7 @@ function UploadFileView(props) {
             </Upload>
         </div>
     );
-}
+});
 UploadFileView.propTypes = {
     refFunc: PropTypes.object,
     styles: PropTypes.object,

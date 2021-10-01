@@ -7,7 +7,7 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-const UserModel = require('../model/user.model');
+const UserModel = require('../model/userModel');
 
 /**
  * checkEmail: Kiểm tra xem email có tồn tại hay không

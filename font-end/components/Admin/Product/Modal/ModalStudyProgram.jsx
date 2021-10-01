@@ -47,7 +47,7 @@ const tailLayout = {
         span: 16,
     },
 };
-function ModalStudyProgram({ refCallBack }) {
+function ModalStudyProgram({ refCallBack, showDrawer, onClose, dataProduct, setDataProduct }) {
     // hooks
     const [form] = Form.useForm();
     const { studyProgram, postStudyProgram, getListStudyProgram, putStudyProgram } = useStudyProgramBase();
@@ -64,7 +64,6 @@ function ModalStudyProgram({ refCallBack }) {
     const [TypeStudyProgram, setTypeStudyProgram] = React.useState(0); // MongLV: 0 -- add, 1 -> edit
     const [objEditVideo, setObjEditVideo] = React.useState(null); // MongLV: null -- add, tồn tại -> edit
     const [idEditStudyProgram, setIdEditStudyProgram] = React.useState(null);
-    const [dataProduct, setDataProduct] = React.useState(null);
     const [content, setContent] = React.useState('');
     const [keyCollapse, setKeyCollapse] = React.useState(null);
     const [linkFile, setLinkFile] = React.useState('');
@@ -76,17 +75,7 @@ function ModalStudyProgram({ refCallBack }) {
 
     const [objVideoActive, setObjVideoActive] = React.useState(null);
 
-    // Handle Func
-    const showDrawer = () => {
-        setVisible(true);
-    };
-
-    const onClose = () => {
-        setVisible(false);
-    };
     const callback = (key) => {
-        console.log('key', key);
-        console.log('key[key.length - 1]', key[key.length - 1]);
         setKeyCollapse(key[key.length - 1]);
     };
 
@@ -163,13 +152,12 @@ function ModalStudyProgram({ refCallBack }) {
     };
 
     const handleEditVideo = (obj) => {
-        debugger; // MongLV
-        const data = {
-            uid: '-1',
-            name: obj.link_video,
-            status: 'done',
-            url: url_base_img + obj.link_video,
-        };
+        // const data = {
+        //     uid: '-1',
+        //     name: obj.link_video,
+        //     status: 'done',
+        //     url: url_base_img + obj.link_video,
+        // };
         obj['isPreview'] ? setCheckedSwitch(true) : setCheckedSwitch(false);
         setObjEditVideo(obj);
         form.setFieldsValue({ ...obj });

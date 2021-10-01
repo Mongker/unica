@@ -7,9 +7,9 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import TableProduct from './Table/TableProduct';
-import { Avatar, Button, Image, Popconfirm, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Popconfirm, Tag, Tooltip } from 'antd';
 import {
     AppstoreOutlined,
     EditOutlined,
@@ -25,11 +25,37 @@ import style from '../../hooks/styles/index.module.scss';
 import useProductBase from '../../hooks/LogicData/useProductBase';
 import ModalStudyProgram from './Modal/ModalStudyProgram';
 import useCategoryBase from '../../hooks/LogicData/useCategoryBase';
+import ContextModalProduct from '../../../context/ContextModalProduct';
 
-function ProductView({ refCallback, isMenu, keyTreeActive }) {
+function ProductView({ isMenu, keyTreeActive }) {
     const { usersObj, myUser } = useUserBase();
     const { categoryObj } = useCategoryBase();
     const { hideProduct, getListProduct } = useProductBase();
+
+    // state
+    const [visibleStudyProgram, setVisibleStudyProgram] = React.useState(false);
+    const [dataProduct, setDataProduct] = React.useState(null);
+
+    // store context
+    const {
+        typeModal,
+        setTypeModal,
+        visible,
+        setVisible,
+        imgFile,
+        setImgFile,
+        videoFile,
+        setVideoFile,
+        IdCategory,
+        setIdCategory,
+        dataEdit,
+        setDataEdit,
+        content,
+        setContent,
+        form,
+        refVideoFile,
+        refImgFile,
+    } = useContext(ContextModalProduct);
 
     // ref
     const refModalStudyProgram = React.useRef();
@@ -40,17 +66,18 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     }, []);
 
     // handle func
+    // const showDrawer = React.useCallback((isValue = false) => setVisible(isValue), [visible]);
     const handleShow = (data) => {
-        if (refCallback && refCallback.current) {
-            refCallback.current.showDrawer();
-            refCallback.current.setTypeModal('EDIT');
-            refCallback.current.setDataEdit(data);
-            refCallback.current.form.setFieldsValue(data);
-            refCallback.current.setIdCategory(data.catalog_id);
-            refCallback.current.refVideoFile.current &&
-                refCallback.current.refVideoFile.current.setLinkFile(data.trailer_link);
-            refCallback.current.refVideoFile.current &&
-                refCallback.current.refVideoFile.current.setFileList([
+        console.log('data', data); // MongLV log fix bug
+        if (data) {
+            setVisible(true);
+            setTypeModal('EDIT');
+            setDataEdit(data);
+            form.setFieldsValue(data);
+            setIdCategory(data.catalog_id);
+            if (refVideoFile.current) {
+                refVideoFile.current.setLinkFile(data.trailer_link);
+                refVideoFile.current.setFileList([
                     {
                         uid: '-1',
                         name: data.trailer_link,
@@ -58,11 +85,11 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
                         url: url_base_img + data.trailer_link,
                     },
                 ]);
+            }
 
-            refCallback.current.refImgFile.current &&
-                refCallback.current.refImgFile.current.setLinkFile(data.image_link);
-            refCallback.current.refImgFile.current &&
-                refCallback.current.refImgFile.current.setFileList([
+            if (refImgFile.current) {
+                refImgFile.current.setLinkFile(data.image_link);
+                refImgFile.current.setFileList([
                     {
                         uid: '-1',
                         name: data.image_link,
@@ -70,6 +97,7 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
                         url: url_base_img + data.image_link,
                     },
                 ]);
+            }
         }
     };
 
@@ -111,14 +139,14 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
     };
 
     const showDrawerAdd = () => {
-        refCallback.current.showDrawer();
-        refCallback.current.setContent(null);
-        categoryObj &&
-            categoryObj[myUser.categoryFollow] &&
-            categoryObj[myUser.categoryFollow].name &&
-            refCallback.current.form.setFieldsValue({
-                name_category: categoryObj[myUser.categoryFollow].name,
-            });
+        // refCallback.current.showDrawer();
+        // refCallback.current.setContent(null);
+        // categoryObj &&
+        //     categoryObj[myUser.categoryFollow] &&
+        //     categoryObj[myUser.categoryFollow].name &&
+        //     refCallback.current.form.setFieldsValue({
+        //         name_category: categoryObj[myUser.categoryFollow].name,
+        //     });
     };
 
     // JSX
@@ -236,7 +264,17 @@ function ProductView({ refCallback, isMenu, keyTreeActive }) {
                 type={keyTreeActive}
                 isFullWidth={isMenu}
             />
-            <ModalStudyProgram refCallBack={refModalStudyProgram} />
+            <ModalStudyProgram
+                refCallBack={refModalStudyProgram}
+                dataProduct={dataProduct}
+                setDataProduct={React.useCallback((value = null) => setDataProduct(value), [dataProduct])}
+                visible={visibleStudyProgram}
+                showDrawer={React.useCallback(
+                    (isValue = true) => setVisibleStudyProgram(isValue),
+                    [visibleStudyProgram],
+                )}
+                onClose={React.useCallback((isValue = false) => setVisibleStudyProgram(isValue), [visibleStudyProgram])}
+            />
         </React.Fragment>
     );
 }

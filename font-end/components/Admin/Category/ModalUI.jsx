@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Input, message, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // action
 import { post, put } from 'redux/actions/categoryAction';
@@ -22,16 +23,26 @@ import UploadFileView from './UploadFileView';
 import styles from './styles/index.module.scss';
 import { url_base_img } from '../../../util/TypeUI';
 
+ModalUI.propTypes = {
+    setIsModalVisible: PropTypes.func,
+    isModalVisible: PropTypes.bool,
+    setRootId: PropTypes.func,
+    setItemEdit: PropTypes.object,
+};
+
+ModalUI.defaultProps = {
+    isModalVisible: false,
+    rootId: '1',
+    setIsModalVisible: () => null,
+    setItemEdit: () => null,
+};
 function ModalUI(props) {
-    const { refFunc } = props;
+    const { isModalVisible, setIsModalVisible, setItemEdit, itemEdit, rootId, setRootId } = props;
     const dispatch = useDispatch();
 
     // state
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [itemEdit, setItemEdit] = useState(null);
-    const [rootId, setRootId] = useState('1');
 
     // ref
     const refUpdateFile = React.useRef(null);
@@ -61,10 +72,6 @@ function ModalUI(props) {
         handleResetState();
     };
 
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
     const handleChangeInputName = (e) => {
         setName(e.target.value);
     };
@@ -74,21 +81,16 @@ function ModalUI(props) {
     };
 
     const handleOk = () => {
-        data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : `${url_base_img}operation.png`;
-        itemEdit ? dispatch(put({ ...itemEdit, ...data })) : dispatch(post(data));
-        handleResetState();
-        setIsModalVisible(false);
+        if (name.length > 0) {
+            data.icon = refUpdateFile.current ? refUpdateFile.current['linkFile'] : `${url_base_img}operation.png`;
+            itemEdit ? dispatch(put({ ...itemEdit, ...data })) : dispatch(post(data));
+            handleResetState();
+            setIsModalVisible(false);
+        } else {
+            message.warn('Tên category không được phép bỏ trống');
+        }
     };
 
-    // Vòng đời
-    React.useEffect(() => {
-        // Gán ref cho phần tử cha sử dụng lại
-        refFunc.current = {
-            showModal,
-            setItemEdit,
-            setRootId,
-        };
-    });
     React.useEffect(() => {
         !isModalVisible && (refUpdateFile.current = null);
     }, [isModalVisible]);
@@ -122,7 +124,9 @@ function ModalUI(props) {
                 <div className={classNames('flex_col', styles.category_add)}>
                     {/* name */}
                     <div className={classNames('flex_row', styles.item_category)}>
-                        <div className={styles.item_name_category}>Tên:</div>
+                        <div className={styles.item_name_category} style={{ color: 'red' }}>
+                            Tên(*):
+                        </div>
                         <Input value={name} onChange={handleChangeInputName} className={styles.item_input_category} />
                     </div>
 
@@ -141,7 +145,7 @@ function ModalUI(props) {
                         <div className={styles.item_name_category}>Icon:</div>
                         <div className={styles.item_input_category}>
                             <UploadFileView
-                                refFunc={refUpdateFile}
+                                ref={refUpdateFile}
                                 styles={styles}
                                 Img={{ width: '20px', height: '20px' }}
                             />
@@ -152,9 +156,5 @@ function ModalUI(props) {
         </React.Fragment>
     );
 }
-
-ModalUI.propTypes = {};
-
-ModalUI.defaultProps = {};
 
 export default React.memo(ModalUI);

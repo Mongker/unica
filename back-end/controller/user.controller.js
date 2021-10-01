@@ -22,12 +22,10 @@ module.exports = {
                     let info = {};
                     try {
                         info = JSON.parse(dataUser.info);
-                        console.log('SON.parse(rows[0].info)', JSON.parse(rows[0].info)); // MongLV log fix bug
+                        console.log('JSON.parse(rows[0].info', JSON.parse(rows[0].info)); // MongLV log fix bug
                     } catch (e) {}
                     delete dataUser.info;
-                    console.log('info', info);
                     const dataNew = { ...dataUser, ...info };
-                    console.log('dataNew', dataNew); // MongLV log fix bug
                     return res.status(200).json({ message: 'OK', user: dataNew });
                 } else {
                     return res.status(200).json({ message: 'Mật khẩu sai' });

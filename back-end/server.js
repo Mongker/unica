@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // include router
-const biodataRouter = require('./routes/biodataRouter');
 const uploadRouter = require('./routes/uploadRouter');
 const UserRouter = require('./routes/userRouter');
 const CategoryRouter = require('./routes/categoryRouter');
@@ -17,10 +16,7 @@ const VideoRouter = require('./routes/videoRouter');
 const CartRouter = require('./routes/cartRouter');
 const TransactionRouter = require('./routes/transactionRouter');
 const OpenProductRouter = require('./routes/opentProductRouter');
-
-// Using pug template engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+const authorRoutes = require('./routes/auth.router');
 
 // connecting route to database
 app.use(function (req, res, next) {
@@ -42,7 +38,6 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(methodOverride('_method'));
 
 // routing
-app.use('/biodata', biodataRouter);
 app.use('/api/file', uploadRouter); // Thao tác với dữ liệu người dùng
 app.use(UserRouter);
 app.use(CategoryRouter);
@@ -52,9 +47,9 @@ app.use(VideoRouter);
 app.use(CartRouter);
 app.use(TransactionRouter);
 app.use(OpenProductRouter);
-
-const PORT = 2020;
+app.use(authorRoutes);
+const PORT = 2021;
 // starting server
-app.listen(2020, function () {
-    console.log(`server listening on port ${2020}`);
+app.listen(PORT, function () {
+    console.log(`server listening on port ${PORT}`);
 });
